@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5FBFE46B-D41C-4721-98A2-28FBE41F8428}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02087E56-AEFE-4CF8-919F-5D559760FE15}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma", "src\InkySigma\InkySigma.xproj", "{98A92493-816D-47C7-BA34-36CC9E37A653}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98A92493-816D-47C7-BA34-36CC9E37A653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A92493-816D-47C7-BA34-36CC9E37A653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A92493-816D-47C7-BA34-36CC9E37A653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A92493-816D-47C7-BA34-36CC9E37A653}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98A92493-816D-47C7-BA34-36CC9E37A653} = {5FBFE46B-D41C-4721-98A2-28FBE41F8428}
+	EndGlobalSection
+EndGlobal
