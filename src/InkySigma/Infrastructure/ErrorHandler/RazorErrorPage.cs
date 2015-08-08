@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Razor;
-using RazorEngine;
+using Microsoft.Framework.Runtime;
 
 namespace InkySigma.Infrastructure.ErrorHandler
 {
@@ -11,15 +12,18 @@ namespace InkySigma.Infrastructure.ErrorHandler
     {
         private string _path { get; set; }
         public Dictionary<string, string> Headers { get; set; }
+        public IApplicationEnvironment Environment { get; set; }
 
-        public RazorErrorPage(string path, Dictionary<string, string> headers)
+        public RazorErrorPage(string path, IApplicationEnvironment environment, Dictionary<string, string> headers = null)
         {
             _path = path;
-            Headers = headers;
+            Headers = headers ?? new Dictionary<string, string>();
+            Environment = environment;
         }
 
         public string Render()
         {
+            if(!File.Exists(Environment))
         }
     }
 }

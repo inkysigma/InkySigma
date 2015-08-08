@@ -1,35 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Http.Extensions;
 
 namespace InkySigma.Infrastructure.ErrorHandler
 {
+    public delegate bool WebServiceType(HttpContext context);
+
     // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
     public class ErrorHandler
     {
         private readonly RequestDelegate _next;
+        private readonly IErrorPage _page;
+        private readonly int _status;
+        private readonly WebServiceType _check;
 
-        public ErrorHandler(RequestDelegate next)
+        public ErrorHandler(RequestDelegate next, int status, IErrorPage page, WebServiceType check)
         {
             _next = next;
+            _page = page;
+            _status = status;
+            _check = check;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
+            var statusCodeFeature = new StatusCodePagesFeature();
+            httpContext.SetFeature<IStatusCodePagesFeature>(statusCodeFeature);
 
-            return _next(httpContext);
+            if (!statusCodeFeature.Enabled)
+                return;
+
+            var response = httpContext.Response;
+            if (response.HeadersSent
+                || response.StatusCode < 400
+                || response.StatusCode >= 600
+                || response.StatusCode != _status
+                || response.ContentLength.HasValue
+                || !string.IsNullOrEmpty(response.ContentType)
+                || !_check(httpContext))
+                return;
+
+            _page.Headers.ToList().ForEach(c => response.Headers[c.Key] = c.Value);
+            await response.WriteAsync(_page.Render());
+            await _next(httpContext);
         }
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class ErrorHandlerExtensions
     {
-        public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder builder, int statusCode, IErrorPage page, WebServiceType type)
         {
-            return builder.UseMiddleware<ErrorHandler>();
+            return builder.UseMiddleware<ErrorHandler>(statusCode, page, type);
+        }
+    }
+
+    public class WebService
+    {
+        public static bool Api(HttpContext context)
+        {
+            var request = context.Request;
+            var requestUrl = UriHelper.Encode(request.Scheme, request.Host, request.PathBase, request.Path, request.QueryString);
+            return Regex.IsMatch(requestUrl, @"^http(s)?:\/\/\S+\.\S+(\\|\/)api(\\|\/)?(\S+)?$");
+        }
+
+        public static bool Mvc(HttpContext context)
+        {
+            var request = context.Request;
+            var requestUrl = UriHelper.Encode(request.Scheme, request.Host, request.PathBase, request.Path, request.QueryString);
+            var requestHost = UriHelper.Encode(request.Scheme, request.Host);
+            Console.WriteLine(requestHost);
+            return !requestUrl.StartsWith(requestHost + "/api");
         }
     }
 }

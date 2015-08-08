@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InkySigma.Infrastructure.ErrorHandler
 {
-    interface IErrorPage
+    public interface IErrorPage
     {
         Dictionary<string, string> Headers { get; set; } 
         string Render();
