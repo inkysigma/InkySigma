@@ -35,6 +35,8 @@ namespace InkySigma.Infrastructure.ErrorHandler
             if (!statusCodeFeature.Enabled)
                 return;
 
+            await _next(httpContext);
+
             var response = httpContext.Response;
             if (response.HeadersSent
                 || response.StatusCode < 400
@@ -47,7 +49,6 @@ namespace InkySigma.Infrastructure.ErrorHandler
 
             _page.Headers.ToList().ForEach(c => response.Headers[c.Key] = c.Value);
             await response.WriteAsync(_page.Render());
-            await _next(httpContext);
         }
     }
 

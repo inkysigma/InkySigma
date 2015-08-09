@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InkySigma.Infrastructure.ErrorHandler;
+﻿using InkySigma.Infrastructure.ErrorHandler;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Routing;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
@@ -17,7 +12,7 @@ namespace InkySigma
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
-        public IHostingEnvironment Environment { get; set; }
+        public IApplicationEnvironment Environment { get; set; }
 
         public Startup(IHostingEnvironment env, IApplicationEnvironment app)
         {
@@ -29,13 +24,17 @@ namespace InkySigma
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-            Environment = env;
+            Environment = app;
         }
 
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -46,14 +45,15 @@ namespace InkySigma
 
         public void ConfigureRoutes(IRouteBuilder builder)
         {
-            builder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+            builder.MapRoute("Default", "{controller}/{action}/{id?}");
         }
 
-        public void ConfigureErrors(IApplicationBuilder builder, IHostingEnvironment env)
+        public void ConfigureErrors(IApplicationBuilder builder)
         {
-            builder.UseErrorHandler(404, new RazorErrorPage("~/Views/Error/404.cshtml"), WebService.Mvc);
-            builder.UseErrorHandler(503, new RazorErrorPage("~/Views/Error/503.cshtml"), WebService.Mvc);
-            builder.UseErrorHandler()
+            builder.UseErrorHandler(404, new PlainErrorPage("404"), WebService.Api);
+            builder.UseErrorHandler(503, new PlainErrorPage("503"), WebService.Api);
+            builder.UseErrorHandler(510, new PlainErrorPage("510"), WebService.Api);
+            builder.UseErrorHandler(400, new PlainErrorPage("400"), WebService.Api);
         }
     }
 }
