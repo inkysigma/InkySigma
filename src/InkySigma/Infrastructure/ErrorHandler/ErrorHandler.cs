@@ -32,13 +32,13 @@ namespace InkySigma.Infrastructure.ErrorHandler
             var statusCodeFeature = new StatusCodePagesFeature();
             httpContext.SetFeature<IStatusCodePagesFeature>(statusCodeFeature);
 
+            await _next(httpContext);
+
             if (!statusCodeFeature.Enabled)
                 return;
 
-            await _next(httpContext);
-
             var response = httpContext.Response;
-            if (response.HeadersSent
+            if (response.HasStarted
                 || response.StatusCode < 400
                 || response.StatusCode >= 600
                 || response.StatusCode != _status
@@ -67,7 +67,8 @@ namespace InkySigma.Infrastructure.ErrorHandler
         {
             var request = context.Request;
             var requestUrl = UriHelper.Encode(request.Scheme, request.Host, request.PathBase, request.Path, request.QueryString);
-            return Regex.IsMatch(requestUrl, @"^http(s)?:\/\/\S+\.\S+(\\|\/)api(\\|\/)?(\S+)?$");
+            var match =  Regex.IsMatch(requestUrl, @"^http(s)?:\/\/\S+(\.\S+)?(\\|\/)api(\\|\/)?(\S+)?$");
+            return match;
         }
 
         public static bool Mvc(HttpContext context)
