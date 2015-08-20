@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Identity.Models
+﻿namespace InkySigma.Identity.Repositories.Result
 {
     public class QueryError
     {

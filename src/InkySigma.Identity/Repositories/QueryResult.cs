@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using InkySigma.Identity.Repositories.Result;
 
-namespace InkySigma.Identity.Models
+namespace InkySigma.Identity.Repositories
 {
     public class QueryResult
     {

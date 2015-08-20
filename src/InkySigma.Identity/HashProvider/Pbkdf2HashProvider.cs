@@ -19,6 +19,7 @@ namespace InkySigma.Identity.HashProvider
         {
             if(string.IsNullOrEmpty(password) || salt == null)
                 throw new ArgumentNullException();
+            
             throw new NotImplementedException();
         }
 
