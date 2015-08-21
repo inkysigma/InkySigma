@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using InkySigma.Identity.Models;
+using InkySigma.Identity.Repositories.Result;
 
 namespace InkySigma.Identity.Repositories
 {
@@ -9,14 +9,22 @@ namespace InkySigma.Identity.Repositories
     {
         Task<string> GetUserIdAsync(TUser user, CancellationToken token);
         Task<string> GetUserNameAsync(TUser user, CancellationToken token);
+        Task<string> GetNameAsync(TUser user, CancellationToken token);
 
         Task<TUser> FindUserByIdAsync(string id, CancellationToken token);
         Task<TUser> FindUserByUserNameAsync(string name, CancellationToken token);
+        Task<TUser> FindUserByNameAsync(string name, CancellationToken token);
 
-        Task<QueryResult> SetUserNameAsync(string username, TUser user, CancellationToken token);
+        Task<QueryResult> SetUserIdAsync(TUser user, string userid, CancellationToken token);
+        Task<QueryResult> SetUserNameAsync(TUser user, string username, CancellationToken token);
+        Task<QueryResult> SetNameAsync(TUser user, string name, CancellationToken token);
 
         Task<QueryResult> AddUserAsync(TUser user, CancellationToken token);
         Task<QueryResult> RemoveUserAsync(TUser user, CancellationToken token);
         Task<QueryResult> UpdateUserAsync(TUser user, CancellationToken token);
+
+        Task<bool> HasUserIdAsync(TUser user, CancellationToken token);
+        Task<bool> HasUserNameAsync(TUser user, CancellationToken token);
+        Task<bool> HasNameAsync(TUser user, CancellationToken token);
     }
 }

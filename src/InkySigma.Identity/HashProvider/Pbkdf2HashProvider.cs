@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using InkySigma.Identity.Models;
 
 namespace InkySigma.Identity.HashProvider
 {
     public class Pbdf2HashProvider : IPasswordHashProvider
     {
-        private int _iterations;
+        private readonly int _iterations;
+        private readonly int _length;
         public Pbdf2HashProvider(PasswordHashProviderOptions options = null)
         {
             if(options == null)
                 options = new PasswordHashProviderOptions();
             _iterations = options.Iterations;
+            _length = options.Length;
         }
 
         public string Hash(string password, byte[] salt)
         {
             if(string.IsNullOrEmpty(password) || salt == null)
                 throw new ArgumentNullException();
-            
-            throw new NotImplementedException();
+
+            using (var hashProvider = new Rfc2898DeriveBytes(password, salt))
+            {
+                hashProvider.IterationCount = _iterations;
+                return Convert.ToBase64String(hashProvider.GetBytes(_length));
+            }
         }
 
         public bool VerifyHash(string password, string provided, byte[] salt)
         {
-            throw new NotImplementedException();
+            if(string.IsNullOrEmpty(password)||string.IsNullOrEmpty(provided)||salt == null)
+                throw new ArgumentNullException();
+
+            if (password == Hash(provided, salt))
+                return true;
+            return false;
         }
 
         [MethodImpl(MethodImplOptions.NoOptimization)]
