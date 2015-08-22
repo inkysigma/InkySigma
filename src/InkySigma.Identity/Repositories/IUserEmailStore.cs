@@ -12,6 +12,8 @@ namespace InkySigma.Identity.Repositories
 
         Task<QueryResult> AddUserEmailAsync(TUser user, string email, CancellationToken token);
 
+        Task<QueryResult> RemoveUserEmail(TUser user, CancellationToken token);
+
         Task<QueryResult> SetUserEmailAsync(TUser user, string email, CancellationToken token);
         Task<QueryResult> SetUserEmailConfirmedAsync(TUser user, bool isConfirmed, CancellationToken token);
 

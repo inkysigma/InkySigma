@@ -1,4 +1,6 @@
-﻿namespace InkySigma.Identity.Repositories.Result
+﻿using System.CodeDom;
+
+namespace InkySigma.Identity.Repositories.Result
 {
     public class QueryError
     {

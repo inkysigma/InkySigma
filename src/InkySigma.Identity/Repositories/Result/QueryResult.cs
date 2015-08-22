@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace InkySigma.Identity.Repositories.Result
 {
@@ -6,7 +7,7 @@ namespace InkySigma.Identity.Repositories.Result
     {
         public bool Succeeded { get; set; }
 
-        public IEnumerable<QueryError> Errors { get; set; } = null;
+        public List<QueryError> Errors { get; set; } = null;
 
         public static QueryResult Success()
         {
@@ -20,6 +21,20 @@ namespace InkySigma.Identity.Repositories.Result
                 Succeeded = false,
                 Errors = new List<QueryError>(errors)
             };
+        }
+
+        public static QueryResult operator +(QueryResult left, QueryResult right)
+        {
+            if (!left.Succeeded || !right.Succeeded)
+                left.Succeeded = false;
+            if (left.Errors == null && right.Errors == null)
+                return left;
+            if (left.Errors == null)
+                left.Errors = new List<QueryError>();
+            if (right.Errors == null)
+                right.Errors = new List<QueryError>();
+            left.Errors.AddRange(right.Errors.Where(c => left.Errors.Any(n => n.Description == c.Description)));
+            return left;
         }
     }
 }

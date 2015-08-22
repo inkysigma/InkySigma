@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 
-namespace InkySigma.Infrastructure.ApplicationBuilder
+namespace InkySigma.Identity
 {
     public static class IdentityBuilder
     {
-        public static async Task<IApplicationBuilder> UseIdentity(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseIdentity(this IApplicationBuilder builder)
         {
             return builder;
         }
