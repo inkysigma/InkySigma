@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Identity.ClaimProvider;
-using InkySigma.Identity.Exceptions;
 using InkySigma.Identity.Model;
-using InkySigma.Identity.Options;
+using InkySigma.Identity.Model.Exceptions;
+using InkySigma.Identity.Model.Options;
 using InkySigma.Identity.RandomProvider;
 using InkySigma.Identity.Repositories;
 using InkySigma.Identity.Repositories.Result;
@@ -15,7 +14,7 @@ using Microsoft.Framework.Logging;
 
 namespace InkySigma.Identity
 {
-    public class LoginManager<TUser> where TUser : class
+    public class LoginManager<TUser> : IDisposable where TUser : class
     {
         private bool _isDisposed = false;
 
@@ -114,6 +113,12 @@ namespace InkySigma.Identity
             if (user == null)
                 throw new InvalidUserException(username);
             return await LoginStore.RemoveUserLogin(user, token, cancellationToken);
+        }
+
+        public void Dispose()
+        {
+            Users.Dispose();
+            LoginStore.Dispose();
         }
     }
 }

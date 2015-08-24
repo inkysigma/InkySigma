@@ -1,7 +1,7 @@
 ﻿using InkySigma.Identity.HashProvider;
 using InkySigma.Identity.RandomProvider;
 
-namespace InkySigma.Identity.Options
+namespace InkySigma.Identity.Model.Options
 {
     public class PasswordOptions
     {

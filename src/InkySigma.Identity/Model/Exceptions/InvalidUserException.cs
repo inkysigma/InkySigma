@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace InkySigma.Identity.Exceptions
+namespace InkySigma.Identity.Model.Exceptions
 {
     /// <summary>
     /// Represents an exception where a user with the specified Token or Password does not exist

@@ -1,6 +1,6 @@
 ﻿using InkySigma.Identity.Repositories;
 
-namespace InkySigma.Identity.Options
+namespace InkySigma.Identity.Model.Options
 {
     public class RepositoryOptions<TUser> where TUser : class
     {

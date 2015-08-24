@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using InkySigma.Identity.Options;
-using InkySigma.Identity.RandomProvider;
+using InkySigma.Identity.Model.Options;
 using InkySigma.Identity.Repositories;
 using InkySigma.Identity.Repositories.Result;
 
@@ -184,19 +182,19 @@ namespace InkySigma.Identity
         public async Task<QueryResult> RemoveUserById(string userId,
             CancellationToken token = default(CancellationToken))
         {
-            Handle();
+            Handle(token);
             if (string.IsNullOrEmpty(userId))
                 throw new ArgumentNullException();
             var tuser = await _userStore.FindUserByIdAsync(userId, token);
             return await RemoveUser(tuser);
         }
-
+        
         public async Task<QueryResult> RemoveUser(TUser user, CancellationToken token = default(CancellationToken))
         {
             Handle(token);
 
             if (user == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("user");
 
             var result = QueryResult.Success();
 

@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Identity.Options
+﻿namespace InkySigma.Identity.Model.Options
 {
     public class PasswordHashProviderOptions
     {

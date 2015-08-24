@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace InkySigma.Identity.Dapper.Models
+﻿namespace InkySigma.Identity.Dapper.Models
 {
     public class UserClaimsViewModel
     {

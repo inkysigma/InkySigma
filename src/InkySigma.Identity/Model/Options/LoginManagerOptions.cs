@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using InkySigma.Identity.RandomProvider;
 
-namespace InkySigma.Identity.Options
+namespace InkySigma.Identity.Model.Options
 {
     public class LoginManagerOptions
     {

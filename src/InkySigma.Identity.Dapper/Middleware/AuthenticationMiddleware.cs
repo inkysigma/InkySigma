@@ -1,14 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Security.Claims;
+﻿using System.IO;
 using System.Threading.Tasks;
 using InkySigma.Identity.Dapper.Models;
-using InkySigma.Identity.Exceptions;
-using InkySigma.Identity.Repositories;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InkySigma.Identity.Dapper.Middleware
 {

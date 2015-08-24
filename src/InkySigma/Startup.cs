@@ -1,15 +1,10 @@
 ﻿using InkySigma.Infrastructure.ApplicationBuilder;
-using InkySigma.Infrastructure.ErrorHandler;
-using InkySigma.Infrastructure.Filter;
-using InkySigma.Infrastructure.Middleware;
 using InkySigma.Infrastructure.ServiceBuilder;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Routing;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
 
 namespace InkySigma
