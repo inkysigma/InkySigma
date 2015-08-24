@@ -16,6 +16,7 @@ namespace InkySigma.Identity.Repositories
 
         Task<QueryResult> SetPasswordAsync(TUser user, string password, CancellationToken token);
         Task<QueryResult> SetSaltAsync(TUser user, byte[] salt, CancellationToken token);
+
         Task<bool> HasPasswordAsync(TUser user, CancellationToken token);
     }
 }

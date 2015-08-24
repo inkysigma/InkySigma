@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using InkySigma.Identity.RandomProvider;
 
-namespace InkySigma.Identity.Models
+namespace InkySigma.Identity.Options
 {
-    public class RandomOptions
+    public class LoginManagerOptions
     {
-        public IUserIdProvider UserIdProvider { get; set; } = new UserIdProvider();
         public ITokenProvider TokenProvider { get; set; } = new TokenProvider();
+        public TimeSpan ExpirationTimeSpan { get; set; } = new TimeSpan(3, 0, 0, 0);
     }
 }

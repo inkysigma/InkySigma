@@ -160,7 +160,7 @@ namespace InkySigma.Identity.Dapper
             throw new NotImplementedException();
         }
 
-        public Task<QueryResult> AddUserAsync(User user, CancellationToken token)
+        public Task<QueryResult> AddUserAsync(User user, string guid, CancellationToken token)
         {
             throw new NotImplementedException();
         }

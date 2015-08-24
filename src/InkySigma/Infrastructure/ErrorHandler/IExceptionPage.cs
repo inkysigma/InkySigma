@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace InkySigma.Infrastructure.ErrorHandler
 {
-    public interface IErrorPage
+    public interface IExceptionPage
     {
-        Dictionary<string, string> Headers { get; set; } 
         string Render();
+
+        void SetException(Exception exception);
     }
 }

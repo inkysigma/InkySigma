@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using InkySigma.Identity.Dapper.Models;
+using InkySigma.Identity.Exceptions;
 using InkySigma.Identity.Repositories;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
@@ -15,11 +17,15 @@ namespace InkySigma.Identity.Dapper.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly long _length;
+        private readonly UserManager<User> _manager;
+        private readonly LoginManager<User> _loginManager; 
 
-        public AuthenticationMiddleware(RequestDelegate next, long length, UserManager<User> manager)
+        public AuthenticationMiddleware(RequestDelegate next, long length, UserManager<User> manager, LoginManager<User> loginManager)
         {
             _next = next;
             _length = length;
+            _manager = manager;
+            _loginManager = loginManager;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -39,6 +45,9 @@ namespace InkySigma.Identity.Dapper.Middleware
                 try
                 {
                     var model = JsonConvert.DeserializeObject<UserClaimsViewModel>(body);
+                    var principal = await _loginManager.VerifyToken(model.Username, model.Token);
+                    if (principal != null)
+                        httpContext.User = principal;
                 }
                 catch (JsonException)
                 {

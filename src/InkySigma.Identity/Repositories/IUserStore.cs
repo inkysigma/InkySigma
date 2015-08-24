@@ -19,7 +19,7 @@ namespace InkySigma.Identity.Repositories
         Task<QueryResult> SetUserNameAsync(TUser user, string username, CancellationToken token);
         Task<QueryResult> SetNameAsync(TUser user, string name, CancellationToken token);
 
-        Task<QueryResult> AddUserAsync(TUser user, CancellationToken token);
+        Task<QueryResult> AddUserAsync(TUser user, string guid, CancellationToken token);
         Task<QueryResult> RemoveUserAsync(TUser user, CancellationToken token);
         Task<QueryResult> UpdateUserAsync(TUser user, CancellationToken token);
 

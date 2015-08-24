@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InkySigma.Identity.HashProvider;
+﻿using InkySigma.Identity.HashProvider;
 using InkySigma.Identity.RandomProvider;
 
-namespace InkySigma.Identity.Models
+namespace InkySigma.Identity.Options
 {
     public class PasswordOptions
     {

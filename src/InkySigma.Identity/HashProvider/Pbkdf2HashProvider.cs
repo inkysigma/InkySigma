@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
-using InkySigma.Identity.Models;
+using InkySigma.Identity.Options;
 
 namespace InkySigma.Identity.HashProvider
 {

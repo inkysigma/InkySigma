@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InkySigma.Identity.Repositories;
+﻿using InkySigma.Identity.Repositories;
 
-namespace InkySigma.Identity.Models
+namespace InkySigma.Identity.Options
 {
     public class RepositoryOptions<TUser> where TUser : class
     {
