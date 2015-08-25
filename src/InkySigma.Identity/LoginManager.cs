@@ -20,18 +20,22 @@ namespace InkySigma.Identity
 
         internal UserManager<TUser> Users;
         internal IUserLoginStore<TUser> LoginStore;
+        internal IUserLockoutStore<TUser> LockoutStore;  
         internal IClaimsProvider<TUser> ClaimsProvider; 
         internal ILogger<LoginManager<TUser>> Logger;
         internal ITokenProvider TokenProvider;
         internal TimeSpan ExpirationTimeSpan;
-        public LoginManager(UserManager<TUser> userManager, IUserLoginStore<TUser> loginStore, IClaimsProvider<TUser> claimsProvider, ILogger<LoginManager<TUser>> logger, LoginManagerOptions options)
+        internal int MaxCount;
+        public LoginManager(UserManager<TUser> userManager, ILogger<LoginManager<TUser>> logger, LoginManagerOptions<TUser> options)
         {
             Users = userManager;
-            LoginStore = loginStore;
+            LoginStore = userManager.UserLoginStore;
+            LockoutStore = userManager.UserLockoutStore;
             Logger = logger;
-            ClaimsProvider = claimsProvider;
+            ClaimsProvider = options.ClaimsProvider;
             TokenProvider = options.TokenProvider;
             ExpirationTimeSpan = options.ExpirationTimeSpan;
+            MaxCount = options.AccessFailedCount;
         }
 
         private void Handle(CancellationToken token)
@@ -84,20 +88,61 @@ namespace InkySigma.Identity
             return null;
         }
 
-        public async Task<string> CreateLogin(string username, string password, bool persistant,
+        /// <summary>
+        /// Creates a token if the provided username and password match.
+        /// </summary>
+        /// <param name="username">The username</param>
+        /// <param name="password">The plain text password</param>
+        /// <param name="location">The location to associate with the token (IP or Computer Name is fine)</param>
+        /// <param name="persistant"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>A token that can be used to authenticate</returns>
+        public async Task<string> CreateLogin(string username, string password, string location, bool persistant,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var user = await Users.FindUserByUsername(username, cancellationToken);
             var exists = await Users.VerifyUserPasswordAsync(username, password, cancellationToken);
             if (!exists)
-                return null;
+            {
+                await LockoutStore.IncrememntAccessFailedCount(user, cancellationToken);
+                throw new InvalidUserException(username);
+            }
+
+            if (await LockoutStore.GetLockoutEnabled(user, cancellationToken))
+            {
+                var endDateTime = await LockoutStore.GetLockoutEndDateTime(user, cancellationToken);
+                if (endDateTime == null)
+                {
+                    await LockoutStore.RemoveUserLockout(user, cancellationToken);
+                }
+                else if (endDateTime < DateTime.Now)
+                {
+                    await LockoutStore.SetLockoutEnabled(user, false, cancellationToken);
+                }
+                else
+                {
+                    throw new InvalidUserException();
+                }
+            }
+
+            var count = await LockoutStore.GetAccessFailedCount(user, cancellationToken);
+
+            if (count > MaxCount)
+            {
+                await LockoutStore.ResetAccessFailedCount(user, cancellationToken);
+                await LockoutStore.SetLockoutEnabled(user, true, cancellationToken);
+                await LockoutStore.SetLockoutEndDateTime(user, DateTime.Now + ExpirationTimeSpan, cancellationToken);
+                throw new UserLockedOutException();
+            }
+
             var token = TokenProvider.Generate();
+            await LockoutStore.ResetAccessFailedCount(user, cancellationToken);
             QueryResult result;
             if (!persistant)
                 result =
-                    await LoginStore.AddUserLogin(user, token, DateTime.Now + ExpirationTimeSpan, cancellationToken);
+                    await LoginStore.AddUserLogin(user, token, location, DateTime.Now + ExpirationTimeSpan, cancellationToken);
             else
-                result = await LoginStore.AddUserLogin(user, token, DateTime.MaxValue, cancellationToken);
+                result = await LoginStore.AddUserLogin(user, token, location, DateTime.MaxValue, cancellationToken);
             return result.Succeeded ? token : null;
         }
 

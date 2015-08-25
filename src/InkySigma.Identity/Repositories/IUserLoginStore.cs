@@ -13,7 +13,7 @@ namespace InkySigma.Identity.Repositories
 
         Task<bool> HasUserLoginAsync(TUser user, string token, CancellationToken cancellationToken);
 
-        Task<QueryResult> AddUserLogin(TUser user, string userToken, DateTime expiration, CancellationToken token);
+        Task<QueryResult> AddUserLogin(TUser user, string userToken, string location, DateTime expiration, CancellationToken token);
 
         Task<QueryResult> RemoveUserLogin(TUser user, string userToken, CancellationToken token);
 

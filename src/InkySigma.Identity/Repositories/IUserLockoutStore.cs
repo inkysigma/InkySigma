@@ -9,7 +9,7 @@ namespace InkySigma.Identity.Repositories
     {
         Task<DateTime> GetLockoutEndDateTime(TUser user, CancellationToken token);
         Task<int> GetAccessFailedCount(TUser user, CancellationToken token);
-        Task<int> GetLockoutEnabled(TUser user, CancellationToken token);
+        Task<bool> GetLockoutEnabled(TUser user, CancellationToken token);
 
         Task<QueryResult> AddUserLockout(TUser user, CancellationToken token);
 
