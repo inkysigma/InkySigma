@@ -3,13 +3,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using InkySigma.Identity.ClaimProvider;
 using InkySigma.Identity.Model;
 using InkySigma.Identity.Model.Exceptions;
 using InkySigma.Identity.Model.Options;
 using InkySigma.Identity.RandomProvider;
 using InkySigma.Identity.Repositories;
 using InkySigma.Identity.Repositories.Result;
+using InkySigma.Identity.ServiceProviders.ClaimProvider;
 using Microsoft.Framework.Logging;
 
 namespace InkySigma.Identity

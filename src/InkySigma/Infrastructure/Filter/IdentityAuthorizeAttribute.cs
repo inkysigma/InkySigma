@@ -9,11 +9,11 @@ using AuthorizationContext = Microsoft.AspNet.Mvc.AuthorizationContext;
 
 namespace InkySigma.Infrastructure.Filter
 {
-    public class IdentityAuthorizeAttribute : IAuthorizationFilter
+    public class IdentityAuthorizeAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationContext context)
         {
-            throw new NotImplementedException();
+            var user = context.HttpContext.User;
         }
     }
 }

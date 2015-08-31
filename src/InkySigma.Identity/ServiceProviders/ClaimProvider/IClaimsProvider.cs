@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace InkySigma.Identity.ClaimProvider
+namespace InkySigma.Identity.ServiceProviders.ClaimProvider
 {
     public interface IClaimsProvider<in TUser> where TUser : class
     {
-        Task<ClaimsPrincipal> CreateAsync(TUser user, IEnumerable<string> role, CancellationToken token);
+        Task<ClaimsPrincipal> CreateAsync(TUser user, IEnumerable<string> roles, CancellationToken token);
     }
 }

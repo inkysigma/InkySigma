@@ -1,6 +1,6 @@
 ﻿using System;
-using InkySigma.Identity.ClaimProvider;
 using InkySigma.Identity.RandomProvider;
+using InkySigma.Identity.ServiceProviders.ClaimProvider;
 
 namespace InkySigma.Identity.Model.Options
 {
