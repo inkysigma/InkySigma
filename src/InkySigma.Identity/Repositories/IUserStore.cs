@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Identity.Repositories.Result;
@@ -13,7 +14,7 @@ namespace InkySigma.Identity.Repositories
 
         Task<TUser> FindUserByIdAsync(string id, CancellationToken token);
         Task<TUser> FindUserByUserNameAsync(string name, CancellationToken token);
-        Task<TUser> FindUserByNameAsync(string name, CancellationToken token);
+        Task<IEnumerable<TUser>> FindUsersByNameAsync(string name, CancellationToken token);
 
         Task<QueryResult> SetUserIdAsync(TUser user, string userid, CancellationToken token);
         Task<QueryResult> SetUserNameAsync(TUser user, string username, CancellationToken token);

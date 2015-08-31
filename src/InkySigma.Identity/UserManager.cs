@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Identity.EmailProvider;
@@ -366,7 +367,7 @@ namespace InkySigma.Identity
                     var hashed = _passwordOptions.HashProvider.Hash(password, salt);
                     var query = await UserPasswordStore.SetPasswordAsync(user, hashed, token);
                     if (!query.Succeeded)
-                        throw new SqlException();
+                        throw new ServerException();
                     return await UserPasswordStore.SetSaltAsync(user, salt, token);
                 }
             }
