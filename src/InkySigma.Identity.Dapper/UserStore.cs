@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
+using InkySigma.Identity.Dapper.Models;
 using InkySigma.Identity.Model.Exceptions;
 using InkySigma.Identity.Repositories;
 using InkySigma.Identity.Repositories.Result;

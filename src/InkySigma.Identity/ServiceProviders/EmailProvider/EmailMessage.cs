@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Identity.EmailProvider
+﻿namespace InkySigma.Identity.ServiceProviders.EmailProvider
 {
     public class EmailMessage
     {

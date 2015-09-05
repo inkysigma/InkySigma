@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InkySigma.Identity.Dapper
+namespace InkySigma.Identity.Dapper.Models
 {
     public class User
     {

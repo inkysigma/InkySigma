@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace InkySigma.Identity.RandomProvider
+namespace InkySigma.Identity.ServiceProviders.RandomProvider
 {
     public class SecureRandomProvider : ISecureRandomProvider
     {

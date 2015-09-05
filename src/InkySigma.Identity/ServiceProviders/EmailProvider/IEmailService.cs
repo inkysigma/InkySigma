@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InkySigma.Identity.EmailProvider
+namespace InkySigma.Identity.ServiceProviders.EmailProvider
 {
     public interface IEmailService
     {

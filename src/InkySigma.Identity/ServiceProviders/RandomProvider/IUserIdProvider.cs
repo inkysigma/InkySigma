@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Identity.RandomProvider
+﻿namespace InkySigma.Identity.ServiceProviders.RandomProvider
 {
     public interface IUserIdProvider
     {

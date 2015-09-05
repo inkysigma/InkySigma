@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Identity.HashProvider
+﻿namespace InkySigma.Identity.ServiceProviders.HashProvider
 {
     public interface IPasswordHashProvider 
     {

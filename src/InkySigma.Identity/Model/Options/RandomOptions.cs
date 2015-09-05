@@ -1,4 +1,4 @@
-﻿using InkySigma.Identity.RandomProvider;
+﻿using InkySigma.Identity.ServiceProviders.RandomProvider;
 
 namespace InkySigma.Identity.Model.Options
 {

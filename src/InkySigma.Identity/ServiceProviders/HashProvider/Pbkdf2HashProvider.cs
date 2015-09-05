@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using InkySigma.Identity.Model.Options;
 
-namespace InkySigma.Identity.HashProvider
+namespace InkySigma.Identity.ServiceProviders.HashProvider
 {
     public class Pbdf2HashProvider : IPasswordHashProvider
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InkySigma.Identity.RandomProvider
+namespace InkySigma.Identity.ServiceProviders.RandomProvider
 {
     public class TokenProvider : ITokenProvider
     {

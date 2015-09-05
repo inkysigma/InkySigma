@@ -1,5 +1,5 @@
-﻿using InkySigma.Identity.HashProvider;
-using InkySigma.Identity.RandomProvider;
+﻿using InkySigma.Identity.ServiceProviders.HashProvider;
+using InkySigma.Identity.ServiceProviders.RandomProvider;
 
 namespace InkySigma.Identity.Model.Options
 {

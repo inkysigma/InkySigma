@@ -4,12 +4,12 @@ using System.Linq;
 using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
-using InkySigma.Identity.EmailProvider;
 using InkySigma.Identity.Model;
 using InkySigma.Identity.Model.Exceptions;
 using InkySigma.Identity.Model.Options;
 using InkySigma.Identity.Repositories;
 using InkySigma.Identity.Repositories.Result;
+using InkySigma.Identity.ServiceProviders.EmailProvider;
 using Microsoft.Framework.Logging;
 
 namespace InkySigma.Identity
