@@ -1,5 +1,5 @@
 ﻿using InkySigma.Infrastructure.ApplicationBuilder;
-using InkySigma.Infrastructure.ServiceBuilder;
+using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Routing;
@@ -34,15 +34,15 @@ namespace InkySigma
 
         public void Configure(IApplicationBuilder app)
         {
-            // app.RequireSecure();
-            app.UseMvc(ConfigureRoutes);
-            app.UseCustomErrors();
+            app.RequireSecure();
             app.UseStaticFiles();
+            app.UseMvc(ConfigureRoutes);
+            app.UseCustomErrors(Configuration["Application:Domain"]);
         }
 
         public void ConfigureRoutes(IRouteBuilder builder)
         {
-            builder.MapRoute("Default", "api/{controller}/{action}/{id?}");
+            builder.MapRoute("Default", "{controller}/{action}/{id?}");
         }
     }
 }

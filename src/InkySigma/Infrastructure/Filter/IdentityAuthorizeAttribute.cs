@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Mvc;
-using AuthorizationContext = Microsoft.AspNet.Mvc.AuthorizationContext;
-using InkySigma.Identity.Dapper;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
 namespace InkySigma.Infrastructure.Filter
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class IdentityAuthorizeAttribute : AuthorizationFilterAttribute
     {
-        private readonly string[] Roles;
+        private readonly string[] _roles;
+
         public IdentityAuthorizeAttribute(params string[] roles)
         {
-            Roles = roles;
+            _roles = roles;
         }
 
         public override void OnAuthorization(AuthorizationContext context)
@@ -34,7 +29,7 @@ namespace InkySigma.Infrastructure.Filter
             {
                 if (claim.Type == ClaimTypes.Role)
                 {
-                    if (!Roles.Contains(claim.Value))
+                    if (!_roles.Contains(claim.Value))
                     {
                         Challenge(httpContext);
                         return;

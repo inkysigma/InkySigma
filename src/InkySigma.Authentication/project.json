@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0-beta7",
+  "description": "InkySigma.Identity",
+  "authors": [ "Justin" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Microsoft.AspNet.Http": "1.0.0-beta7",
+    "Microsoft.Framework.Logging": "1.0.0-beta7",
+    "InkySigma.Common": "1.0.0",
+    "Newtonsoft.Json": "7.0.1"
+  },
+
+  "frameworks": {
+    "dnx451": {
+    }
+  }
+}

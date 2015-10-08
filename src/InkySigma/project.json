@@ -8,8 +8,8 @@
 
     "Newtonsoft.Json": "7.0.1",
     "Npgsql": "3.0.0",
-    "InkySigma.Identity": "",
-    "InkySigma.Identity.Dapper": "",
+    "InkySigma.Authentication": "",
+    "InkySigma.Authentication.Dapper": "",
 
     "Microsoft.AspNet.Mvc": "6.0.0-beta7",
     "Microsoft.AspNet.Diagnostics": "1.0.0-beta7",
@@ -19,7 +19,8 @@
     "Microsoft.AspNet.Http.Extensions": "1.0.0-beta7",
 
     "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta7",
-    "Microsoft.Framework.Configuration.Json": "1.0.0-beta7"
+    "Microsoft.Framework.Configuration.Json": "1.0.0-beta7",
+    "Microsoft.Framework.Logging": "1.0.0-beta7"
   },
 
   "commands": {

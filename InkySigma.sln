@@ -13,13 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma", "src\InkySigma\InkySigma.xproj", "{98A92493-816D-47C7-BA34-36CC9E37A653}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Identity", "src\InkySigma.Identity\InkySigma.Identity.xproj", "{9CA03F91-92B3-4050-8551-C967BD95E311}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Authentication", "src\InkySigma.Authentication\InkySigma.Authentication.xproj", "{9CA03F91-92B3-4050-8551-C967BD95E311}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Identity.Dapper", "src\InkySigma.Identity.Dapper\InkySigma.Identity.Dapper.xproj", "{51788A2C-7737-407E-B657-E06D78D34C7B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Authentication.Dapper", "src\InkySigma.Authentication.Dapper\InkySigma.Authentication.Dapper.xproj", "{51788A2C-7737-407E-B657-E06D78D34C7B}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Common", "src\InkySigma.Common\InkySigma.Common.xproj", "{DB195912-9D99-40BE-8A67-25B613D35EEF}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Console", "src\InkySigma.Console\InkySigma.Console.xproj", "{11F4A690-29E7-46FE-91C1-8D89618468D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CFB4FED7-7F19-49DC-9237-5195B67FE2B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

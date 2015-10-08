@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InkySigma.Infrastructure.Filter;
 using Microsoft.AspNet.Mvc;
 
@@ -10,11 +9,17 @@ namespace InkySigma.Controllers
     public class AuthorizationController : Controller
     {
         // GET: api/values
-        [HttpGet]
+        [HttpPost]
         [IdentityAuthorize("Temp")]
         public IEnumerable<string> Login()
         {
             return new string[] { "value1", "value2" };
         }
+
+        [HttpGet]
+        public IEnumerable<string> Test()
+        {
+            return new string[] {"hello", "ji"};
+        } 
     }
 }
