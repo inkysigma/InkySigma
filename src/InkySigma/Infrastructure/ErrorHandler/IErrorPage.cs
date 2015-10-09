@@ -4,7 +4,7 @@ namespace InkySigma.Infrastructure.ErrorHandler
 {
     public interface IErrorPage
     {
-        Dictionary<string, string> Headers { get; set; } 
+        Dictionary<string, string> Headers { get; set; }
         string Render();
     }
 }

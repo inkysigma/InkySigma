@@ -13,8 +13,6 @@ namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserLockoutStore : IUserLockoutStore<User>
     {
-        public bool IsDisposed { get; set; } = false;
-
         private readonly SqlConnection _connection;
         private readonly string _table;
 
@@ -24,25 +22,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             _table = table;
         }
 
-        private void Handle(CancellationToken token = default(CancellationToken))
-        {
-            if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserLockoutStore));
-        }
-
-        private QueryResult BuildError(SqlException e)
-        {
-            var errors = (from object i in e.Errors
-                select new QueryError()
-                {
-                    Description = i.ToString()
-                }).ToList();
-            return new QueryResult()
-            {
-                Errors = errors,
-                Succeeded = false
-            };
-        }
+        public bool IsDisposed { get; set; }
 
         public void Dispose()
         {
@@ -137,6 +117,26 @@ namespace InkySigma.Authentication.Dapper.Stores
         public Task<QueryResult> ResetAccessFailedCount(User user, CancellationToken token)
         {
             throw new NotImplementedException();
+        }
+
+        private void Handle(CancellationToken token = default(CancellationToken))
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(UserLockoutStore));
+        }
+
+        private QueryResult BuildError(SqlException e)
+        {
+            var errors = (from object i in e.Errors
+                select new QueryError
+                {
+                    Description = i.ToString()
+                }).ToList();
+            return new QueryResult
+            {
+                Errors = errors,
+                Succeeded = false
+            };
         }
     }
 }

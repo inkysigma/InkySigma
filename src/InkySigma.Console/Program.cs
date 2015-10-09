@@ -10,10 +10,12 @@ namespace InkySigma.Console
     public class Program
     {
         private readonly IServiceProvider _provider;
+
         public Program(IServiceProvider provider)
         {
             _provider = provider;
         }
+
         public void Main(string[] args)
         {
             var tempBuilder = new ConfigurationBuilder().AddCommandLine(args);
@@ -28,7 +30,6 @@ namespace InkySigma.Console
 
             using (host.Start())
             {
-                
             }
         }
     }

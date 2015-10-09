@@ -11,12 +11,13 @@ namespace InkySigma.Authentication.Dapper.Middleware
     // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
     public class AuthenticationMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly long _length;
+        private readonly LoginManager<User> _loginManager;
         private readonly UserManager<User> _manager;
-        private readonly LoginManager<User> _loginManager; 
+        private readonly RequestDelegate _next;
 
-        public AuthenticationMiddleware(RequestDelegate next, long length, UserManager<User> manager, LoginManager<User> loginManager)
+        public AuthenticationMiddleware(RequestDelegate next, long length, UserManager<User> manager,
+            LoginManager<User> loginManager)
         {
             _next = next;
             _length = length;

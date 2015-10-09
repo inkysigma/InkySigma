@@ -17,13 +17,13 @@ namespace InkySigma.Authentication.Dapper.Stores
         private readonly SqlConnection _connection;
         private readonly string _table;
 
-        public bool IsDisposed { get; set; } = false;
-
         public UserStore(SqlConnection connection, string table = "auth.users")
         {
             _connection = connection;
             _table = table;
         }
+
+        public bool IsDisposed { get; set; }
 
         public void Dispose()
         {
@@ -31,13 +31,6 @@ namespace InkySigma.Authentication.Dapper.Stores
                 return;
             _connection.Dispose();
             IsDisposed = true;
-        }
-
-        private void Header(CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-            if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserStore));
         }
 
         public async Task<string> GetUserIdAsync(User user, CancellationToken token)
@@ -48,7 +41,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             var sqlResult =
                 await
                     _connection.QueryAsync("SELECT Id FROM @table WHERE UserName=@UserName",
-                        new {table = _table, UserName = user.UserName});
+                        new {table = _table, user.UserName});
             var enumerable = sqlResult as dynamic[] ?? sqlResult.ToArray();
             if (!enumerable.Any())
                 return null;
@@ -80,7 +73,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 var sqlResult =
                     await
                         _connection.QueryAsync("SELECT Name FROM @table WHERE UserName=@UserName",
-                            new {table = _table, UserName = user.UserName});
+                            new {table = _table, user.UserName});
                 var enumerable = sqlResult as dynamic[] ?? sqlResult.ToArray();
                 if (!enumerable.Any())
                     return null;
@@ -173,10 +166,10 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(userid));
             try
             {
-                bool succeeded = (await
+                var succeeded = (await
                     _connection.ExecuteAsync("UPDATE @table SET Id=@id WHERE UserName=@username",
                         new {table = _table, username = user.UserName})) == 1;
-                return new QueryResult()
+                return new QueryResult
                 {
                     Succeeded = succeeded
                 };
@@ -196,7 +189,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(username));
             try
             {
-                bool succeeded =
+                var succeeded =
                     (await
                         _connection.ExecuteAsync("UPDATE @table SET UserName=@User WHERE Id=@Id",
                             new {table = _table, Key = user.Id, User = username})) == 1;
@@ -232,7 +225,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                             _connection.ExecuteAsync("UPDATE @table SET Name=@name WHERE UserName=@username",
                                 new {table = _table, username = user.UserName, name})) ==
                         1;
-                return new QueryResult()
+                return new QueryResult
                 {
                     Succeeded = succeeded
                 };
@@ -250,7 +243,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             try
             {
-                bool succeeded = (await _connection.ExecuteAsync("UPDATE @table SET Active=@isActive WHERE Id=@Id", new
+                var succeeded = (await _connection.ExecuteAsync("UPDATE @table SET Active=@isActive WHERE Id=@Id", new
                 {
                     user.Id,
                     table = _table,
@@ -277,12 +270,12 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(guid));
             try
             {
-                bool succeeded =
+                var succeeded =
                     (await
                         (_connection.ExecuteAsync(
                             "INSERT INTO @table (Id,UserName,Name,Active) VALUES(@Id, @UserName, @Name, false)",
-                            new {table = _table, Id = guid, UserName = user.UserName, Name = user.Name}))) == 1;
-                return new QueryResult()
+                            new {table = _table, Id = guid, user.UserName, user.Name}))) == 1;
+                return new QueryResult
                 {
                     Succeeded = succeeded
                 };
@@ -300,9 +293,9 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             try
             {
-                bool succeeded =
-                    (await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {Id = user.Id})) == 1;
-                return new QueryResult()
+                var succeeded =
+                    (await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {user.Id})) == 1;
+                return new QueryResult
                 {
                     Succeeded = succeeded
                 };
@@ -320,10 +313,10 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             try
             {
-                bool succeeded =
+                var succeeded =
                     await
                         _connection.ExecuteAsync("UPDATE @table SET UserName=@UserName, Name=@Name WHERE Id=@Id",
-                            new {table = _table, user.UserName, user.Name, Id = user.Id}) == 1;
+                            new {table = _table, user.UserName, user.Name, user.Id}) == 1;
                 return new QueryResult
                 {
                     Succeeded = succeeded
@@ -372,14 +365,21 @@ namespace InkySigma.Authentication.Dapper.Stores
             return (await _connection.QueryAsync("SELECT * FROM @table WHERE Id=@Id AND Active=true")).Any();
         }
 
+        private void Header(CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(UserStore));
+        }
+
         private QueryResult BuildError(SqlException e)
         {
             var errors = (from object i in e.Errors
-                select new QueryError()
+                select new QueryError
                 {
                     Description = i.ToString()
                 }).ToList();
-            return new QueryResult()
+            return new QueryResult
             {
                 Errors = errors,
                 Succeeded = false
@@ -387,4 +387,3 @@ namespace InkySigma.Authentication.Dapper.Stores
         }
     }
 }
-

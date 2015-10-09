@@ -11,9 +11,6 @@ namespace InkySigma
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; set; }
-        public IApplicationEnvironment Environment { get; set; }
-
         public Startup(IHostingEnvironment env, IApplicationEnvironment app)
         {
             var builder = new ConfigurationBuilder(app.ApplicationBasePath)
@@ -24,6 +21,8 @@ namespace InkySigma
             Environment = app;
         }
 
+        public IConfiguration Configuration { get; set; }
+        public IApplicationEnvironment Environment { get; set; }
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {

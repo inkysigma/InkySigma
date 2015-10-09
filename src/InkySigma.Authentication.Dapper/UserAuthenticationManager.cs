@@ -10,7 +10,6 @@ namespace InkySigma.Authentication.Dapper
         public static async Task AddUser(this UserManager<User> manager, User user, CancellationToken token)
         {
             await manager.AddUserAsync(user, user.UserName, token);
-            
         }
     }
 }

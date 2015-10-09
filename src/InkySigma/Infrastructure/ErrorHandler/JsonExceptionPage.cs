@@ -11,12 +11,12 @@ namespace InkySigma.Infrastructure.ErrorHandler
 
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>
         {
-            { "Content-Type", "application/json" }
+            {"Content-Type", "application/json"}
         };
 
         public string Render()
         {
-            var page = new ResponseFrameModel()
+            var page = new ResponseFrameModel
             {
                 Succeeded = false,
                 Exception = JsonConvert.SerializeObject(new ResponseException(Exception)).Replace("\r\n", " "),

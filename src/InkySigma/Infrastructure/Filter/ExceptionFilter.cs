@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,11 +15,13 @@ namespace InkySigma.Infrastructure.Filter
     {
         private readonly ILogger _logger;
         private readonly IExceptionPage _page;
+
         public ExceptionFilter(ILogger logger, IExceptionPage page)
         {
             _logger = logger;
             _page = page;
         }
+
         public void OnException(ExceptionContext context)
         {
             var httpContext = context.HttpContext;
@@ -52,7 +52,7 @@ namespace InkySigma.Infrastructure.Filter
 
         private string SetupPage(HttpContext httpContext, IExceptionPage page, Exception exception, int statusCode)
         {
-            foreach (KeyValuePair<string, string> i in page.Headers)
+            foreach (var i in page.Headers)
             {
                 if (httpContext.Response.Headers.ContainsKey(i.Key))
                     continue;
@@ -67,10 +67,7 @@ namespace InkySigma.Infrastructure.Filter
 
         private void WritePage(HttpContext httpContext, string page)
         {
-            var task = Task.Run(async () =>
-            {
-                await WritePageAsync(httpContext, page, CancellationToken.None);
-            });
+            var task = Task.Run(async () => { await WritePageAsync(httpContext, page, CancellationToken.None); });
             task.Wait();
         }
 

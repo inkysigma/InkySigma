@@ -11,10 +11,8 @@ namespace InkySigma.ApplicationBuilder
         public static IServiceCollection ConfigureMvcOptions(this IServiceCollection collection)
         {
             var logger = new Logger<ExceptionContext>(new LoggerFactory());
-            collection.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new ExceptionFilter(logger, new JsonExceptionPage()));
-            });
+            collection.Configure<MvcOptions>(
+                options => { options.Filters.Add(new ExceptionFilter(logger, new JsonExceptionPage())); });
             return collection;
         }
     }

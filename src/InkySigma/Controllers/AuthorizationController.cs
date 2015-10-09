@@ -13,13 +13,13 @@ namespace InkySigma.Controllers
         [IdentityAuthorize("Temp")]
         public IEnumerable<string> Login()
         {
-            return new string[] { "value1", "value2" };
+            return new[] {"value1", "value2"};
         }
 
         [HttpGet]
         public IEnumerable<string> Test()
         {
-            return new string[] {"hello", "ji"};
-        } 
+            return new[] {"hello", "ji"};
+        }
     }
 }
