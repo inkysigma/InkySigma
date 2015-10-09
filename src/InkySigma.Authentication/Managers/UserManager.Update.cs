@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Repositories.Result;
@@ -15,7 +13,7 @@ namespace InkySigma.Authentication.Managers
             Handle(cancellationToken);
             if (user == null || string.IsNullOrEmpty(password))
                 throw new ArgumentNullException();
-            byte[] salt = _passwordOptions.RandomProvider.GenerateRandom();
+            var salt = _passwordOptions.RandomProvider.GenerateRandom();
             var hashed = _passwordOptions.HashProvider.Hash(password, salt);
             var result = await UserPasswordStore.SetPasswordAsync(user, hashed, CancellationToken.None);
             if (!result.Succeeded)

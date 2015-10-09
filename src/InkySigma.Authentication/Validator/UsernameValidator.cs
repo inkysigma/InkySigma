@@ -18,8 +18,8 @@ namespace InkySigma.Authentication.Validator
             {
                 problems.Add("Username cannot be less than 8 characters");
             }
-            
-            if(problems.Count == 0)
+
+            if (problems.Count == 0)
                 return null;
 
             return problems;

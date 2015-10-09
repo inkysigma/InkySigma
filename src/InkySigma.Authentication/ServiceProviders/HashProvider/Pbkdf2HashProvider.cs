@@ -10,9 +10,10 @@ namespace InkySigma.Authentication.ServiceProviders.HashProvider
     {
         private readonly int _iterations;
         private readonly int _length;
+
         public Pbdf2HashProvider(PasswordHashProviderOptions options = null)
         {
-            if(options == null)
+            if (options == null)
                 options = new PasswordHashProviderOptions();
             _iterations = options.Iterations;
             _length = options.Length;
@@ -20,7 +21,7 @@ namespace InkySigma.Authentication.ServiceProviders.HashProvider
 
         public string Hash(string password, byte[] salt)
         {
-            if(string.IsNullOrEmpty(password) || salt == null)
+            if (string.IsNullOrEmpty(password) || salt == null)
                 throw new ArgumentNullException();
 
             using (var hashProvider = new Rfc2898DeriveBytes(password, salt))
@@ -32,7 +33,7 @@ namespace InkySigma.Authentication.ServiceProviders.HashProvider
 
         public bool VerifyHash(string password, string provided, byte[] salt)
         {
-            if(string.IsNullOrEmpty(password)||string.IsNullOrEmpty(provided)||salt == null)
+            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(provided) || salt == null)
                 throw new ArgumentNullException();
 
             if (password == Hash(provided, salt))

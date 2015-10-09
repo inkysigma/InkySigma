@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,9 +61,9 @@ namespace InkySigma.Authentication.Managers
                 throw new ArgumentNullException(nameof(user));
 
             var token = _randomProvider.TokenProvider.Generate();
-            return await UserTokenStore.AddTokenAsync(user, new UpdateTokenRow()
+            return await UserTokenStore.AddTokenAsync(user, new UpdateTokenRow
             {
-                Expiration = DateTime.Now + timeSpan
+                Expiration = DateTime.Now + _timeSpan
             }, cancellationToken);
         }
 

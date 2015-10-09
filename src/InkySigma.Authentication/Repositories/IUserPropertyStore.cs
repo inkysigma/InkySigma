@@ -5,7 +5,7 @@ using InkySigma.Authentication.Repositories.Result;
 
 namespace InkySigma.Authentication.Repositories
 {
-    public interface IUserPropertyStore<TUser>:IDisposable where TUser : class
+    public interface IUserPropertyStore<TUser> : IDisposable where TUser : class
     {
         Task<TUser> GetProperties(TUser user, CancellationToken token);
         Task<QueryResult> RemoveProperties(TUser user, CancellationToken token);

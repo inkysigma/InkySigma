@@ -1,4 +1,4 @@
-﻿using InkySigma.Infrastructure.ApplicationBuilder;
+﻿using InkySigma.ApplicationBuilder;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -29,7 +29,7 @@ namespace InkySigma
         {
             services.AddMvc();
             services.ConfigureMvcOptions();
-            services.AddSqlConnectionBuilder();
+            services.AddSqlConnectionBuilder(Configuration["Data:Npgsql:ConnectionString"]);
         }
 
         public void Configure(IApplicationBuilder app)

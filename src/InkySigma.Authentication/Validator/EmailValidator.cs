@@ -15,7 +15,7 @@ namespace InkySigma.Authentication.Validator
             }
             var regex = new Regex(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
             var matches = regex.Matches(input);
-            if(matches.Count!=1)
+            if (matches.Count != 1)
                 problems.Add("Email is invalid");
             if (problems.Count == 0)
                 return null;

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 
 namespace InkySigma.Authentication.Obfuscator
 {
-    interface IObfuscator
+    internal interface IObfuscator
     {
         string Obfuscate(string input, CancellationToken token);
     }

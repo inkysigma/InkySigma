@@ -6,7 +6,7 @@ namespace InkySigma.Authentication.ServiceProviders.RandomProvider
     {
         public string Generate()
         {
-            Guid id = Guid.NewGuid();
+            var id = Guid.NewGuid();
             return id.ToString();
         }
     }

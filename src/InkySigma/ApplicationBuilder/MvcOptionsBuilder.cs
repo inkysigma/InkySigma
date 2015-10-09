@@ -4,7 +4,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 
-namespace InkySigma.Infrastructure.ApplicationBuilder
+namespace InkySigma.ApplicationBuilder
 {
     public static class MvcOptionsBuilder
     {

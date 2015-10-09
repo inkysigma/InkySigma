@@ -2,7 +2,7 @@
 using InkySigma.Infrastructure.ErrorHandler;
 using Microsoft.AspNet.Builder;
 
-namespace InkySigma.Infrastructure.ApplicationBuilder
+namespace InkySigma.ApplicationBuilder
 {
     public static class ErrorBuilder
     {

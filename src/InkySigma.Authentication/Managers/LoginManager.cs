@@ -17,18 +17,19 @@ namespace InkySigma.Authentication.Managers
 {
     public class LoginManager<TUser> : IDisposable where TUser : class
     {
-        private bool _isDisposed = false;
-
-        internal UserManager<TUser> Users;
-        internal IUserLoginStore<TUser> LoginStore;
-        internal IUserLockoutStore<TUser> LockoutStore;  
-        internal IClaimsProvider<TUser> ClaimsProvider; 
-        internal ILogger<LoginManager<TUser>> Logger;
-        internal ITokenProvider TokenProvider;
+        private readonly bool _isDisposed = false;
+        internal IClaimsProvider<TUser> ClaimsProvider;
         internal IEmailService EmailService;
         internal TimeSpan ExpirationTimeSpan;
+        internal IUserLockoutStore<TUser> LockoutStore;
+        internal ILogger<LoginManager<TUser>> Logger;
+        internal IUserLoginStore<TUser> LoginStore;
         internal int MaxCount;
-        public LoginManager(UserManager<TUser> userManager, ILogger<LoginManager<TUser>> logger, LoginManagerOptions<TUser> options)
+        internal ITokenProvider TokenProvider;
+        internal UserManager<TUser> Users;
+
+        public LoginManager(UserManager<TUser> userManager, ILogger<LoginManager<TUser>> logger,
+            LoginManagerOptions<TUser> options)
         {
             Users = userManager;
             LoginStore = userManager.UserLoginStore;
@@ -41,6 +42,12 @@ namespace InkySigma.Authentication.Managers
             MaxCount = options.AccessFailedCount;
         }
 
+        public void Dispose()
+        {
+            Users.Dispose();
+            LoginStore.Dispose();
+        }
+
         private void Handle(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
@@ -49,14 +56,15 @@ namespace InkySigma.Authentication.Managers
         }
 
         /// <summary>
-        /// Verifies that a token exists and generates a ClaimsPrincipal off of it if it exists. If it doesnt, return null.
-        /// If user doesn't exist, throws InvalidUserException if the user is not found
+        ///     Verifies that a token exists and generates a ClaimsPrincipal off of it if it exists. If it doesnt, return null.
+        ///     If user doesn't exist, throws InvalidUserException if the user is not found
         /// </summary>
         /// <param name="username">The provided username (UTF-8 encoding)</param>
         /// <param name="token">The provided token</param>
         /// <param name="cancellationToken">Cancels the operation</param>
         /// <returns></returns>
-        public async Task<ClaimsPrincipal> VerifyToken(string username, string token, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ClaimsPrincipal> VerifyToken(string username, string token,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             Handle(cancellationToken);
             if (string.IsNullOrEmpty(username))
@@ -92,7 +100,7 @@ namespace InkySigma.Authentication.Managers
         }
 
         /// <summary>
-        /// Creates a token if the provided username and password match.
+        ///     Creates a token if the provided username and password match.
         /// </summary>
         /// <param name="username">The username</param>
         /// <param name="password">The plain text password</param>
@@ -139,7 +147,9 @@ namespace InkySigma.Authentication.Managers
             QueryResult result;
             if (!persistant)
                 result =
-                    await LoginStore.AddUserLogin(user, token, location, DateTime.Now + ExpirationTimeSpan, cancellationToken);
+                    await
+                        LoginStore.AddUserLogin(user, token, location, DateTime.Now + ExpirationTimeSpan,
+                            cancellationToken);
             else
                 result = await LoginStore.AddUserLogin(user, token, location, DateTime.MaxValue, cancellationToken);
             return result.Succeeded ? token : null;
@@ -157,12 +167,6 @@ namespace InkySigma.Authentication.Managers
             if (user == null)
                 throw new InvalidUserException(username);
             return await LoginStore.RemoveUserLogin(user, token, cancellationToken);
-        }
-
-        public void Dispose()
-        {
-            Users.Dispose();
-            LoginStore.Dispose();
         }
     }
 }

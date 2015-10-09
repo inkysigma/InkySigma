@@ -9,7 +9,6 @@ namespace InkySigma.Authentication.Model.Options
         public ITokenProvider TokenProvider { get; set; } = new TokenProvider();
         public TimeSpan ExpirationTimeSpan { get; set; } = new TimeSpan(3, 0, 0, 0);
         public int AccessFailedCount { get; set; } = 5;
-
         internal IClaimsProvider<TUser> ClaimsProvider { get; set; }
     }
 }

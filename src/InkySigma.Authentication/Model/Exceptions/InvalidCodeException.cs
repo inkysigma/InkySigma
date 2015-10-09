@@ -6,7 +6,7 @@ namespace InkySigma.Authentication.Model.Exceptions
     {
         public InvalidCodeException() : base("The given code was invalid.")
         {
-            this.HResult = 5;
+            HResult = 5;
         }
     }
 }

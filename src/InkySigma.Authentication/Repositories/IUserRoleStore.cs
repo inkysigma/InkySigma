@@ -5,16 +5,12 @@ using InkySigma.Authentication.Repositories.Result;
 
 namespace InkySigma.Authentication.Repositories
 {
-    public interface IUserRoleStore<in TUser>:IDisposable where TUser : class
+    public interface IUserRoleStore<in TUser> : IDisposable where TUser : class
     {
         Task<string[]> GetUserRolesAsync(TUser user, CancellationToken token);
-
         Task<QueryResult> AddUserRoleAsync(TUser user, string role, CancellationToken token);
-
         Task<QueryResult> RemoveUserRoleAsync(TUser user, string role, CancellationToken token);
-
         Task<QueryResult> RemoveUserRolesAsync(TUser user, CancellationToken token);
-
         Task<bool> HasRoleRoleAsync(TUser user, string role, CancellationToken token);
     }
 }
