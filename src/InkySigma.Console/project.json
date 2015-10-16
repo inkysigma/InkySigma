@@ -7,7 +7,6 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "Microsoft.AspNet.Hosting": "1.0.0-beta7"
   },
 
   "commands": {
