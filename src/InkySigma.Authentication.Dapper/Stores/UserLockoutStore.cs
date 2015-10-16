@@ -16,7 +16,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         private readonly SqlConnection _connection;
         private readonly string _table;
 
-        public UserLockoutStore(SqlConnection conn, string format = "", string table = "auth.lockout")
+        public UserLockoutStore(SqlConnection conn, string table = "auth.lockout")
         {
             _connection = conn;
             _table = table;
@@ -76,42 +76,69 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            try
-            {
-                await
-                    _connection.ExecuteAsync(
-                        "INSERT INTO @table (Id, AccessFailedCount, LockoutEnabled, AccessEndDate) VALUES(@Id, 0, false, @Date)",
-                        new
-                        {
-                            table = _table,
-                            user.Id
-                        });
-                return QueryResult.Success();
-            }
-            catch (SqlException e)
-            {
-                return BuildError(e);
-            }
+            await
+                _connection.ExecuteAsync(
+                    "INSERT INTO @table (Id, AccessFailedCount, LockoutEnabled, AccessEndDate) VALUES(@Id, 0, false, @Date)",
+                    new
+                    {
+                        table = _table,
+                        user.Id
+                    });
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> RemoveUserLockout(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserLockout(User user, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (string.IsNullOrEmpty(user?.Id))
+                throw new ArgumentNullException(nameof(user));
+            await
+                _connection.ExecuteAsync(
+                    "DELETE FROM @table WHERE Id=@Id",
+                    new
+                    {
+                        table = _table,
+                        user.Id
+                    });
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> SetLockoutEndDateTime(User user, DateTime dateTime, CancellationToken token)
+        public async Task<QueryResult> SetLockoutEndDateTime(User user, DateTime dateTime, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (string.IsNullOrEmpty(user?.Id))
+                throw new ArgumentNullException(nameof(user));
+            await
+                _connection.ExecuteAsync("UPDATE @table SET AccessEndDate=@dateTime WHERE Id=@Id",
+                    new {table = _table, dateTime, user.Id});
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> SetLockoutEnabled(User user, bool isLockedOut, CancellationToken token)
+        public async Task<QueryResult> SetLockoutEnabled(User user, bool isLockedOut, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            await
+                _connection.ExecuteAsync("UPDATE @table SET LockoutEnabled=@isLockedOut WHERE Id=@Id",
+                    new {table = _table, isLockedOut, user.Id});
+            return QueryResult.Success();
         }
 
-        public Task<int> IncrememntAccessFailedCount(User user, CancellationToken token)
+        public async Task<int> IncrememntAccessFailedCount(User user, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            int accessFailedCount = await GetAccessFailedCount(user, token);
+            accessFailedCount++;
+            await
+                _connection.ExecuteAsync("UPDATE @table SET AccessFailedCount=@accessFailedCount WHERE Id=@Id", new { table = _table, accessFailedCount, user.Id});
+            return accessFailedCount;
         }
 
         public Task<QueryResult> ResetAccessFailedCount(User user, CancellationToken token)
@@ -123,6 +150,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(nameof(UserLockoutStore));
+            token.ThrowIfCancellationRequested();
         }
 
         private QueryResult BuildError(SqlException e)

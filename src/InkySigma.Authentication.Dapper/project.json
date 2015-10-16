@@ -8,7 +8,7 @@
 
   "dependencies": {
     "System.Threading": "4.0.10-beta-23019",
-    "InkySigma.Authentication": "1.0.0-beta7",
+    "InkySigma.Authentication": "1.0.0-beta8",
     "Dapper": "1.42.0"
   },
 

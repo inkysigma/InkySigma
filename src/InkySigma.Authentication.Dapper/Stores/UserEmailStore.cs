@@ -71,34 +71,64 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
-                throw new ArgumentNullException(user.UserName);
+                throw new InvalidUserException(user.UserName);
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
-            await _connection.QueryAsync("INSERT INTO @table Active FROM @table WHERE Id=@Id", new
+            await _connection.ExecuteAsync("INSERT INTO @table(Id, Email, Active) VALUES(@Id, @Email, false)", new
             {
                 table = _table,
-                user.Id
-            })
+                user.Id,
+                email
+            });
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> RemoveUserEmail(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserEmail(User user, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.UserName))
+                throw new InvalidUserException(user.UserName);
+            await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {table = _table, user.Id});
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> SetUserEmailAsync(User user, string email, CancellationToken token)
+        public async Task<QueryResult> SetUserEmailAsync(User user, string email, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.UserName))
+                throw new InvalidUserException(user.UserName);
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException(email);
+            await _connection.ExecuteAsync("UPDATE @table SET Email=@email WHERE Id=@Id", new {email, user.Id, table = _table});
+            return QueryResult.Success();
         }
 
-        public Task<QueryResult> SetUserEmailConfirmedAsync(User user, bool isConfirmed, CancellationToken token)
+        public async Task<QueryResult> SetUserEmailConfirmedAsync(User user, bool isConfirmed, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.UserName))
+                throw new InvalidUserException(user.UserName);
+            await _connection.ExecuteAsync("UPDATE @table SET Active=@isConfirmed WHERE Id=@Id", new { isConfirmed, user.Id, table = _table });
+            return QueryResult.Success();
         }
 
-        public Task<bool> HasUserEmailAsync(User user, CancellationToken token)
+        public async Task<bool> HasUserEmailAsync(User user, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.UserName))
+                throw new InvalidUserException(user.UserName);
+            var result = await _connection.QueryAsync("SELECT * FROM @table WHERE Id=@Id", new {table = _table, user.Id});
+            if (result == null)
+                throw new InvalidUserException();
+            return result.Any();
         }
 
         public Task<User> FindUserByEmailAsync(string email, CancellationToken token)
