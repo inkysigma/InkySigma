@@ -2,9 +2,9 @@
 
 namespace InkySigma.Authentication.Model.Exceptions
 {
-    public class InvalidCodeException : Exception
+    public class InvalidCodeException : AuthenticationBaseException
     {
-        public InvalidCodeException() : base("The given code was invalid.")
+        public InvalidCodeException() : base(401, "The given code was invalid.")
         {
             HResult = 5;
         }
