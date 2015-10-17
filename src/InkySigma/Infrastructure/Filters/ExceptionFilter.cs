@@ -4,14 +4,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Exceptions;
-using InkySigma.Infrastructure.ErrorHandler;
 using InkySigma.Infrastructure.ExceptionHandler;
 using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Framework.Logging;
 
-namespace InkySigma.Infrastructure.Filter
+namespace InkySigma.Infrastructure.Filters
 {
     public class ExceptionFilter : ActionFilterAttribute, IExceptionFilter
     {

@@ -1,4 +1,4 @@
-﻿using InkySigma.ApplicationBuilder;
+﻿using InkySigma.ApplicationBuilders;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;

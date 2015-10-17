@@ -1,7 +1,7 @@
 ﻿using Microsoft.Framework.DependencyInjection;
 using Npgsql;
 
-namespace InkySigma.ApplicationBuilder
+namespace InkySigma.ApplicationBuilders
 {
     public static class SqlConnectionBuilder
     {

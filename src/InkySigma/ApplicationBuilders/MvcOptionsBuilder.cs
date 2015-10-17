@@ -1,12 +1,11 @@
-﻿using InkySigma.Infrastructure.ErrorHandler;
-using InkySigma.Infrastructure.ExceptionHandler;
-using InkySigma.Infrastructure.Filter;
+﻿using InkySigma.Infrastructure.ExceptionHandler;
+using InkySigma.Infrastructure.Filters;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 
-namespace InkySigma.ApplicationBuilder
+namespace InkySigma.ApplicationBuilders
 {
     public static class MvcOptionsBuilder
     {
