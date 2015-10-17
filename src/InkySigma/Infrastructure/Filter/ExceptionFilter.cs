@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Infrastructure.ErrorHandler;
+using InkySigma.Infrastructure.ExceptionHandler;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;

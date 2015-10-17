@@ -1,6 +1,55 @@
-﻿namespace InkySigma.Authentication.Dapper.Stores
+﻿using System;
+using System.Data.SqlClient;
+using System.Threading;
+using System.Threading.Tasks;
+using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Authentication.Model.Result;
+using InkySigma.Authentication.Repositories;
+
+namespace InkySigma.Authentication.Dapper.Stores
 {
-    public class UserPropertyStore
+    /// <summary>
+    /// No properties to CRUD on so far outside of authentication
+    /// </summary>
+    public class UserPropertyStore : IUserPropertyStore<User>
     {
+        public SqlConnection Connection { get; }
+        public string Table { get; }
+
+        public bool IsDisposed { get; private set; }
+
+        public UserPropertyStore(SqlConnection connection, string table = "auth.properties")
+        {
+            Connection = connection;
+            Table = table;
+        }
+
+        public void Dispose()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(UserRoleStore));
+            Connection.Dispose();
+            IsDisposed = true;
+        }
+
+        public async Task<User> GetProperties(User user, CancellationToken token)
+        {
+            return user;
+        }
+
+        public async Task<QueryResult> RemoveProperties(User user, CancellationToken token)
+        {
+            return QueryResult.Success();
+        }
+
+        public async Task<QueryResult> UpdateProperties(User user, CancellationToken token)
+        {
+            return QueryResult.Success();
+        }
+
+        public async Task<QueryResult> AddProperties(User user, CancellationToken token)
+        {
+            return QueryResult.Success();
+        }
     }
 }

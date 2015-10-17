@@ -29,13 +29,7 @@ namespace InkySigma.Infrastructure.ErrorHandler
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var statusCodeFeature = new StatusCodePagesFeature();
-            httpContext.SetFeature<IStatusCodePagesFeature>(statusCodeFeature);
-
             await _next(httpContext);
-
-            if (!statusCodeFeature.Enabled)
-                return;
 
             var response = httpContext.Response;
             if (response.HasStarted

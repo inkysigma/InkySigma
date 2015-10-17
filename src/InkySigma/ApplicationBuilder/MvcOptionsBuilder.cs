@@ -1,4 +1,5 @@
 ﻿using InkySigma.Infrastructure.ErrorHandler;
+using InkySigma.Infrastructure.ExceptionHandler;
 using InkySigma.Infrastructure.Filter;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;

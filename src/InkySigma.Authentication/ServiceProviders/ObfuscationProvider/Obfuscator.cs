@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
 
-namespace InkySigma.Authentication.Obfuscator
+namespace InkySigma.Authentication.ServiceProviders.ObfuscationProvider
 {
     public class Obfuscator : IObfuscator
     {

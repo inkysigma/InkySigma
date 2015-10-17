@@ -6,7 +6,7 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
 
-namespace InkySigma.Authentication.Dapper.Middleware
+namespace InkySigma.Authentication.Dapper.Infrastructure
 {
     // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
     public class AuthenticationMiddleware

@@ -6,7 +6,6 @@ namespace InkySigma.Console
     {
         public void Main(string[] args)
         {
-
             var webHost = Process.Start("dnx", "web");
         }
     }

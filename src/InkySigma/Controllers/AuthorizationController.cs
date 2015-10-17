@@ -15,11 +15,5 @@ namespace InkySigma.Controllers
         {
             return new[] {"value1", "value2"};
         }
-
-        [HttpGet]
-        public IEnumerable<string> Test()
-        {
-            return new[] {"hello", "ji"};
-        }
     }
 }

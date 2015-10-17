@@ -66,21 +66,11 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            try
-            {
-                var rowCount =
-                    await
-                        _connection.ExecuteAsync("INSERT INTO @table(Id,Password,Salt) VALUES(@Id,@Password,@Salt)",
-                            new {table = _table, user.Id, Password = password, Salt = salt});
-                return new QueryResult
-                {
-                    Succeeded = rowCount == 1
-                };
-            }
-            catch (SqlException e)
-            {
-                return BuildError(e);
-            }
+            var rowCount =
+                await
+                    _connection.ExecuteAsync("INSERT INTO @table(Id,Password,Salt) VALUES(@Id,@Password,@Salt)",
+                        new {table = _table, user.Id, Password = password, Salt = salt});
+            return QueryResult.Success(rowCount);
         }
 
         public async Task<QueryResult> RemovePasswordAsync(User user, CancellationToken token)
@@ -88,19 +78,9 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            try
-            {
-                var rowCount =
-                    await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {table = _table, user.Id});
-                return new QueryResult
-                {
-                    Succeeded = rowCount == 1
-                };
-            }
-            catch (SqlException e)
-            {
-                return BuildError(e);
-            }
+            var rowCount =
+                await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {table = _table, user.Id});
+            return QueryResult.Success(rowCount);
         }
 
         public async Task<QueryResult> SetPasswordAsync(User user, string password, CancellationToken token)
@@ -108,21 +88,12 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            try
-            {
-                var rowCount =
-                    await
-                        _connection.ExecuteAsync("UPDATE @table SET Password=@password WHERE Id=@Id",
-                            new {table = _table, password, Key = user.Id});
-                return new QueryResult
-                {
-                    Succeeded = rowCount == 1
-                };
-            }
-            catch (SqlException e)
-            {
-                return BuildError(e);
-            }
+
+            var rowCount =
+                await
+                    _connection.ExecuteAsync("UPDATE @table SET Password=@password WHERE Id=@Id",
+                        new {table = _table, password, Key = user.Id});
+            return QueryResult.Success(rowCount);
         }
 
         public async Task<QueryResult> SetSaltAsync(User user, byte[] salt, CancellationToken token)
@@ -130,21 +101,11 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            try
-            {
                 var rowCount =
                     await
                         _connection.ExecuteAsync("UPDATE @table SET Salt=@salty WHERE Id=@Id",
                             new {table = _table, salty = Convert.ToBase64String(salt), Key = user.Id});
-                return new QueryResult
-                {
-                    Succeeded = rowCount == 1
-                };
-            }
-            catch (SqlException e)
-            {
-                return BuildError(e);
-            }
+            return QueryResult.Success(rowCount);
         }
 
         public async Task<bool> HasPasswordAsync(User user, CancellationToken token)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using InkySigma.Model;
 using Newtonsoft.Json;
 
-namespace InkySigma.Infrastructure.ErrorHandler
+namespace InkySigma.Infrastructure.ExceptionHandler
 {
     public class JsonExceptionPage : IExceptionPage
     {
