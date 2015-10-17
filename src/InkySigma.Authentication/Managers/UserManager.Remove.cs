@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Exceptions;
-using InkySigma.Authentication.Repositories.Result;
+using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Managers
 {

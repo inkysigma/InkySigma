@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Authentication.Repositories.Result
+﻿namespace InkySigma.Authentication.Model.Result
 {
     public class QueryError
     {

@@ -1,16 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace InkySigma.Authentication.Repositories.Result
+namespace InkySigma.Authentication.Model.Result
 {
     public class QueryResult
     {
         public bool Succeeded { get; set; }
+        public int RowsModified { get; set; }
         public List<QueryError> Errors { get; set; }
 
         public static QueryResult Success()
         {
             return new QueryResult {Succeeded = true};
+        }
+
+        public static QueryResult Success(int rowCount)
+        {
+            return new QueryResult
+            {
+                Succeeded = true,
+                RowsModified = rowCount
+            };
         }
 
         public static QueryResult Fail(params QueryError[] errors)

@@ -8,8 +8,8 @@ using Dapper;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model;
 using InkySigma.Authentication.Model.Exceptions;
+using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
-using InkySigma.Authentication.Repositories.Result;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
@@ -38,11 +38,18 @@ namespace InkySigma.Authentication.Dapper.Stores
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(nameof(UserLoginStore));
-
+            token.ThrowIfCancellationRequested();
         }
 
-        public async Task<IEnumerable<TokenRow>> GetUserLoginsAsync(User user, CancellationToken token)
+        /// <summary>
+        /// Gets all user logins asychronously
+        /// </summary>
+        /// <param name="user">The user to be queried for</param>
+        /// <param name="token">A cancellation token</param>
+        /// <returns>A list of all tokens</returns>
+        public async Task<IEnumerable<TokenRow>> GetUserLoginsAsync(User user, CancellationToken cancellationToken)
         {
+            Handle(cancellationToken);
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
@@ -50,27 +57,85 @@ namespace InkySigma.Authentication.Dapper.Stores
             var result = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id", new {user.Id, Table});
             if (result == null)
                 throw new NullReferenceException(nameof(result));
-            return result;
+            var objects = result as dynamic[] ?? result.ToArray();
+            var enumerable = new TokenRow[objects.Count()];
+            for (int i = 0; i < objects.Count(); i++)
+            {
+                enumerable[i] = objects[i] as TokenRow;
+            }
+            return enumerable;
         }
 
-        public Task<bool> HasUserLoginAsync(User user, string token, CancellationToken cancellationToken)
+        /// <summary>
+        /// Verifies whether a user is associated the a given token.
+        /// </summary>
+        /// <param name="user">The user to be queried for</param>
+        /// <param name="token">The token to be looked for</param>
+        /// <param name="cancellationToken">A cancellation token</param>
+        /// <returns>A boolean representing whether the token is associated with the user</returns>
+        public async Task<bool> HasUserLoginAsync(User user, string token, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Handle(cancellationToken);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentNullException(nameof(token));
+            var tokens = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id and Token=@token", new {Table, user.Id, token});
+            if (tokens == null)
+                throw new NullReferenceException(nameof(tokens));
+            return tokens.Any();
         }
 
-        public Task<QueryResult> AddUserLogin(User user, string userToken, string location, DateTime expiration, CancellationToken token)
+        public async Task<QueryResult> AddUserLogin(User user, string token, string location, DateTime expiration, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Handle(cancellationToken);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentNullException(nameof(token));
+            if (string.IsNullOrEmpty(location))
+                throw new ArgumentNullException(nameof(location));
+            if (expiration == null)
+                throw new ArgumentNullException(nameof(expiration));
+            var count = await
+                Connection.ExecuteAsync(
+                    "INSERT INTO @Table (Id, Token, Location, Expiration) VALUES(@Id, @token, @location, @expiration)",
+                    new {user.Id, token, location, expiration, Table});
+            return QueryResult.Success(count);
         }
 
-        public Task<QueryResult> RemoveUserLogin(User user, string userToken, CancellationToken token)
+        public async Task<QueryResult> RemoveUserLogin(User user, string token, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Handle(cancellationToken);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentNullException(nameof(token));
+            var count =
+                await
+                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id AND Token=@token",
+                        new {Table, user.Id, token});
+            return QueryResult.Success(count);
         }
 
-        public Task<QueryResult> RemoveUser(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUser(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Handle(cancellationToken);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            var count =
+                await
+                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id",
+                        new {Table, user.Id});
+            return QueryResult.Success(count);
         }
     }
 }

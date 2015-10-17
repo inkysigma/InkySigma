@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
-using InkySigma.Authentication.Repositories.Result;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {

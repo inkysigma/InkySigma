@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using InkySigma.Authentication.Repositories.Result;
+using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Managers
 {
