@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Options;
 using InkySigma.Authentication.Repositories;
-using InkySigma.Common.Extentions;
+using InkySigma.Common;
 
 namespace InkySigma.Authentication.ServiceProviders.ClaimProvider
 {

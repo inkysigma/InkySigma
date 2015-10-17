@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Exceptions;
-using InkySigma.Infrastructure.ExceptionHandler;
+using InkySigma.Infrastructure.ExceptionPage;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Framework.Logging;

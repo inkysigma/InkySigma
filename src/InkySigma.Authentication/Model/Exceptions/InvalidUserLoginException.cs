@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using InkySigma.Common;
 
 namespace InkySigma.Authentication.Model.Exceptions
 {
-    public class InvalidUserLoginException : AuthenticationBaseException
+    public class InvalidUserLoginException : CommonException
     {
         public InvalidUserLoginException(string information) : base(401, "You aren't logged in.", information)
         {

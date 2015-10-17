@@ -67,7 +67,7 @@ namespace InkySigma.Authentication.Managers
             }, cancellationToken);
         }
 
-        public virtual async Task<QueryResult> AddUserPassword(TUser user, string password,
+        public virtual async Task<QueryResult> AddUserPasswordAsync(TUser user, string password,
             CancellationToken token = default(CancellationToken))
         {
             Handle(token);

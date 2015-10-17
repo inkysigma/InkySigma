@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
 namespace InkySigma.Console
 {
     public class Program

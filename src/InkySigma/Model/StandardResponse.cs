@@ -6,17 +6,17 @@
     /// The message is a user friendly message
     /// Information is any further information
     /// </summary>
-    public class StandardResponse<T>
+    public class StandardResponse
     {
         public bool Succeeded { get; set; }
         public int Code { get; set; } = 200;
         public string Message { get; set; }
         public string Information { get; set; }
-        public T Payload { get; set; }
+        public dynamic Payload { get; set; }
 
-        public static StandardResponse<T> Create(T payload)
+        public static StandardResponse Create(dynamic payload)
         {
-            return new StandardResponse<T>
+            return new StandardResponse
             {
                 Succeeded = true,
                 Payload = payload

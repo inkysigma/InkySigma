@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using InkySigma.Common;
 
-namespace InkySigma.Infrastructure.ExceptionHandler
+namespace InkySigma.Infrastructure.ExceptionPage
 {
     public interface IExceptionPage
     {

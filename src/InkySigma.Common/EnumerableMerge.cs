@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace InkySigma.Common.Extentions
+namespace InkySigma.Common
 {
     public static class EnumerableMerge
     {

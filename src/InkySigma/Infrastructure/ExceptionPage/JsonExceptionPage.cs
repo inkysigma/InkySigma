@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using InkySigma.Common;
 using InkySigma.Model;
 using Newtonsoft.Json;
 
-namespace InkySigma.Infrastructure.ExceptionHandler
+namespace InkySigma.Infrastructure.ExceptionPage
 {
     public class JsonExceptionPage : IExceptionPage
     {
-        protected Exception Exception { get; set; }
+        protected CommonException Exception { get; set; }
 
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>
         {
@@ -16,10 +17,12 @@ namespace InkySigma.Infrastructure.ExceptionHandler
 
         public string Render()
         {
-            var page = new ResponseFrameModel
+            var page = new StandardResponse()
             {
                 Succeeded = false,
-                Exception = JsonConvert.SerializeObject(new ResponseException(Exception)).Replace("\r\n", " "),
+                Code = Exception.Code,
+                Information = Exception.Information,
+                Message = Exception.Message,
                 Payload = null
             };
             return JsonConvert.SerializeObject(page);
@@ -27,7 +30,13 @@ namespace InkySigma.Infrastructure.ExceptionHandler
 
         public void SetException(Exception exception)
         {
-            Exception = exception;
+            var commonException = exception as CommonException;
+            if (commonException != null)
+            {
+                Exception = commonException;
+                return;
+            }
+            Exception = new CommonException(503, exception.Message, null);
         }
     }
 }
