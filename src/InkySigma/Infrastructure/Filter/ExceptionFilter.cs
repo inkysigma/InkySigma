@@ -7,6 +7,7 @@ using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Infrastructure.ErrorHandler;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Framework.Logging;
 
 namespace InkySigma.Infrastructure.Filter

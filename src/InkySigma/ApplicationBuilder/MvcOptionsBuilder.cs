@@ -1,6 +1,7 @@
 ﻿using InkySigma.Infrastructure.ErrorHandler;
 using InkySigma.Infrastructure.Filter;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 

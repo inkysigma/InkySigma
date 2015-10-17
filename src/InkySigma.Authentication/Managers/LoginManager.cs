@@ -139,7 +139,7 @@ namespace InkySigma.Authentication.Managers
                 await LockoutStore.ResetAccessFailedCount(user, cancellationToken);
                 await LockoutStore.SetLockoutEnabled(user, true, cancellationToken);
                 await LockoutStore.SetLockoutEndDateTime(user, DateTime.Now + ExpirationTimeSpan, cancellationToken);
-                throw new UserLockedOutException();
+                throw new UserLockedOutException(username);
             }
 
             var token = TokenProvider.Generate();

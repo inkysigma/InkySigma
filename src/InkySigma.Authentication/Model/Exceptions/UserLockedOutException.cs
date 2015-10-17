@@ -4,7 +4,7 @@ namespace InkySigma.Authentication.Model.Exceptions
 {
     public class UserLockedOutException : AuthenticationBaseException
     {
-        public UserLockedOutException() : base(401, "User is locked out")
+        public UserLockedOutException(string username) : base(401, "User is locked out.", username)
         {
             
         }
