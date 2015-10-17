@@ -141,9 +141,16 @@ namespace InkySigma.Authentication.Dapper.Stores
             return accessFailedCount;
         }
 
-        public Task<QueryResult> ResetAccessFailedCount(User user, CancellationToken token)
+        public async Task<QueryResult> ResetAccessFailedCount(User user, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(user.UserName);
+            await
+                _connection.ExecuteAsync("UPDATE @table SET AccessFailedCount=0 WHERE Id=@Id", new { table = _table, user.Id });
+            return QueryResult.Success();
         }
 
         private void Handle(CancellationToken token = default(CancellationToken))

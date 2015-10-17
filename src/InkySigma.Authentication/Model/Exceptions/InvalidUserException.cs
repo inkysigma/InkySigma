@@ -7,11 +7,8 @@ namespace InkySigma.Authentication.Model.Exceptions
     /// </summary>
     public class InvalidUserException : AuthenticationBaseException
     {
-        public InvalidUserException(string username = null) : base(401, username)
+        public InvalidUserException(string username = null) : base(401, "The user given is incorrect", username)
         {
-            UserName = username;
         }
-
-        public string UserName { get; set; }
     }
 }

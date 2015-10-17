@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model;
+using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Repositories;
 using InkySigma.Authentication.Repositories.Result;
 
@@ -12,14 +15,42 @@ namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserLoginStore : IUserLoginStore<User>
     {
-        public void Dispose()
+        public SqlConnection Connection { get; }
+        public bool IsDisposed { get; set; } = false;
+
+        private string Table { get; }
+
+        public UserLoginStore(SqlConnection connection, string table)
         {
-            throw new NotImplementedException();
+            Connection = connection;
+            Table = table;
         }
 
-        public Task<IEnumerable<TokenRow>> GetUserLoginsAsync(User user, CancellationToken token)
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(UserLoginStore));
+            Connection.Dispose();
+            IsDisposed = true;
+        }
+
+        private void Handle(CancellationToken token = default(CancellationToken))
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(UserLoginStore));
+
+        }
+
+        public async Task<IEnumerable<TokenRow>> GetUserLoginsAsync(User user, CancellationToken token)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Id))
+                throw new InvalidUserException(nameof(user));
+            var result = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id", new {user.Id, Table});
+            if (result == null)
+                throw new NullReferenceException(nameof(result));
+            return result;
         }
 
         public Task<bool> HasUserLoginAsync(User user, string token, CancellationToken cancellationToken)

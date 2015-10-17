@@ -11,6 +11,9 @@ using InkySigma.Authentication.Repositories.Result;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
+    /// <summary>
+    /// This is a store that stores user emails.
+    /// </summary>
     public class UserEmailStore : IUserEmailStore<User>
     {
         private readonly SqlConnection _connection;

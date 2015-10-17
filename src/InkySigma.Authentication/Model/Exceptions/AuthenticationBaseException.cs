@@ -8,10 +8,12 @@ namespace InkySigma.Authentication.Model.Exceptions
     public class AuthenticationBaseException : Exception
     {
         public int Code { get; set; }
+        public string Information { get; set; }
 
-        public AuthenticationBaseException(int code, string message) : base(message)
+        public AuthenticationBaseException(int code, string message, string information) : base(message)
         {
             Code = code;
+            Information = information;
         }
     }
 }
