@@ -33,9 +33,14 @@ namespace InkySigma
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseRemoveAspHeaders();
+
             app.RequireSecure();
+
             app.UseStaticFiles();
+
             app.UseMvc(ConfigureRoutes);
+
             app.UseCustomErrors(Configuration["Application:Domain"]);
         }
 

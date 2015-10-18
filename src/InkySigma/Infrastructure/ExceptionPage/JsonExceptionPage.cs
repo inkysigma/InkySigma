@@ -23,6 +23,7 @@ namespace InkySigma.Infrastructure.ExceptionPage
                 Code = Exception.Code,
                 Information = Exception.Information,
                 Message = Exception.Message,
+                Developer = Exception.Developer,
                 Payload = null
             };
             return JsonConvert.SerializeObject(page);
@@ -36,7 +37,7 @@ namespace InkySigma.Infrastructure.ExceptionPage
                 Exception = commonException;
                 return;
             }
-            Exception = new CommonException(503, exception.Message, null);
+            Exception = new CommonException(503, exception.Message, null, null);
         }
     }
 }

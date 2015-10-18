@@ -1,22 +1,18 @@
-{
-  "version": "1.0.0-*",
-  "description": "InkySigma.Identity.Dapper Class Library",
+﻿{
+  "version": "1.0.0-beta8",
+  "description": "InkySigma.Authentication.AspNet Class Library",
   "authors": [ "Justin" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
 
   "dependencies": {
-    "Dapper": "1.42.0",
     "InkySigma.Authentication": "1.0.0-beta8",
     "Microsoft.AspNet.Mvc": "6.0.0-beta8",
-    "System.Threading": "4.0.10-beta-23019"
+    "Newtonsoft.Json": "7.0.1"
   },
 
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-      }
-    }
+    "dnx451": { }
   }
 }

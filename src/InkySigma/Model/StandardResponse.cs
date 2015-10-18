@@ -9,9 +9,13 @@
     public class StandardResponse
     {
         public bool Succeeded { get; set; }
+
+        public bool MessageAvailable => !string.IsNullOrEmpty(Message);
+
         public int Code { get; set; } = 200;
         public string Message { get; set; }
         public string Information { get; set; }
+        public string Developer { get; set; }
         public dynamic Payload { get; set; }
 
         public static StandardResponse Create(dynamic payload)

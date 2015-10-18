@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc.Filters;
 
-namespace InkySigma.Authentication.Dapper.Infrastructure
+namespace InkySigma.Authentication.AspNet.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class IdentityAuthorizeAttribute : AuthorizationFilterAttribute
@@ -23,17 +25,14 @@ namespace InkySigma.Authentication.Dapper.Infrastructure
                 Challenge(httpContext);
                 return;
             }
-            foreach (var claim in user.Claims)
+            foreach (var claim in user.Claims.Where(claim => claim.Type == ClaimTypes.Role))
             {
-                if (claim.Type == ClaimTypes.Role)
+                if (!_roles.Contains(claim.Value))
                 {
-                    if (!_roles.Contains(claim.Value))
-                    {
-                        Challenge(httpContext);
-                        return;
-                    }
-                    base.OnAuthorization(context);
+                    Challenge(httpContext);
+                    return;
                 }
+                base.OnAuthorization(context);
             }
         }
 

@@ -6,11 +6,13 @@ namespace InkySigma.Common
     {
         public int Code { get; set; }
         public string Information { get; set; }
+        public string Developer { get; set; }
 
-        public CommonException(int code, string message, string information) : base(message)
+        public CommonException(int code, string message, string information, string developer) : base(message)
         {
             Code = code;
             Information = information;
+            Developer = developer;
         }
     }
 }
