@@ -1,4 +1,8 @@
 ﻿using InkySigma.ApplicationBuilders;
+using InkySigma.Authentication.AspNet.LoginMiddleware;
+using InkySigma.Authentication.Dapper;
+using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Authentication.Managers;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -27,8 +31,14 @@ namespace InkySigma
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             services.ConfigureMvcOptions();
+
             services.AddSqlConnectionBuilder(Configuration["Data:Npgsql:ConnectionString"]);
+
+            services.AddBasicAuthentication();
+
+            services.AddDapperApplicationBuilder();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -38,6 +48,8 @@ namespace InkySigma
             app.RequireSecure();
 
             app.UseStaticFiles();
+
+            app.UseAuthentication<User>();
 
             app.UseMvc(ConfigureRoutes);
 

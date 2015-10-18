@@ -31,7 +31,7 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
 
     public static class BasicAutheitcationMethodMiddleware
     {
-        public static IServiceCollection UseBasicAuthentication(this IServiceCollection builder)
+        public static IServiceCollection AddBasicAuthentication(this IServiceCollection builder)
         {
             return builder.AddTransient<IAuthenticationMethod, BasicAuthenticationMethod>();
         }

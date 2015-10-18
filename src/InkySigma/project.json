@@ -9,6 +9,7 @@
     "Newtonsoft.Json": "7.0.1",
     "Npgsql": "3.0.0",
     "InkySigma.Authentication": "",
+    "InkySigma.Authentication.AspNet": "",
     "InkySigma.Authentication.Dapper": "",
 
     "Microsoft.AspNet.Mvc": "6.0.0-beta8",
