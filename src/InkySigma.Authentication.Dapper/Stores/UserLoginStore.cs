@@ -20,7 +20,7 @@ namespace InkySigma.Authentication.Dapper.Stores
 
         private string Table { get; }
 
-        public UserLoginStore(SqlConnection connection, string table)
+        public UserLoginStore(SqlConnection connection, string table = "auth.login")
         {
             Connection = connection;
             Table = table;
