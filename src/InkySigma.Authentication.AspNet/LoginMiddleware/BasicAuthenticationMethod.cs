@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using InkySigma.Common;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
+using Microsoft.Framework.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace InkySigma.Authentication.AspNet.LoginMiddleware
@@ -24,6 +26,14 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
                 UserName = authHeaderArrary[0],
                 Token = authHeaderArrary[1]
             };
+        }
+    }
+
+    public static class BasicAutheitcationMethodMiddleware
+    {
+        public static IServiceCollection UseBasicAuthentication(this IServiceCollection builder)
+        {
+            return builder.AddTransient<IAuthenticationMethod, BasicAuthenticationMethod>();
         }
     }
 }
