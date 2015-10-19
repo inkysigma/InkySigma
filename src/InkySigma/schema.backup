@@ -1,0 +1,396 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.4
+-- Dumped by pg_dump version 9.4.0
+-- Started on 2015-10-18 17:16:55
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 7 (class 2615 OID 24586)
+-- Name: auth; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA auth;
+
+
+ALTER SCHEMA auth OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 3079 OID 11855)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2066 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = auth, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 174 (class 1259 OID 32792)
+-- Name: email; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE email (
+    "Id" text NOT NULL,
+    "Email" text NOT NULL,
+    "Active" boolean NOT NULL
+);
+
+
+ALTER TABLE email OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 32805)
+-- Name: lockout; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lockout (
+    "Id" text NOT NULL,
+    "AccessFailedCount" integer DEFAULT 0 NOT NULL,
+    "LockoutEnabled" boolean DEFAULT false NOT NULL,
+    "AccessEndDate" date NOT NULL
+);
+
+
+ALTER TABLE lockout OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 32838)
+-- Name: login; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE login (
+    "Id" text NOT NULL,
+    "Token" text NOT NULL,
+    "Location" text NOT NULL,
+    "Expiration" date NOT NULL
+);
+
+
+ALTER TABLE login OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 32851)
+-- Name: pass; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pass (
+    "Id" text NOT NULL,
+    "Password" text NOT NULL,
+    "Salt" text NOT NULL
+);
+
+
+ALTER TABLE pass OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 32864)
+-- Name: properties; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE properties (
+    "Id" text NOT NULL
+);
+
+
+ALTER TABLE properties OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 32877)
+-- Name: roles; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE roles (
+    "Id" text NOT NULL,
+    "Role" text NOT NULL,
+    "Count" integer NOT NULL
+);
+
+
+ALTER TABLE roles OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 32918)
+-- Name: roles_Count_seq; Type: SEQUENCE; Schema: auth; Owner: postgres
+--
+
+CREATE SEQUENCE "roles_Count_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "roles_Count_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2067 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: roles_Count_seq; Type: SEQUENCE OWNED BY; Schema: auth; Owner: postgres
+--
+
+ALTER SEQUENCE "roles_Count_seq" OWNED BY roles."Count";
+
+
+--
+-- TOC entry 180 (class 1259 OID 32890)
+-- Name: token; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE token (
+    "Id" text NOT NULL,
+    "Token" text NOT NULL,
+    "Expiration" date NOT NULL,
+    "Property" integer NOT NULL,
+    "Count" integer NOT NULL
+);
+
+
+ALTER TABLE token OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 32896)
+-- Name: token_Count_seq; Type: SEQUENCE; Schema: auth; Owner: postgres
+--
+
+CREATE SEQUENCE "token_Count_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "token_Count_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2068 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: token_Count_seq; Type: SEQUENCE OWNED BY; Schema: auth; Owner: postgres
+--
+
+ALTER SEQUENCE "token_Count_seq" OWNED BY token."Count";
+
+
+--
+-- TOC entry 173 (class 1259 OID 32780)
+-- Name: user; Type: TABLE; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "user" (
+    "Id" text NOT NULL,
+    "Name" text NOT NULL,
+    "UserName" text NOT NULL,
+    "IsActive" boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE "user" OWNER TO postgres;
+
+--
+-- TOC entry 1923 (class 2604 OID 32920)
+-- Name: Count; Type: DEFAULT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY roles ALTER COLUMN "Count" SET DEFAULT nextval('"roles_Count_seq"'::regclass);
+
+
+--
+-- TOC entry 1924 (class 2604 OID 32898)
+-- Name: Count; Type: DEFAULT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY token ALTER COLUMN "Count" SET DEFAULT nextval('"token_Count_seq"'::regclass);
+
+
+--
+-- TOC entry 1928 (class 2606 OID 32799)
+-- Name: email_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY email
+    ADD CONSTRAINT email_pk PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1930 (class 2606 OID 32826)
+-- Name: lockout_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lockout
+    ADD CONSTRAINT lockout_pk PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1932 (class 2606 OID 32845)
+-- Name: login_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY login
+    ADD CONSTRAINT login_pk PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1934 (class 2606 OID 32858)
+-- Name: pass_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pass
+    ADD CONSTRAINT pass_pk PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1936 (class 2606 OID 32871)
+-- Name: properties_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY properties
+    ADD CONSTRAINT properties_pk PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1939 (class 2606 OID 32929)
+-- Name: roles_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pk PRIMARY KEY ("Count");
+
+
+--
+-- TOC entry 1942 (class 2606 OID 32911)
+-- Name: token_pk; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY token
+    ADD CONSTRAINT token_pk PRIMARY KEY ("Count");
+
+
+--
+-- TOC entry 1926 (class 2606 OID 32788)
+-- Name: user_id; Type: CONSTRAINT; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_id PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 1937 (class 1259 OID 32930)
+-- Name: roles_index; Type: INDEX; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX roles_index ON roles USING btree ("Id" NULLS FIRST);
+
+
+--
+-- TOC entry 1940 (class 1259 OID 32931)
+-- Name: token_index; Type: INDEX; Schema: auth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX token_index ON token USING btree ("Id");
+
+
+--
+-- TOC entry 1943 (class 2606 OID 32800)
+-- Name: email_id_pk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY email
+    ADD CONSTRAINT email_id_pk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1944 (class 2606 OID 32827)
+-- Name: lockout_id_pk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY lockout
+    ADD CONSTRAINT lockout_id_pk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1945 (class 2606 OID 32846)
+-- Name: login_id_fk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY login
+    ADD CONSTRAINT login_id_fk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1946 (class 2606 OID 32859)
+-- Name: pass_id_fk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY pass
+    ADD CONSTRAINT pass_id_fk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1947 (class 2606 OID 32872)
+-- Name: properties_id_fk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY properties
+    ADD CONSTRAINT properties_id_fk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1948 (class 2606 OID 32913)
+-- Name: roles_fk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_fk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1949 (class 2606 OID 32905)
+-- Name: token_id_fk; Type: FK CONSTRAINT; Schema: auth; Owner: postgres
+--
+
+ALTER TABLE ONLY token
+    ADD CONSTRAINT token_id_fk FOREIGN KEY ("Id") REFERENCES "user"("Id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2065 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-10-18 17:16:55
+
+--
+-- PostgreSQL database dump complete
+--
+
