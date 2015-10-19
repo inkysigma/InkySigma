@@ -1,7 +1,9 @@
-﻿using InkySigma.ApplicationBuilders;
+﻿using System;
+using InkySigma.ApplicationBuilders;
 using InkySigma.Authentication.AspNet.LoginMiddleware;
 using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -14,9 +16,9 @@ namespace InkySigma
 {
     public class Startup
     {
-        /*public Startup(IHostingEnvironment env, IApplicationEnvironment app)
+        public Startup(IHostingEnvironment env, IApplicationEnvironment app)
         {
-            var builder = new ConfigurationBuilder(app.ApplicationBasePath)
+            var builder = new ConfigurationBuilder()
                 .AddJsonFile("config.json");
 
             builder.AddEnvironmentVariables();
@@ -32,6 +34,10 @@ namespace InkySigma
             services.AddMvc();
 
             services.ConfigureMvcOptions();
+
+            services.AddTransient<IEmailService, EmailService>(
+                provider => new EmailService(Configuration["Email:Host"], Configuration["Email:UserName"],
+                    Configuration["Email:Password"], Configuration["Email:From"], Int32.Parse(Configuration["Email:Port"])));
 
             services.AddSqlConnectionBuilder(Configuration["Data:Npgsql:ConnectionString"]);
 
@@ -58,6 +64,6 @@ namespace InkySigma
         public void ConfigureRoutes(IRouteBuilder builder)
         {
             builder.MapRoute("Default", "{controller}/{action}/{id?}");
-        }*/
+        }
     }
 }

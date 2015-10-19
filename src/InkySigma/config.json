@@ -9,5 +9,12 @@
   },
   "Application": {
     "Domain": "api.inkysigma.com"
+  },
+  "Email": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "UserName": "noreply789349@gmail.com",
+    "Password": "HelloWorld",
+    "From":  "noreply789349@gmail.com"
   }
 }

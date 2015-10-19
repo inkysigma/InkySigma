@@ -12,18 +12,20 @@ namespace InkySigma.Authentication.ServiceProviders.EmailProvider
         public string UserName { get; set; }
         public string Password { get; set; }
         public string From { get; set; }
+        public int Port { get; set; }
 
-        public EmailService(string host, string userName, string password, string from)
+        public EmailService(string host, string userName, string password, string from, int port)
         {
             Host = host;
             UserName = userName;
             Password = password;
             From = from;
+            Port = port;
         }
 
         public async Task<bool> SendEmail(EmailMessage message)
         {
-            var client = new SmtpClient(Host)
+            var client = new SmtpClient(Host, Port)
             {
                 EnableSsl = true,
                 Credentials = new NetworkCredential(UserName, Password)
