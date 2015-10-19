@@ -33,7 +33,8 @@ namespace InkySigma.Controllers
         {
             return new[] {"value1", "value2"};
         }
-
+        
+        [HttpPost]
         public async Task<StandardResponse> Register(RegisterViewModel user)
         {
             if (user == null)
