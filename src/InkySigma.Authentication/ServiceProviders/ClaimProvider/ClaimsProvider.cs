@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model.Options;
 using InkySigma.Authentication.Repositories;
 using InkySigma.Common;
@@ -12,11 +13,11 @@ namespace InkySigma.Authentication.ServiceProviders.ClaimProvider
 {
     public class ClaimsProvider<TUser> : IClaimsProvider<TUser> where TUser : class
     {
-        public ClaimsProvider(IUserStore<TUser> userStore, IUserRoleStore<TUser> userRoleStore,
+        public ClaimsProvider(UserManager<TUser> manager,
             ClaimTypesOptions options)
         {
-            UserStore = userStore;
-            UserRoleStore = userRoleStore;
+            UserStore = manager.UserStore;
+            UserRoleStore = manager.UserRoleStore;
             Options = options;
         }
 

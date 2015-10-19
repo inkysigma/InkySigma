@@ -4,7 +4,7 @@ namespace InkySigma.Authentication.Model.Exceptions
 {
     public class InvalidCodeException : CommonException
     {
-        public InvalidCodeException(string code = null) : base(401, "The given code was invalid.", code, null)
+        public InvalidCodeException(string code = null, int errorCode = 401) : base(errorCode, "The given code was invalid.", code, null)
         {
         }
     }

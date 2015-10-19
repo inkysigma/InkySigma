@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Managers;
+using InkySigma.Authentication.Model.Messages;
+using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Infrastructure.Exceptions;
+using InkySigma.Model;
 using InkySigma.ViewModel;
 using Microsoft.AspNet.Mvc;
 
@@ -15,10 +18,12 @@ namespace InkySigma.Controllers
     public class AuthorizationController : Controller
     {
         public UserManager<User> UserManager { get; set; }
+        public IEmailService EmailService { get; set; }
 
-        public AuthorizationController(UserManager<User> userManager)
+        public AuthorizationController(UserManager<User> userManager, IEmailService emailService)
         {
             UserManager = userManager;
+            EmailService = emailService;
         }
 
         
@@ -29,12 +34,23 @@ namespace InkySigma.Controllers
             return new[] {"value1", "value2"};
         }
 
-        public async Task<string> Register(RegisterViewModel user)
+        public async Task<StandardResponse> Register(RegisterViewModel user)
         {
             if (user == null)
                 throw new ParameterNullException(nameof(user));
             var constructed = user.Generate();
-            return await UserManager.AddUser(constructed);
+            var model = await UserManager.AddUser(constructed);
+            await
+                EmailService.SendEmail(new ActivationEmail(user.Email, model.Token, "api.inkysigma.com/activate",
+                    "inkysigma.com/activate"));
+            var response = new StandardResponse
+            {
+                Succeeded = true,
+                Code = 200,
+                Message = "Please check your email for a confirmation email",
+                Payload = null
+            };
+            return response;
         }
     }
 }

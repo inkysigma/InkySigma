@@ -2,7 +2,6 @@
 using InkySigma.Authentication.AspNet.LoginMiddleware;
 using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
-using InkySigma.Authentication.Managers;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;

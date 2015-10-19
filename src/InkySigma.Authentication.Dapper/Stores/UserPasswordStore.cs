@@ -68,7 +68,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             var rowCount =
                 await
-                    _connection.ExecuteAsync("INSERT INTO @table(Id,Password,Salt) VALUES(@Id,@Password,@Salt)",
+                    _connection.ExecuteAsync("INSERT INTO @table (Id,Password,Salt) VALUES(@Id,@Password,@Salt)",
                         new {table = _table, user.Id, Password = password, Salt = salt});
             return QueryResult.Success(rowCount);
         }

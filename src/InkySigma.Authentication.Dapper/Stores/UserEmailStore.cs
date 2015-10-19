@@ -77,7 +77,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
-            await _connection.ExecuteAsync("INSERT INTO @table(Id, Email, Active) VALUES(@Id, @Email, false)", new
+            await _connection.ExecuteAsync("INSERT INTO @table (Id, Email, Active) VALUES(@Id, @Email, false)", new
             {
                 table = Table,
                 user.Id,

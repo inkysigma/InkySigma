@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model;
 using InkySigma.Authentication.Model.Exceptions;
+using InkySigma.Authentication.Model.Messages;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 
@@ -23,23 +24,11 @@ namespace InkySigma.Authentication.Managers
                 throw new ArgumentNullException(nameof(code));
             var token = await UserTokenStore.FindTokenAsync(user, code, cancellationToken);
             if (token == null)
-            {
-                var result = new QueryResult
-                {
-                    Succeeded = false
-                };
-                result.Errors = new List<QueryError>();
-                result.Errors.Add(new QueryError
-                {
-                    Code = "404",
-                    Description = "No Token Found"
-                });
-                return result;
-            }
+                throw new InvalidCodeException(code, 404);
             if (token.Expiration < DateTime.Now)
                 return QueryResult.Fail("410", "The token has expired");
             if (token.Property != UpdateProperty.Activate)
-                return QueryResult.Fail("400", "This token is not for activation");
+                return QueryResult.Fail("401", "This token is not for activation");
             return await UserStore.SetUserActive(user, true, cancellationToken);
         }
 
@@ -51,16 +40,18 @@ namespace InkySigma.Authentication.Managers
             return await UserStore.SetUserActive(user, false, cancellationToken);
         }
 
-        public virtual async Task<QueryResult> RequestActivation(TUser user, EmailMessage message, string guid,
+        public virtual async Task<UpdateTokenRow> RequestActivation(TUser user,
             CancellationToken cancellationToken)
         {
-            await EmailService.SendEmail(message);
-            return await UserTokenStore.AddTokenAsync(user, new UpdateTokenRow
+            var guid = Guid.NewGuid();
+            var row = new UpdateTokenRow
             {
                 Expiration = DateTime.Now + _timeSpan,
                 Property = UpdateProperty.Activate,
-                Token = guid
-            }, cancellationToken);
+                Token = guid.ToString()
+            };
+            await UserTokenStore.AddTokenAsync(user, row, cancellationToken);
+            return row;
         }
 
         public virtual async Task<QueryResult> ResetPassword(TUser user, string code, string password,

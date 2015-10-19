@@ -48,7 +48,7 @@ namespace InkySigma.Authentication.Managers
 
         public UserManager(RepositoryOptions<TUser> repositories, FormValidatorOptions formOptions,
             PasswordOptions passwordOptions, RandomOptions randomOptions, IEmailService emailService,
-            ILogger<UserManager<TUser>> logger)
+            ILogger<UserManager<TUser>> logger, TimeSpan timeSpan = default(TimeSpan))
         {
             UserStore = repositories.UserStore;
             UserRoleStore = repositories.UserRoleStore;
@@ -63,6 +63,7 @@ namespace InkySigma.Authentication.Managers
             _passwordOptions = passwordOptions;
             _randomProvider = randomOptions;
             _logger = logger;
+            _timeSpan = timeSpan;
         }
 
         public void Dispose()

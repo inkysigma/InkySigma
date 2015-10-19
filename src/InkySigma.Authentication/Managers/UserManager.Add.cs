@@ -105,5 +105,14 @@ namespace InkySigma.Authentication.Managers
                 throw new ArgumentNullException(nameof(user));
             return await UserPropertyStore.AddProperties(user, token);
         }
+
+        public virtual async Task<QueryResult> AddUserLockout(TUser user,
+            CancellationToken token = default(CancellationToken))
+        {
+            Handle(token);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            return await UserLockoutStore.AddUserLockout(user, token);
+        }
     }
 }
