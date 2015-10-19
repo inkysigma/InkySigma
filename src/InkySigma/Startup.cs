@@ -14,7 +14,7 @@ namespace InkySigma
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IApplicationEnvironment app)
+        /*public Startup(IHostingEnvironment env, IApplicationEnvironment app)
         {
             var builder = new ConfigurationBuilder(app.ApplicationBasePath)
                 .AddJsonFile("config.json");
@@ -58,6 +58,6 @@ namespace InkySigma
         public void ConfigureRoutes(IRouteBuilder builder)
         {
             builder.MapRoute("Default", "{controller}/{action}/{id?}");
-        }
+        }*/
     }
 }
