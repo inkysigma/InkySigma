@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Managers;
@@ -20,6 +21,12 @@ namespace InkySigma.Authentication.Dapper
             await manager.AddUserLockout(user, token);
             var stoken = await manager.RequestActivation(user, token);
             return stoken;
+        }
+
+        public static async Task<User> FindUserByUserName(this UserManager<User> manager, string username,
+            CancellationToken token = default(CancellationToken))
+        {
+            throw new NotImplementedException();
         }
     }
 }

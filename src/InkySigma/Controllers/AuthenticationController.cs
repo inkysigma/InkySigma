@@ -15,23 +15,31 @@ using Microsoft.AspNet.Mvc;
 
 namespace InkySigma.Controllers
 {
-    public class AuthorizationController : Controller
+    public class AuthenticationController : Controller
     {
         public UserManager<User> UserManager { get; set; }
+        public LoginManager<User> LoginManager { get; set; } 
         public IEmailService EmailService { get; set; }
 
-        public AuthorizationController(UserManager<User> userManager, IEmailService emailService)
+        public AuthenticationController(UserManager<User> userManager, LoginManager<User> loginManager, IEmailService emailService)
         {
             UserManager = userManager;
+            LoginManager = loginManager;
             EmailService = emailService;
         }
 
         
             // GET: api/values
         [HttpPost]
-        public IEnumerable<string> Login()
+        public async Task<string> Login(LoginViewModel login)
         {
-            return new[] {"value1", "value2"};
+            if (login == null)
+                throw new ParameterNullException(nameof(login));
+            var token =
+                await
+                    LoginManager.CreateLogin(login.UserName, login.Password, HttpContext.Request.Host.ToString(),
+                        login.IsPersistent);
+            return token;
         }
 
         public async Task<StandardResponse> Register(RegisterViewModel user)
