@@ -1,9 +1,7 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using InkySigma.Authentication.Managers;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
-using Newtonsoft.Json;
 
 namespace InkySigma.Authentication.AspNet.LoginMiddleware
 {

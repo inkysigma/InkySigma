@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model;
-using InkySigma.Authentication.ServiceProviders.EmailProvider;
 
 namespace InkySigma.Authentication.Dapper
 {

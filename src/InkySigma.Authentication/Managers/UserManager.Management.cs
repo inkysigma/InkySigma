@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Threading;
@@ -8,7 +7,6 @@ using InkySigma.Authentication.Model;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Messages;
 using InkySigma.Authentication.Model.Result;
-using InkySigma.Authentication.ServiceProviders.EmailProvider;
 
 namespace InkySigma.Authentication.Managers
 {

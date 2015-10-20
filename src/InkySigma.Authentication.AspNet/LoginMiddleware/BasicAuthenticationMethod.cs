@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
-using InkySigma.Common;
-using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Microsoft.Framework.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace InkySigma.Authentication.AspNet.LoginMiddleware
 {

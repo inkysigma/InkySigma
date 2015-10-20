@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InkySigma.Authentication.Model.Exceptions;
-using InkySigma.Common;
+﻿using InkySigma.Common;
 
 namespace InkySigma.Infrastructure.Exceptions
 {

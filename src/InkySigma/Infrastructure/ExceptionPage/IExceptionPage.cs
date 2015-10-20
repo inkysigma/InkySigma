@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using InkySigma.Common;
 
 namespace InkySigma.Infrastructure.ExceptionPage
 {

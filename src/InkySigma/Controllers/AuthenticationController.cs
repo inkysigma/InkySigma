@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Managers;
