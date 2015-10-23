@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,18 +7,19 @@ using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
+using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserRoleStore : IUserRoleStore<User>
     {
-        public SqlConnection Connection { get; }
+        public NpgsqlConnection Connection { get; }
         public string Table { get; }
 
         public bool IsDisposed { get; private set; }
 
 
-        public UserRoleStore(SqlConnection connection, string table = "auth.roles")
+        public UserRoleStore(NpgsqlConnection connection, string table = "auth.roles")
         {
             Connection = connection;
             Table = table;

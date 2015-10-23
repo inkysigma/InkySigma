@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
+using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
@@ -13,12 +13,12 @@ namespace InkySigma.Authentication.Dapper.Stores
     /// </summary>
     public class UserPropertyStore : IUserPropertyStore<User>
     {
-        public SqlConnection Connection { get; }
+        public NpgsqlConnection Connection { get; }
         public string Table { get; }
 
         public bool IsDisposed { get; private set; }
 
-        public UserPropertyStore(SqlConnection connection, string table = "auth.properties")
+        public UserPropertyStore(NpgsqlConnection connection, string table = "auth.properties")
         {
             Connection = connection;
             Table = table;

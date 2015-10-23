@@ -9,15 +9,16 @@ using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
+using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserStore : IUserStore<User>
     {
-        private readonly SqlConnection _connection;
+        private readonly NpgsqlConnection _connection;
         private readonly string _table;
 
-        public UserStore(SqlConnection connection, string table = "auth.users")
+        public UserStore(NpgsqlConnection connection, string table = "auth.users")
         {
             _connection = connection;
             _table = table;

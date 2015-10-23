@@ -8,6 +8,7 @@
 
   "dependencies": {
     "Dapper": "1.42.0",
+    "Npgsql": "3.0.0",
     "InkySigma.Authentication": "1.0.0-beta8",
     "Microsoft.AspNet.Mvc": "6.0.0-beta8",
     "System.Threading": "4.0.10-beta-23019"
