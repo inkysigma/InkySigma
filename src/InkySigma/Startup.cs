@@ -7,10 +7,12 @@ using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Infrastructure.ExceptionPage;
 using InkySigma.Infrastructure.Filters;
+using InkySigma.Infrastructure.Formatters;
 using InkySigma.Infrastructure.Middleware;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.AspNet.Routing;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Configuration;
@@ -44,6 +46,8 @@ namespace InkySigma
             {
                 var logger = new Logger<ExceptionContext>(new LoggerFactory());
                 options.Filters.Add(new ExceptionFilter(logger, new JsonExceptionPage()));
+                options.InputFormatters.Add(new JsonInputFormatter());
+                options.OutputFormatters.Add(new JsonStandardMediaTypeFormatter());
             });
 
             services.AddTransient<IEmailService, EmailService>(
@@ -74,7 +78,7 @@ namespace InkySigma
 
         public void ConfigureRoutes(IRouteBuilder builder)
         {
-            builder.MapRoute("Default", "api/{controller}/{action}/{id?}");
+            builder.MapRoute("Default", "{controller}/{action}/{id?}");
         }
     }
 }
