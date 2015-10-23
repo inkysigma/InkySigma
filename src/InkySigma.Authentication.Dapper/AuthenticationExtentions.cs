@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Dapper.Stores;
 using InkySigma.Authentication.Managers;
@@ -8,6 +7,7 @@ using InkySigma.Authentication.ServiceProviders.ClaimProvider;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
+using Npgsql;
 
 namespace InkySigma.Authentication.Dapper
 {
@@ -17,7 +17,7 @@ namespace InkySigma.Authentication.Dapper
         {
             services.AddTransient(provider =>
             {
-                var conn = provider.GetService<SqlConnection>();
+                var conn = provider.GetService<NpgsqlConnection>();
                 var userStore = new UserStore(conn);
                 var repo = new RepositoryOptions<User>
                 {
