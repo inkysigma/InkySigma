@@ -17,10 +17,13 @@ namespace InkySigma.Infrastructure.Middleware
         public async Task Invoke(HttpContext httpContext)
         {
             await _next(httpContext);
-            httpContext.Response.Headers.Remove("X-Powered-By");
-            httpContext.Response.Headers.Remove("Server");
-            httpContext.Response.Headers.Remove("X-AspNet-Version");
-            httpContext.Response.Headers.Remove("X-AspNetMvc-Version");
+            if (!httpContext.Response.HasStarted)
+            {
+                httpContext.Response.Headers.Remove("X-Powered-By");
+                httpContext.Response.Headers.Remove("Server");
+                httpContext.Response.Headers.Remove("X-AspNet-Version");
+                httpContext.Response.Headers.Remove("X-AspNetMvc-Version");
+            }
         }
     }
 

@@ -25,6 +25,12 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
         public async Task Invoke(HttpContext httpContext)
         {
             var model = _method.RetrieveUserTokenPair(httpContext);
+            if (model == null)
+            {
+                httpContext.User = null;
+                await _next(httpContext);
+                return;
+            }
             var principal = await _loginManager.VerifyToken(model.UserName, model.Token);
 
             if (principal != null)

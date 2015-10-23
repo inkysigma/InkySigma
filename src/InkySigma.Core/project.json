@@ -1,0 +1,16 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "InkySigma.Core Class Library",
+  "authors": [ "Justin" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "InkySigma.Authentication.Dapper": "" 
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}

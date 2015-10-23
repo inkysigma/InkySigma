@@ -40,6 +40,7 @@ namespace InkySigma.Controllers
             return token;
         }
 
+        [HttpPost]
         public async Task<StandardResponse> Register(RegisterViewModel user)
         {
             if (user == null)
@@ -57,6 +58,12 @@ namespace InkySigma.Controllers
                 Payload = null
             };
             return response;
+        }
+
+        [HttpGet]
+        public string Test()
+        {
+            return "Hello";
         }
     }
 }

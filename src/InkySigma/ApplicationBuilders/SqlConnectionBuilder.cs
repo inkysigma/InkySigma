@@ -1,4 +1,5 @@
-﻿using Microsoft.Framework.DependencyInjection;
+﻿using System.Data.SqlClient;
+using Microsoft.Framework.DependencyInjection;
 using Npgsql;
 
 namespace InkySigma.ApplicationBuilders

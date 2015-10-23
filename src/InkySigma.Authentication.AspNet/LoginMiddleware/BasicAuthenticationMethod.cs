@@ -13,6 +13,9 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
             var request = context.Request;
             var authorizationHeader = Encoding.UTF8.GetString(Convert.FromBase64String(request.Headers["Authorization"].ToString()));
 
+            if (string.IsNullOrEmpty(authorizationHeader))
+                return null;
+
             Debug.WriteLine(authorizationHeader);
             var authHeaderArrary = authorizationHeader.Split(':');
             if (authHeaderArrary.Length != 2)
