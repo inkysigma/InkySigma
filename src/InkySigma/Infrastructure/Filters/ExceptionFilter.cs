@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Model.Exceptions;
+using InkySigma.Common;
 using InkySigma.Infrastructure.ExceptionPage;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Filters;
@@ -27,14 +28,15 @@ namespace InkySigma.Infrastructure.Filters
             var httpContext = context.HttpContext;
             if (httpContext.Response.HasStarted)
                 return;
-            if (context.Exception is ArgumentNullException || context.Exception is FormatException)
+
+            if (context.Exception is CommonException)
+            {
+                _page.SetException(context.Exception);
+                WritePage(httpContext, _page.Render().Replace(@"/", string.Empty));
+            }
+            else if (context.Exception is ArgumentNullException || context.Exception is FormatException)
             {
                 var page = SetupPage(httpContext, _page, context.Exception, 400);
-                WritePage(httpContext, page);
-            }
-            else if (context.Exception is InvalidUserException)
-            {
-                var page = SetupPage(httpContext, _page, context.Exception, 401);
                 WritePage(httpContext, page);
             }
             else if (context.Exception is SqlException)

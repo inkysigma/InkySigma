@@ -27,7 +27,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         public void Dispose()
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserRoleStore));
+                return;
             Connection.Dispose();
             IsDisposed = true;
         }

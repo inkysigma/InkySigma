@@ -25,12 +25,12 @@ namespace InkySigma
     {
         public Startup(IHostingEnvironment env, IApplicationEnvironment app)
         {
-            Debug.WriteLine(env.MapPath("~"));
             var jsonConfig = new JsonConfigurationProvider("config.json");
             var environConfig = new EnvironmentVariablesConfigurationProvider();
 
             var builder = new ConfigurationBuilder(jsonConfig, environConfig);
             builder.SetBasePath(app.ApplicationBasePath);
+
             Configuration = builder.Build();
             Environment = app;
         }

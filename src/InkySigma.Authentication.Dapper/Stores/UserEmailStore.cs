@@ -29,7 +29,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         public void Dispose()
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(UserEmailStore));
+                return;
             _connection.Dispose();
             _isDisposed = true;
         }

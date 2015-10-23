@@ -69,7 +69,7 @@ namespace InkySigma.Authentication.Managers
         public void Dispose()
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(UserManager<TUser>));
+                return;
             _isDisposed = true;
             UserEmailStore.Dispose();
             UserStore.Dispose();
@@ -78,6 +78,7 @@ namespace InkySigma.Authentication.Managers
             UserPasswordStore.Dispose();
             UserRoleStore.Dispose();
             UserPropertyStore.Dispose();
+            UserTokenStore.Dispose();
         }
 
         private void Handle(CancellationToken token)
