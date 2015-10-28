@@ -6,7 +6,8 @@ using InkySigma.Authentication.Model.Messages;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Infrastructure.Exceptions;
 using InkySigma.Model;
-using InkySigma.ViewModel;
+using InkySigma.RequestModel;
+using InkySigma.ResponseModels;
 using Microsoft.AspNet.Mvc;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -29,7 +30,7 @@ namespace InkySigma.Controllers
         
             // GET: api/values
         [HttpPost]
-        public async Task<string> Login(LoginViewModel login)
+        public async Task<LoginResponseModel> Login(LoginRequestModel login)
         {
             if (login == null)
                 throw new ParameterNullException(nameof(login));
@@ -37,11 +38,20 @@ namespace InkySigma.Controllers
                 await
                     LoginManager.CreateLogin(login.UserName, login.Password, HttpContext.Request.Host.ToString(),
                         login.IsPersistent);
-            return token;
+            if (token == null)
+                return new LoginResponseModel
+                {
+                    LoginSucceeded = false
+                };
+            return new LoginResponseModel
+            {
+                Token = token,
+                Name = (await UserManager.FindUserByUsername(login.UserName)).UserName
+            };
         }
 
         [HttpPost]
-        public async Task<StandardResponse> Register(RegisterViewModel user)
+        public async Task<StandardResponse> Register(RegisterRequestModel user)
         {
             if (user == null)
                 throw new ParameterNullException(nameof(user));

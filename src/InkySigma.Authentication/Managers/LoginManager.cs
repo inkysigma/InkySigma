@@ -128,7 +128,7 @@ namespace InkySigma.Authentication.Managers
                 }
                 else
                 {
-                    throw new InvalidUserException();
+                    throw new InvalidUserException(username);
                 }
             }
 

@@ -21,11 +21,5 @@ namespace InkySigma.Authentication.Dapper
             var stoken = await manager.RequestActivation(user, token);
             return stoken;
         }
-
-        public static async Task<User> FindUserByUserName(this UserManager<User> manager, string username,
-            CancellationToken token = default(CancellationToken))
-        {
-            throw new NotImplementedException();
-        }
     }
 }

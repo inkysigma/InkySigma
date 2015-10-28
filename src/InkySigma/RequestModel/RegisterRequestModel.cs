@@ -1,8 +1,8 @@
 ﻿using InkySigma.Authentication.Dapper.Models;
 
-namespace InkySigma.ViewModel
+namespace InkySigma.RequestModel
 {
-    public class RegisterViewModel
+    public class RegisterRequestModel
     {
 
         public string Email { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace InkySigma.ViewModel
+﻿namespace InkySigma.RequestModel
 {
-    public class AddContactViewModel
+    public class AddContactRequestModel
     {
         public string Contact { get; set; }
         public string Type { get; set; }
