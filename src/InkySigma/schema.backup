@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.4.4
 -- Dumped by pg_dump version 9.4.0
--- Started on 2015-10-18 17:16:55
+-- Started on 2015-10-27 23:01:02
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -32,7 +32,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2066 (class 0 OID 0)
+-- TOC entry 2076 (class 0 OID 0)
 -- Dependencies: 183
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -146,7 +146,7 @@ CREATE SEQUENCE "roles_Count_seq"
 ALTER TABLE "roles_Count_seq" OWNER TO postgres;
 
 --
--- TOC entry 2067 (class 0 OID 0)
+-- TOC entry 2077 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: roles_Count_seq; Type: SEQUENCE OWNED BY; Schema: auth; Owner: postgres
 --
@@ -186,7 +186,7 @@ CREATE SEQUENCE "token_Count_seq"
 ALTER TABLE "token_Count_seq" OWNER TO postgres;
 
 --
--- TOC entry 2068 (class 0 OID 0)
+-- TOC entry 2078 (class 0 OID 0)
 -- Dependencies: 181
 -- Name: token_Count_seq; Type: SEQUENCE OWNED BY; Schema: auth; Owner: postgres
 --
@@ -223,6 +223,104 @@ ALTER TABLE ONLY roles ALTER COLUMN "Count" SET DEFAULT nextval('"roles_Count_se
 --
 
 ALTER TABLE ONLY token ALTER COLUMN "Count" SET DEFAULT nextval('"token_Count_seq"'::regclass);
+
+
+--
+-- TOC entry 2060 (class 0 OID 32792)
+-- Dependencies: 174
+-- Data for Name: email; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY email ("Id", "Email", "Active") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2061 (class 0 OID 32805)
+-- Dependencies: 175
+-- Data for Name: lockout; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY lockout ("Id", "AccessFailedCount", "LockoutEnabled", "AccessEndDate") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2062 (class 0 OID 32838)
+-- Dependencies: 176
+-- Data for Name: login; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY login ("Id", "Token", "Location", "Expiration") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2063 (class 0 OID 32851)
+-- Dependencies: 177
+-- Data for Name: pass; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY pass ("Id", "Password", "Salt") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2064 (class 0 OID 32864)
+-- Dependencies: 178
+-- Data for Name: properties; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY properties ("Id") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2065 (class 0 OID 32877)
+-- Dependencies: 179
+-- Data for Name: roles; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY roles ("Id", "Role", "Count") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2079 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: roles_Count_seq; Type: SEQUENCE SET; Schema: auth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"roles_Count_seq"', 1, false);
+
+
+--
+-- TOC entry 2066 (class 0 OID 32890)
+-- Dependencies: 180
+-- Data for Name: token; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY token ("Id", "Token", "Expiration", "Property", "Count") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2080 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: token_Count_seq; Type: SEQUENCE SET; Schema: auth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"token_Count_seq"', 1, false);
+
+
+--
+-- TOC entry 2059 (class 0 OID 32780)
+-- Dependencies: 173
+-- Data for Name: user; Type: TABLE DATA; Schema: auth; Owner: postgres
+--
+
+COPY "user" ("Id", "Name", "UserName", "IsActive") FROM stdin;
+\.
 
 
 --
@@ -377,7 +475,7 @@ ALTER TABLE ONLY token
 
 
 --
--- TOC entry 2065 (class 0 OID 0)
+-- TOC entry 2075 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -388,7 +486,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2015-10-18 17:16:55
+-- Completed on 2015-10-27 23:01:02
 
 --
 -- PostgreSQL database dump complete

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace InkySigma.ResponseModels
+﻿namespace InkySigma.ResponseModels
 {
     public class LoginResponseModel
     {
@@ -20,7 +15,7 @@ namespace InkySigma.ResponseModels
         public string Name { get; set; }
         
         /// <summary>
-        /// This is the token Id
+        /// This is the token for all future requests that require authentication.
         /// </summary>
         public string Token { get; set; }
     }
