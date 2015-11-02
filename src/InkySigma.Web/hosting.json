@@ -1,0 +1,4 @@
+﻿{
+  "server": "Microsoft.AspNet.Server.WebListener",
+  "server.urls": "http://api.tonghwa.net:5000;https://api.tonghwa.net:44300"
+}

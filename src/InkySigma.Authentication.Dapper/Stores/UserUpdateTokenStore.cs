@@ -16,7 +16,7 @@ namespace InkySigma.Authentication.Dapper.Stores
     public class UserUpdateTokenStore : IUserUpdateTokenStore<User>
     {
         public NpgsqlConnection Connection { get; }
-        public bool IsDisposed { get; private set; } = false;
+        public bool IsDisposed { get; private set; }
         public string Table { get; }
 
         public UserUpdateTokenStore(NpgsqlConnection connection, string table = "auth.token")

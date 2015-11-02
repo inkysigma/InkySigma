@@ -16,7 +16,7 @@ namespace InkySigma.Authentication.Dapper.Stores
     public class UserLoginStore : IUserLoginStore<User>
     {
         public NpgsqlConnection Connection { get; }
-        public bool IsDisposed { get; set; } = false;
+        public bool IsDisposed { get; set; }
 
         private string Table { get; }
 
