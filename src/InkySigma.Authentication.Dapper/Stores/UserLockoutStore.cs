@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
-    public class UserLockoutStore : IUserLockoutStore<User>
+    public class UserLockoutStore<TUser> : IUserLockoutStore<TUser> where TUser : User
     {
         private readonly NpgsqlConnection _connection;
         private readonly string _table;
@@ -34,7 +34,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<DateTime> GetLockoutEndDateTime(User user, CancellationToken token)
+        public async Task<DateTime> GetLockoutEndDateTime(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -48,7 +48,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return DateTime.Parse(firstOrDefault.Date);
         }
 
-        public async Task<int> GetAccessFailedCount(User user, CancellationToken token)
+        public async Task<int> GetAccessFailedCount(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -62,7 +62,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return firstOrDefault.AccessFailedCount;
         }
 
-        public async Task<bool> GetLockoutEnabled(User user, CancellationToken token)
+        public async Task<bool> GetLockoutEnabled(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -72,7 +72,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return value.Any();
         }
 
-        public async Task<QueryResult> AddUserLockout(User user, CancellationToken token)
+        public async Task<QueryResult> AddUserLockout(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -88,7 +88,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> RemoveUserLockout(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserLockout(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -104,7 +104,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> SetLockoutEndDateTime(User user, DateTime dateTime, CancellationToken token)
+        public async Task<QueryResult> SetLockoutEndDateTime(TUser user, DateTime dateTime, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -115,7 +115,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> SetLockoutEnabled(User user, bool isLockedOut, CancellationToken token)
+        public async Task<QueryResult> SetLockoutEnabled(TUser user, bool isLockedOut, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -128,7 +128,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<int> IncrememntAccessFailedCount(User user, CancellationToken token)
+        public async Task<int> IncrememntAccessFailedCount(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -142,7 +142,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return accessFailedCount;
         }
 
-        public async Task<QueryResult> ResetAccessFailedCount(User user, CancellationToken token)
+        public async Task<QueryResult> ResetAccessFailedCount(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -157,7 +157,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         private void Handle(CancellationToken token = default(CancellationToken))
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserLockoutStore));
+                throw new ObjectDisposedException(nameof(UserLockoutStore<TUser>));
             token.ThrowIfCancellationRequested();
         }
 

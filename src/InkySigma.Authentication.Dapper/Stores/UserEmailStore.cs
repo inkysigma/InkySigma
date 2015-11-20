@@ -14,7 +14,7 @@ namespace InkySigma.Authentication.Dapper.Stores
     /// <summary>
     /// This is a store that stores user emails.
     /// </summary>
-    public class UserEmailStore : IUserEmailStore<User>
+    public class UserEmailStore<TUser> : IUserEmailStore<TUser> where TUser : User
     {
         private readonly NpgsqlConnection _connection;
         public string Table { get; }
@@ -34,7 +34,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             _isDisposed = true;
         }
 
-        public async Task<string> GetUserEmailAsync(User user, CancellationToken token)
+        public async Task<string> GetUserEmailAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -51,7 +51,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return first;
         }
 
-        public async Task<bool> GetUserEmailConfirmedAsync(User user, CancellationToken token)
+        public async Task<bool> GetUserEmailConfirmedAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -68,7 +68,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return first;
         }
 
-        public async Task<QueryResult> AddUserEmailAsync(User user, string email, CancellationToken token)
+        public async Task<QueryResult> AddUserEmailAsync(TUser user, string email, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -86,7 +86,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> RemoveUserEmail(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserEmail(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -97,7 +97,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> SetUserEmailAsync(User user, string email, CancellationToken token)
+        public async Task<QueryResult> SetUserEmailAsync(TUser user, string email, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -110,7 +110,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> SetUserEmailConfirmedAsync(User user, bool isConfirmed, CancellationToken token)
+        public async Task<QueryResult> SetUserEmailConfirmedAsync(TUser user, bool isConfirmed, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -121,7 +121,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<bool> HasUserEmailAsync(User user, CancellationToken token)
+        public async Task<bool> HasUserEmailAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -134,7 +134,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return result.Any();
         }
 
-        public async Task<User> FindUserByEmailAsync(string email, CancellationToken token)
+        public async Task<TUser> FindUserByEmailAsync(string email, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(email))
@@ -142,13 +142,13 @@ namespace InkySigma.Authentication.Dapper.Stores
             var result =
                 (await _connection.QueryAsync<string>("SELECT Id FROM @Table WHERE Email=@email", new {Table, email}))
                     .FirstOrDefault();
-            return User.Create(result);
+            return (TUser) User.Create(result);
         }
 
         private void Handle(CancellationToken token = default(CancellationToken))
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(UserEmailStore));
+                throw new ObjectDisposedException(nameof(UserEmailStore<TUser>));
             token.ThrowIfCancellationRequested();
         }
     }

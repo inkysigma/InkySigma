@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNet.Http;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InkySigma.Authentication.AspNet.LoginMiddleware
 {

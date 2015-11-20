@@ -7,7 +7,7 @@ using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Repositories
 {
-    public interface IUserUpdateTokenStore<in TUser> : IDisposable where TUser : class
+    public interface IUserTokenStore<in TUser> : IDisposable where TUser : class
     {
         Task<QueryResult> AddTokenAsync(TUser user, UpdateTokenRow token, CancellationToken cancellationToken);
         Task<IEnumerable<UpdateTokenRow>> GetTokensAsync(TUser user, CancellationToken token);

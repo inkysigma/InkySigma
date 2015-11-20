@@ -9,16 +9,17 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.AspNet.Routing;
-using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.Configuration.EnvironmentVariables;
-using Microsoft.Framework.Configuration.Json;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Authentication.AspNet.LoginMiddleware;
 using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Web.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace InkySigma.Web
 {
@@ -29,7 +30,9 @@ namespace InkySigma.Web
             var jsonConfig = new JsonConfigurationProvider("config.json");
             var environConfig = new EnvironmentVariablesConfigurationProvider();
 
-            var builder = new ConfigurationBuilder(jsonConfig, environConfig);
+            var builder = new ConfigurationBuilder();
+            builder.Add(jsonConfig);
+            builder.Add(environConfig);
             builder.SetBasePath(app.ApplicationBasePath);
 
             Configuration = builder.Build();
@@ -58,7 +61,7 @@ namespace InkySigma.Web
 
             services.AddBasicAuthentication();
 
-            services.AddDapperApplicationBuilder();
+            services.AddDapperApplicationBuilder<SigmaUser>();
         }
 
         public void Configure(IApplicationBuilder app)

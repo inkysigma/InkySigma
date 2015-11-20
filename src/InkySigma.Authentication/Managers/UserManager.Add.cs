@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using InkySigma.Authentication.Model;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Result;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {

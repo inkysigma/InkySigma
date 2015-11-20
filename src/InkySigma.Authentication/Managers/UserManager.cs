@@ -3,7 +3,7 @@ using System.Threading;
 using InkySigma.Authentication.Model.Options;
 using InkySigma.Authentication.Repositories;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {
@@ -22,7 +22,7 @@ namespace InkySigma.Authentication.Managers
         public readonly IUserPropertyStore<TUser> UserPropertyStore;
         public readonly IUserRoleStore<TUser> UserRoleStore;
         public readonly IUserStore<TUser> UserStore;
-        public readonly IUserUpdateTokenStore<TUser> UserTokenStore;
+        public readonly IUserTokenStore<TUser> UserTokenStore;
         private bool _isDisposed;
 
         public UserManager(RepositoryOptions<TUser> repositories, IEmailService emailService,

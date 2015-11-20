@@ -11,6 +11,6 @@ namespace InkySigma.Authentication.Model.Options
         public IUserLoginStore<TUser> UserLoginStore { get; set; }
         public IUserLockoutStore<TUser> UserLockoutStore { get; set; }
         public IUserPropertyStore<TUser> UserPropertyStore { get; set; }
-        public IUserUpdateTokenStore<TUser> UserTokenStore { get; set; }
+        public IUserTokenStore<TUser> UserTokenStore { get; set; }
     }
 }

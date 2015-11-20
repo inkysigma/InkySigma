@@ -7,7 +7,7 @@ using InkySigma.Common;
 using InkySigma.Web.Infrastructure.ExceptionPage;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Filters;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Web.Infrastructure.Filters
 {

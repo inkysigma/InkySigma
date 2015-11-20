@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
-    public class UserPasswordStore : IUserPasswordStore<User>
+    public class UserPasswordStore<TUser> : IUserPasswordStore<TUser> where TUser : User
     {
         private readonly NpgsqlConnection _connection;
         private readonly string _table;
@@ -33,7 +33,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<string> GetPasswordAsync(User user, CancellationToken token = default(CancellationToken))
+        public async Task<string> GetPasswordAsync(TUser user, CancellationToken token = default(CancellationToken))
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -48,7 +48,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return result.Password;
         }
 
-        public async Task<byte[]> GetSaltAsync(User user, CancellationToken token = default(CancellationToken))
+        public async Task<byte[]> GetSaltAsync(TUser user, CancellationToken token = default(CancellationToken))
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -62,7 +62,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return Convert.FromBase64String(result.Salt);
         }
 
-        public async Task<QueryResult> AddPasswordAsync(User user, string password, byte[] salt, CancellationToken token)
+        public async Task<QueryResult> AddPasswordAsync(TUser user, string password, byte[] salt, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -74,7 +74,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> RemovePasswordAsync(User user, CancellationToken token)
+        public async Task<QueryResult> RemovePasswordAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -84,7 +84,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> SetPasswordAsync(User user, string password, CancellationToken token)
+        public async Task<QueryResult> SetPasswordAsync(TUser user, string password, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -97,7 +97,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> SetSaltAsync(User user, byte[] salt, CancellationToken token)
+        public async Task<QueryResult> SetSaltAsync(TUser user, byte[] salt, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -109,7 +109,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<bool> HasPasswordAsync(User user, CancellationToken token)
+        public async Task<bool> HasPasswordAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -120,7 +120,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         private void Handle(CancellationToken token = default(CancellationToken))
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserPasswordStore));
+                throw new ObjectDisposedException(nameof(UserPasswordStore<TUser>));
             token.ThrowIfCancellationRequested();
         }
 

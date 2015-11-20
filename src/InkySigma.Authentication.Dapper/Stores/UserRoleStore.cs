@@ -11,7 +11,7 @@ using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
-    public class UserRoleStore : IUserRoleStore<User>
+    public class UserRoleStore<TUser> : IUserRoleStore<TUser> where TUser : User
     {
         public NpgsqlConnection Connection { get; }
         public string Table { get; }
@@ -36,11 +36,11 @@ namespace InkySigma.Authentication.Dapper.Stores
         private void Handle(CancellationToken token = default(CancellationToken))
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserRoleStore));
+                throw new ObjectDisposedException(nameof(UserRoleStore<TUser>));
             token.ThrowIfCancellationRequested();
         }
 
-        public async Task<string[]> GetUserRolesAsync(User user, CancellationToken token)
+        public async Task<string[]> GetUserRolesAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -52,7 +52,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return result.ToArray();
         }
 
-        public async Task<QueryResult> AddUserRoleAsync(User user, string role, CancellationToken token)
+        public async Task<QueryResult> AddUserRoleAsync(TUser user, string role, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -68,7 +68,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> RemoveUserRoleAsync(User user, string role, CancellationToken token)
+        public async Task<QueryResult> RemoveUserRoleAsync(TUser user, string role, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -83,7 +83,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> RemoveUserRolesAsync(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserRolesAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -96,7 +96,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<bool> HasRoleRoleAsync(User user, string role, CancellationToken token)
+        public async Task<bool> HasRoleRoleAsync(TUser user, string role, CancellationToken token)
         {
             Handle(token);
             if (user == null)

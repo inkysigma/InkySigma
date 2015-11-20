@@ -11,7 +11,7 @@ using InkySigma.Authentication.Repositories;
 using InkySigma.Authentication.ServiceProviders.ClaimProvider;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Authentication.ServiceProviders.RandomProvider;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {

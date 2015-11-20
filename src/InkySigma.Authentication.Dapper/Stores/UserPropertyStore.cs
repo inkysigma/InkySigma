@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model.Result;
@@ -10,7 +11,7 @@ namespace InkySigma.Authentication.Dapper.Stores
     /// <summary>
     /// No properties to CRUD on so far outside of authentication
     /// </summary>
-    public class UserPropertyStore : IUserPropertyStore<User>
+    public class UserPropertyStore<TUser> : IUserPropertyStore<TUser> where TUser : User
     {
         public NpgsqlConnection Connection { get; }
         public string Table { get; }
@@ -31,23 +32,31 @@ namespace InkySigma.Authentication.Dapper.Stores
             IsDisposed = true;
         }
 
-        public async Task<User> GetProperties(User user, CancellationToken token)
+        public async Task<TUser> GetProperties(TUser user, CancellationToken token)
         {
             return user;
         }
 
-        public async Task<QueryResult> RemoveProperties(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveProperties(TUser user, CancellationToken token)
         {
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> UpdateProperties(User user, CancellationToken token)
+        public async Task<QueryResult> UpdateProperties(TUser user, CancellationToken token)
         {
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> AddProperties(User user, CancellationToken token)
+        public async Task<QueryResult> AddProperties(TUser user, CancellationToken token)
         {
+            var properties = user.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType == typeof (IDictionary<,>))
+                {
+                    
+                }
+            }
             return QueryResult.Success();
         }
     }

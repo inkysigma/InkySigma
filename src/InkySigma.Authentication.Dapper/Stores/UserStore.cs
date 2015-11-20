@@ -13,7 +13,7 @@ using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
-    public class UserStore : IUserStore<User>
+    public class UserStore<TUser> : IUserStore<TUser> where TUser : User
     {
         private readonly NpgsqlConnection _connection;
         private readonly string _table;
@@ -34,7 +34,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             IsDisposed = true;
         }
 
-        public async Task<string> GetUserIdAsync(User user, CancellationToken token)
+        public async Task<string> GetUserIdAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (user.UserName == null)
@@ -50,7 +50,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return firstOrDefault != null ? firstOrDefault.Id : null;
         }
 
-        public async Task<string> GetUserNameAsync(User user, CancellationToken token)
+        public async Task<string> GetUserNameAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (user.Id == null)
@@ -64,7 +64,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return firstOrDefault != null ? firstOrDefault.UserName : null;
         }
 
-        public async Task<string> GetNameAsync(User user, CancellationToken token)
+        public async Task<string> GetNameAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (user.UserName == null && user.Id == null)
@@ -95,7 +95,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<User> FindUserByIdAsync(string id, CancellationToken token)
+        public async Task<TUser> FindUserByIdAsync(string id, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(id))
@@ -112,12 +112,12 @@ namespace InkySigma.Authentication.Dapper.Stores
                     Name = value.Name,
                     UserName = value.UserName
                 };
-                return user;
+                return (TUser) user;
             }
             throw new InvalidUserException(id);
         }
 
-        public async Task<User> FindUserByUserNameAsync(string name, CancellationToken token)
+        public async Task<TUser> FindUserByUserNameAsync(string name, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(name))
@@ -128,7 +128,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                         new {table = _table, Name = name})).FirstOrDefault();
             if (value == null)
                 throw new InvalidUserException(name);
-            return new User
+            return (TUser) new User
             {
                 Id = value.Id,
                 Name = value.Name,
@@ -136,7 +136,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             };
         }
 
-        public async Task<IEnumerable<User>> FindUsersByNameAsync(string name, CancellationToken token)
+        public async Task<IEnumerable<TUser>> FindUsersByNameAsync(string name, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(name))
@@ -145,10 +145,10 @@ namespace InkySigma.Authentication.Dapper.Stores
                 (await
                     _connection.QueryAsync("SELECT Id,Name,UserName FROM @table WHERE Name=@name",
                         new {table = _table, name}));
-            var users = new List<User>();
+            var users = new List<TUser>();
             foreach (var i in values)
             {
-                users.Add(new User
+                users.Add((TUser) new User
                 {
                     Id = i.Id,
                     Name = i.Name,
@@ -158,7 +158,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return users;
         }
 
-        public async Task<QueryResult> SetUserIdAsync(User user, string userid, CancellationToken token)
+        public async Task<QueryResult> SetUserIdAsync(TUser user, string userid, CancellationToken token)
         {
             Header(token);
             if (user?.UserName == null)
@@ -181,7 +181,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> SetUserNameAsync(User user, string username, CancellationToken token)
+        public async Task<QueryResult> SetUserNameAsync(TUser user, string username, CancellationToken token)
         {
             Header(token);
             if (user?.Id == null)
@@ -205,7 +205,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> SetNameAsync(User user, string name, CancellationToken token)
+        public async Task<QueryResult> SetNameAsync(TUser user, string name, CancellationToken token)
         {
             Header(token);
             if (user != null && (user?.Id == null && user.UserName == null))
@@ -237,7 +237,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> SetUserActive(User user, bool isActive, CancellationToken token)
+        public async Task<QueryResult> SetUserActive(TUser user, bool isActive, CancellationToken token)
         {
             Header(token);
             if (user == null)
@@ -261,7 +261,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> AddUserAsync(User user, string guid, CancellationToken token)
+        public async Task<QueryResult> AddUserAsync(TUser user, string guid, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user?.UserName) || string.IsNullOrEmpty(user.Email) ||
@@ -287,7 +287,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> RemoveUserAsync(User user, CancellationToken token)
+        public async Task<QueryResult> RemoveUserAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -307,7 +307,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             }
         }
 
-        public async Task<QueryResult> UpdateUserAsync(User user, CancellationToken token)
+        public async Task<QueryResult> UpdateUserAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user?.Id))
@@ -328,8 +328,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 return BuildError(e);
             }
         }
-
-        public async Task<bool> HasUserIdAsync(User user, CancellationToken token)
+        
+        public async Task<bool> HasUserIdAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user.Id))
@@ -337,7 +337,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return (await _connection.QueryAsync("SELECT * FROM @table WHERE Id=@Id", new {Key = user.Id})).Count() == 1;
         }
 
-        public async Task<bool> HasUserNameAsync(User user, CancellationToken token)
+        public async Task<bool> HasUserNameAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user.UserName))
@@ -347,7 +347,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                     .Count() == 1;
         }
 
-        public async Task<bool> HasNameAsync(User user, CancellationToken token)
+        public async Task<bool> HasNameAsync(TUser user, CancellationToken token)
         {
             Header(token);
             if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Id))
@@ -358,7 +358,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                         new {user.Name, Key = user.Id})).Count() == 1;
         }
 
-        public async Task<bool> HasActivated(User user, CancellationToken token)
+        public async Task<bool> HasActivated(TUser user, CancellationToken token)
         {
             Header(token);
             if (user == null)
@@ -370,7 +370,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         {
             token.ThrowIfCancellationRequested();
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(UserStore));
+                throw new ObjectDisposedException(nameof(UserStore<TUser>));
         }
 
         private QueryResult BuildError(SqlException e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using InkySigma.Web.Model;
 using Microsoft.AspNet.Mvc;
@@ -8,13 +9,13 @@ namespace InkySigma.Web.Infrastructure.Formatters
 {
     public class JsonStandardMediaTypeFormatter : JsonOutputFormatter
     {
-        public override Task WriteResponseBodyAsync(OutputFormatterContext context)
+        public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
             var response = context.HttpContext.Response;
-            var encoding = context.SelectedEncoding;
+            var encoding = context.ContentType?.Encoding ?? Encoding.UTF8;
 
             StandardResponse standard;
 
