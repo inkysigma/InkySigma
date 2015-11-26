@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,18 +10,17 @@ using InkySigma.Authentication.Model;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
-using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserLoginStore<TUser> : IUserLoginStore<TUser> where TUser : User
     {
-        public NpgsqlConnection Connection { get; }
+        public DbConnection Connection { get; }
         public bool IsDisposed { get; set; }
 
         private string Table { get; }
 
-        public UserLoginStore(NpgsqlConnection connection, string table = "auth.login")
+        public UserLoginStore(DbConnection connection, string table = "auth.login")
         {
             Connection = connection;
             Table = table;

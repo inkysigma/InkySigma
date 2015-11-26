@@ -1,0 +1,17 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "InkySigma.Web.Data Class Library",
+  "authors": [ "Justin" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Dapper": "1.42.0",
+    "Npgsql": "3.0.3"
+  },
+
+  "frameworks": {
+    "net451": { }
+  }
+}

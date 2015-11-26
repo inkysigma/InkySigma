@@ -7,7 +7,15 @@ namespace InkySigma.Web.Core
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
     public class SigmaUser : User
     {
-        public virtual List<SigmaUser> Contacts { get; set; }
-        public virtual Dictionary<SigmaUser, bool> ContactRequests { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }
+        public virtual ICollection<ContactRequest> ContactRequests { get; set; }
+
+        public new static SigmaUser Create(string id)
+        {
+            return new SigmaUser()
+            {
+                Id = id
+            };
+        }
     }
 }

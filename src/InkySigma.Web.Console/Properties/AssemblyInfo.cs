@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("InkySigma.Web.Business")]
+[assembly: AssemblyTitle("InkySigma.Web.Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("InkySigma.Web.Business")]
+[assembly: AssemblyProduct("InkySigma.Web.Console")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2ce390d3-dcc9-4e8d-8472-47361a769f6b")]
+[assembly: Guid("60a47efc-13a8-4963-af36-9f33c0ee7ff7")]

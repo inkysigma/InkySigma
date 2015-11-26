@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
@@ -8,16 +9,15 @@ using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Model.Exceptions;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
-using Npgsql;
 
 namespace InkySigma.Authentication.Dapper.Stores
 {
     public class UserLockoutStore<TUser> : IUserLockoutStore<TUser> where TUser : User
     {
-        private readonly NpgsqlConnection _connection;
+        private readonly DbConnection _connection;
         private readonly string _table;
 
-        public UserLockoutStore(NpgsqlConnection conn, string table = "auth.lockout")
+        public UserLockoutStore(DbConnection conn, string table = "auth.lockout")
         {
             _connection = conn;
             _table = table;

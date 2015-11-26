@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
+using InkySigma.Authentication.Dapper;
 using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Authentication.Managers;
+using InkySigma.Authentication.Model.Messages;
+using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Web.Infrastructure.Exceptions;
 using InkySigma.Web.Model;
 using InkySigma.Web.RequestModel;
 using InkySigma.Web.ResponseModels;
 using Microsoft.AspNet.Mvc;
-using InkySigma.Authentication.Managers;
-using InkySigma.Authentication.Model.Messages;
-using InkySigma.Authentication.ServiceProviders.EmailProvider;
-using InkySigma.Authentication.Dapper;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
