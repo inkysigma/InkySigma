@@ -48,12 +48,17 @@ namespace InkySigma.Authentication.Dapper
             return services;
         }
 
-        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IServiceCollection services,
-            IUserPropertyStore<TUser> propertyStore) where TUser : User
+        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IServiceCollection services, IUserPropertyStore<TUser> property) where TUser : User
         {
             services.AddTransient(provider =>
             {
                 var conn = provider.GetService<DbConnection>();
+
+                var propertyStore = provider.GetService<IUserPropertyStore<TUser>>();
+
+                if (propertyStore == null)
+                    throw new InvalidOperationException("Missing a dependency");
+
                 var userStore = new UserStore<TUser>(conn);
                 var repo = new RepositoryOptions<TUser>
                 {

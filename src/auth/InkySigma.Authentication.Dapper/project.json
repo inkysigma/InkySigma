@@ -14,9 +14,7 @@
   },
 
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-      }
-    }
+    "dnx451": { },
+    "net451": { }
   }
 }

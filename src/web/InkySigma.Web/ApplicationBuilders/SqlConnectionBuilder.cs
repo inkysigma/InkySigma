@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Data.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
 namespace InkySigma.Web.ApplicationBuilders
@@ -10,7 +11,7 @@ namespace InkySigma.Web.ApplicationBuilders
         {
             var connection = new NpgsqlConnection(configuration);
             connection.OpenAsync();
-            collection.AddTransient(provider => connection);
+            collection.AddTransient<DbConnection>(provider => connection);
             return collection;
         }
     }
