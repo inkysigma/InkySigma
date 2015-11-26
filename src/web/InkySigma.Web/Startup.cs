@@ -60,7 +60,7 @@ namespace InkySigma.Web
 
             services.AddBasicAuthentication();
 
-            services.AddDapperApplicationBuilder<SigmaUser>();
+            services.AddDapperApplicationBuilder<SigmaUser>(new SigmaProperty);
         }
 
         public void Configure(IApplicationBuilder app)

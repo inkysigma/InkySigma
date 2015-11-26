@@ -7,7 +7,7 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "InkySigma.Common": "1.0.0",
+    "InkySigma.Common": "1.0.0-rc1-final",
     "Microsoft.AspNet.Http": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Newtonsoft.Json": "7.0.1"
