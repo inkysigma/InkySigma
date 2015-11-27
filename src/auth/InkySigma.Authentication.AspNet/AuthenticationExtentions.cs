@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.AspNet
 {
-    public static class AuthenticationExtentions
+    /*public static class AuthenticationExtentions
     {
         public static IServiceCollection AddDapperApplicationBuilder(this IServiceCollection services)
         {
@@ -44,44 +44,19 @@ namespace InkySigma.Authentication.AspNet
                         });
                 });
             return services;
-        }
+        }*/
 
-        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IAuthenticationBuilder services, IUserPropertyStore<TUser> property) where TUser : User
+        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IAuthenticationBuilder<TUser> builder) where TUser : User
         {
-            services.AddTransient(provider =>
+            builder.ServiceCollection.AddTransient(provider =>
             {
-                var conn = provider.GetService<DbConnection>();
-
-                var propertyStore = provider.GetService<IUserPropertyStore<TUser>>();
-
-                if (propertyStore == null)
-                    throw new InvalidOperationException("Missing a dependency");
-
-                var userStore = new UserStore<TUser>(conn);
-                var repo = new RepositoryOptions<TUser>
-                {
-                    UserStore = userStore,
-                    UserEmailStore = new UserEmailStore<TUser>(conn),
-                    UserLockoutStore = new UserLockoutStore<TUser>(conn),
-                    UserLoginStore = new UserLoginStore<TUser>(conn),
-                    UserPasswordStore = new UserPasswordStore<TUser>(conn),
-                    UserPropertyStore = propertyStore,
-                    UserRoleStore = new UserRoleStore<TUser>(conn),
-                    UserTokenStore = new UserTokenStore<TUser>(conn)
-                };
-                return new UserManager<TUser>(repo, provider.GetService<IEmailService>(),
-                    provider.GetService<ILogger<UserManager<TUser>>>(), TimeSpan.FromDays(1));
+                return new UserManager<TUser>(builder.RepositoryOptions, builder.EmailProvider, builder.UserLogger, builder.ExpirationTime);
             });
-            services.AddTransient(
+            builder.ServiceCollection.AddTransient(
                 provider =>
                 {
                     var manager = provider.GetService<UserManager<TUser>>();
-                    return new LoginManager<TUser>(manager,
-                        provider.GetService<ILogger<LoginManager<TUser>>>(),
-                        new LoginManagerOptions<TUser>
-                        {
-                            ClaimsProvider = new ClaimsProvider<TUser>(manager, new ClaimTypesOptions())
-                        });
+                    return new LoginManager<TUser>(manager, builder.LoginLogger, builder.LoginOptions);
                 });
             return services;
         }
