@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using InkySigma.Authentication.Dapper.Models;
-using InkySigma.Authentication.Dapper.Stores;
 using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model.Options;
 using InkySigma.Authentication.Repositories;
@@ -10,7 +8,7 @@ using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace InkySigma.Authentication.Dapper
+namespace InkySigma.Authentication.AspNet
 {
     public static class AuthenticationExtentions
     {
@@ -48,7 +46,7 @@ namespace InkySigma.Authentication.Dapper
             return services;
         }
 
-        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IServiceCollection services, IUserPropertyStore<TUser> property) where TUser : User
+        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IAuthenticationBuilder services, IUserPropertyStore<TUser> property) where TUser : User
         {
             services.AddTransient(provider =>
             {

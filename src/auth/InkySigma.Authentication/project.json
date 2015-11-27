@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-rc1-final",
-  "description": "InkySigma.Identity",
+  "description": "InkySigma.Authentication",
   "authors": [ "Justin" ],
   "tags": [ "" ],
   "projectUrl": "",
