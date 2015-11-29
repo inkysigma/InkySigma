@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Dapper;
 using InkySigma.Authentication.Model.Result;
 using InkySigma.Authentication.Repositories;
-using InkySigma.Web.Business.Options;
 using InkySigma.Web.Core;
+using InkySigma.Web.Data.Options;
 
-namespace InkySigma.Web.Business
+namespace InkySigma.Web.Data
 {
     public class SigmaPropertyStore : IUserPropertyStore<SigmaUser>
     {
@@ -88,6 +88,7 @@ namespace InkySigma.Web.Business
             {
                 var table = await Connection.QueryAsync($"SELECT * FROM {Tables.ContactTable} WHERE Id=@Id AND ");
             }
+            return QueryResult.Success();
         }
 
         public Task<QueryResult> AddProperties(SigmaUser user, CancellationToken token)

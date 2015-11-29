@@ -1,4 +1,4 @@
-﻿namespace InkySigma.Web.Business.Options
+﻿namespace InkySigma.Web.Data.Options
 {
     public class TableOptions
     {

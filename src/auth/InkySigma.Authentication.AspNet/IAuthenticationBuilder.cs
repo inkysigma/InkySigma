@@ -1,20 +1,24 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
+using InkySigma.Authentication.Managers;
+using InkySigma.Authentication.Model.Options;
+using InkySigma.Authentication.ServiceProviders.EmailProvider;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.AspNet
 {
-    public interface IAuthenticationBuilder<TUser>
+    public interface IAuthenticationBuilder<TUser> where TUser : class
     {
         IServiceCollection ServiceCollection { get; set; }
         
-        DbConnection Connection { get; set; }
+        RepositoryOptions<TUser> RepositoryOptions { get; set; }
         
-        RepositoryOptions RepositoryOptions { get; set; }
+        LoginManagerOptions<TUser> LoginOptions { get; set; }
         
-        LoginManagerOptions LoginOptions { get; set; }
-        
-        IEmailProvider EmailProvider { get; set; }
-        
-        TimeSpan ExpirationTime { get; set; } = TimeSpan.FromDays(1)
+        IEmailService EmailProvider { get; set; }
+
+        TimeSpan ExpirationTime { get; set; }
         
         Logger<UserManager<TUser>> UserLogger { get; set; }
         

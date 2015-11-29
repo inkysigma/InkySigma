@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Common;
+using InkySigma.Authentication.AspNet;
 using InkySigma.Authentication.AspNet.LoginMiddleware;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
@@ -21,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using InkySigma.Authentication.Dapper;
+using Npgsql;
+using InkySigma.Web.Data;
 
 namespace InkySigma.Web
 {
@@ -56,18 +60,27 @@ namespace InkySigma.Web
 
             services.AddTransient<IEmailService, EmailService>(
                 provider => new EmailService(Configuration["Email:Host"], Configuration["Email:UserName"],
-                    Configuration["Email:Password"], Configuration["Email:From"], Int32.Parse(Configuration["Email:Port"])));
+                    Configuration["Email:Password"], Configuration["Email:From"],
+                    Int32.Parse(Configuration["Email:Port"])));
 
-            services.AddSqlConnectionBuilder(Configuration["Data:Npgsql:ConnectionString"]);
+            var connection = new NpgsqlConnection(Configuration["Data:Npgsql:ConnectionString"]);
+            connection.OpenAsync();
+
+            services.AddTransient<DbConnection>(provider => connection);
 
             services.AddBasicAuthentication();
 
-            services.AddDapperApplicationBuilder<SigmaUser>();
+            services.AddRepositories(new DefaultDapperRepositoryOptions<SigmaUser>(connection,
+                new SigmaPropertyStore(connection)))
+                .AddEmailProvider(Configuration["Email:Host"], Configuration["Email:UserName"],
+                    Configuration["Email:Password"], Configuration["Email:From"],
+                    Int32.Parse(Configuration["Email:Port"]))
+                .BuildManagers();
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            // app.RequireSecure();
+            app.RequireSecure();
 
             app.UseStaticFiles();
 

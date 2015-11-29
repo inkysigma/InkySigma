@@ -10,8 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.AspNet
 {
-    /*public static class AuthenticationExtentions
+    public static class AuthenticationExtentions
     {
+        /*
         public static IServiceCollection AddDapperApplicationBuilder(this IServiceCollection services)
         {
             services.AddTransient(provider =>
@@ -46,19 +47,30 @@ namespace InkySigma.Authentication.AspNet
             return services;
         }*/
 
-        public static IServiceCollection AddDapperApplicationBuilder<TUser>(this IAuthenticationBuilder<TUser> builder) where TUser : User
+        public static IAuthenticationBuilder<TUser> AddRepositories<TUser>(this IServiceCollection collection,
+            RepositoryOptions<TUser> options) where TUser : class
         {
-            builder.ServiceCollection.AddTransient(provider =>
-            {
-                return new UserManager<TUser>(builder.RepositoryOptions, builder.EmailProvider, builder.UserLogger, builder.ExpirationTime);
-            });
+            var builder = new DefaultAuthenticationBuilder<TUser> {RepositoryOptions = options};
+            return builder;
+        }
+
+        public static IAuthenticationBuilder<TUser> AddEmailProvider<TUser>(this IAuthenticationBuilder<TUser> builder,
+            string host, string username, string password, string from, int port) where TUser : class
+        {
+            builder.EmailProvider = new EmailService(host, username, password, from, port);
+            return builder;
+        }
+
+        public static IServiceCollection BuildManagers<TUser>(this IAuthenticationBuilder<TUser> builder) where TUser : class
+        {
+            builder.ServiceCollection.AddTransient(provider => new UserManager<TUser>(builder.RepositoryOptions, builder.EmailProvider, builder.UserLogger, builder.ExpirationTime));
             builder.ServiceCollection.AddTransient(
                 provider =>
                 {
                     var manager = provider.GetService<UserManager<TUser>>();
                     return new LoginManager<TUser>(manager, builder.LoginLogger, builder.LoginOptions);
                 });
-            return services;
+            return builder.ServiceCollection;
         }
     }
 }
