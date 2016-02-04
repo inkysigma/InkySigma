@@ -8,17 +8,17 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
     // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
     public class AuthenticationMiddleware<TUser> where TUser : class
     {
-        private readonly LoginManager<TUser> _loginManager;
+        private readonly LoginService<TUser> _loginService;
         private readonly UserManager<TUser> _manager;
         private readonly RequestDelegate _next;
         private readonly IAuthenticationMethod _method;
 
         public AuthenticationMiddleware(RequestDelegate next, UserManager<TUser> manager,
-            LoginManager<TUser> loginManager, IAuthenticationMethod method)
+            LoginService<TUser> loginService, IAuthenticationMethod method)
         {
             _next = next;
             _manager = manager;
-            _loginManager = loginManager;
+            _loginService = loginService;
             _method = method;
         }
 
@@ -31,7 +31,7 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
                 await _next(httpContext);
                 return;
             }
-            var principal = await _loginManager.VerifyToken(model.UserName, model.Token);
+            var principal = await _loginService.VerifyToken(model.UserName, model.Token);
 
             if (principal != null)
                 httpContext.User = principal;

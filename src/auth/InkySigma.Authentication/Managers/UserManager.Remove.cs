@@ -30,7 +30,7 @@ namespace InkySigma.Authentication.Managers
             var isAllRemoved = true;
 
             // Removes the user email
-            result = result + await UserEmailStore.RemoveUserEmail(user, token);
+            result = result + await UserEmailStore.RemoveUser(user, token);
 
             if (result.Succeeded)
                 isAllRemoved = false;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model.Options;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
@@ -22,6 +21,6 @@ namespace InkySigma.Authentication.AspNet
         
         Logger<UserManager<TUser>> UserLogger { get; set; }
         
-        Logger<LoginManager<TUser>> LoginLogger { get; set; }
+        Logger<LoginService<TUser>> LoginLogger { get; set; }
     }
 }

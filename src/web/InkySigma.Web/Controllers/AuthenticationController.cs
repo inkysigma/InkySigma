@@ -17,13 +17,13 @@ namespace InkySigma.Web.Controllers
     public class AuthenticationController : Controller
     {
         public UserManager<User> UserManager { get; set; }
-        public LoginManager<User> LoginManager { get; set; } 
+        public LoginService<User> LoginService { get; set; } 
         public IEmailService EmailService { get; set; }
 
-        public AuthenticationController(UserManager<User> userManager, LoginManager<User> loginManager, IEmailService emailService)
+        public AuthenticationController(UserManager<User> userManager, LoginService<User> loginService, IEmailService emailService)
         {
             UserManager = userManager;
-            LoginManager = loginManager;
+            LoginService = loginService;
             EmailService = emailService;
         }
 
@@ -36,7 +36,7 @@ namespace InkySigma.Web.Controllers
                 throw new ParameterNullException(nameof(login));
             var token =
                 await
-                    LoginManager.CreateLogin(login.UserName, login.Password, HttpContext.Request.Host.ToString(),
+                    LoginService.CreateLogin(login.UserName, login.Password, HttpContext.Request.Host.ToString(),
                         login.IsPersistent);
             if (token == null)
                 return new LoginResponseModel

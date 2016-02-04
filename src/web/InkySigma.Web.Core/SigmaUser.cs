@@ -8,7 +8,8 @@ namespace InkySigma.Web.Core
     public class SigmaUser : User
     {
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<ContactRequest> ContactRequests { get; set; }
+        public virtual ICollection<ContactRequest> InboundRequests { get; set; }
+        public virtual ICollection<ContactRequest> OutboundRequests { get; set; } 
 
         public new static SigmaUser Create(string id)
         {

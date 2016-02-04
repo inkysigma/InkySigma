@@ -5,7 +5,6 @@ using InkySigma.Authentication.AspNet.LoginMiddleware;
 using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using InkySigma.Web.ApplicationBuilders;
-using InkySigma.Web.Business;
 using InkySigma.Web.Core;
 using InkySigma.Web.Infrastructure.ExceptionPage;
 using InkySigma.Web.Infrastructure.Filters;
@@ -22,9 +21,7 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
-using InkySigma.Authentication.Dapper;
 using Npgsql;
-using InkySigma.Web.Data;
 
 namespace InkySigma.Web
 {

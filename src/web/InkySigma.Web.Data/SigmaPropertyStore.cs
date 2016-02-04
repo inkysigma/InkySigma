@@ -65,7 +65,7 @@ namespace InkySigma.Web.Data
                             Name = p.Name,
                             Target = SigmaUser.Create(p.Target)
                         });
-            user.ContactRequests = requests.ToList();
+            user.InboundRequests = requests.ToList();
             return user;
         }
 

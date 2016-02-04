@@ -86,7 +86,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> RemoveUserEmail(TUser user, CancellationToken token)
+        public async Task<QueryResult> RemoveUser(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)

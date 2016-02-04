@@ -15,20 +15,20 @@ using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {
-    public class LoginManager<TUser> : IDisposable where TUser : class
+    public class LoginService<TUser> : IDisposable where TUser : class
     {
         private readonly bool _isDisposed = false;
         internal IClaimsProvider<TUser> ClaimsProvider;
         internal IEmailService EmailService;
         internal TimeSpan ExpirationTimeSpan;
         internal IUserLockoutStore<TUser> LockoutStore;
-        internal ILogger<LoginManager<TUser>> Logger;
+        internal ILogger<LoginService<TUser>> Logger;
         internal IUserLoginStore<TUser> LoginStore;
         internal int MaxCount;
         internal ITokenProvider TokenProvider;
         internal UserManager<TUser> Users;
 
-        public LoginManager(UserManager<TUser> userManager, ILogger<LoginManager<TUser>> logger,
+        public LoginService(UserManager<TUser> userManager, ILogger<LoginService<TUser>> logger,
             LoginManagerOptions<TUser> options)
         {
             Users = userManager;
@@ -52,7 +52,7 @@ namespace InkySigma.Authentication.Managers
         {
             token.ThrowIfCancellationRequested();
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(LoginManager<TUser>));
+                throw new ObjectDisposedException(nameof(LoginService<TUser>));
         }
 
         /// <summary>

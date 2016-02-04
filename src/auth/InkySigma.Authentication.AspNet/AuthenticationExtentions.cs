@@ -1,12 +1,7 @@
-﻿using System;
-using System.Data.Common;
-using InkySigma.Authentication.Managers;
+﻿using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model.Options;
-using InkySigma.Authentication.Repositories;
-using InkySigma.Authentication.ServiceProviders.ClaimProvider;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.AspNet
 {
@@ -37,8 +32,8 @@ namespace InkySigma.Authentication.AspNet
                 provider =>
                 {
                     var manager = provider.GetService<UserManager<User>>();
-                    return new LoginManager<User>(provider.GetService<UserManager<User>>(),
-                        provider.GetService<ILogger<LoginManager<User>>>(),
+                    return new LoginService<User>(provider.GetService<UserManager<User>>(),
+                        provider.GetService<ILogger<LoginService<User>>>(),
                         new LoginManagerOptions<User>
                         {
                             ClaimsProvider = new ClaimsProvider<User>(manager, new ClaimTypesOptions())
@@ -68,7 +63,7 @@ namespace InkySigma.Authentication.AspNet
                 provider =>
                 {
                     var manager = provider.GetService<UserManager<TUser>>();
-                    return new LoginManager<TUser>(manager, builder.LoginLogger, builder.LoginOptions);
+                    return new LoginService<TUser>(manager, builder.LoginLogger, builder.LoginOptions);
                 });
             return builder.ServiceCollection;
         }
