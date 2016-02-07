@@ -36,7 +36,7 @@ namespace InkySigma.Authentication.Managers
                 isAllRemoved = false;
 
             // Removes the lockout
-            result = result + await UserLockoutStore.RemoveUserLockout(user, token);
+            result = result + await UserLockoutStore.RemoveUser(user, token);
             if (result.Succeeded)
                 isAllRemoved = false;
 

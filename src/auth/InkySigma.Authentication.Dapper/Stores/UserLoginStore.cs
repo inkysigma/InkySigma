@@ -47,7 +47,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         /// <param name="user">The user to be queried for</param>
         /// <param name="token">A cancellation token</param>
         /// <returns>A list of all tokens</returns>
-        public async Task<IEnumerable<TokenRow>> GetUserLoginsAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<IEnumerable<LoginToken>> GetUserLoginsAsync(TUser user, CancellationToken cancellationToken)
         {
             Handle(cancellationToken);
             if (user == null)
@@ -58,10 +58,10 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (result == null)
                 throw new NullReferenceException(nameof(result));
             var objects = result as dynamic[] ?? result.ToArray();
-            var enumerable = new TokenRow[objects.Count()];
+            var enumerable = new LoginToken[objects.Count()];
             for (int i = 0; i < objects.Count(); i++)
             {
-                enumerable[i] = objects[i] as TokenRow;
+                enumerable[i] = objects[i] as LoginToken;
             }
             return enumerable;
         }

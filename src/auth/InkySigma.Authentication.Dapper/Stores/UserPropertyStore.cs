@@ -32,24 +32,24 @@ namespace InkySigma.Authentication.Dapper.Stores
             IsDisposed = true;
         }
 
-        public async Task<TUser> GetProperties(TUser user, CancellationToken token)
+        public Task<TUser> GetProperties(TUser user, CancellationToken token)
         {
-            return user;
+            return Task.Run(() => user, token);
         }
 
-        public async Task<QueryResult> RemoveProperties(TUser user, CancellationToken token)
+        public Task<QueryResult> RemoveProperties(TUser user, CancellationToken token)
         {
-            return QueryResult.Success();
+            return Task.Run(() => QueryResult.Success(), token);
         }
 
-        public async Task<QueryResult> UpdateProperties(TUser user, CancellationToken token)
+        public Task<QueryResult> UpdateProperties(TUser user, CancellationToken token)
         {
-            return QueryResult.Success();
+            return Task.Run(() => QueryResult.Success(), token);
         }
 
-        public async Task<QueryResult> AddProperties(TUser user, CancellationToken token)
+        public Task<QueryResult> AddProperties(TUser user, CancellationToken token)
         {
-            var properties = user.GetType().GetProperties();
+            /**var properties = user.GetType().GetProperties();
             foreach (var property in properties)
             {
                 if (property.PropertyType == typeof (IDictionary<,>))
@@ -57,8 +57,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                     
                 }
                 property.GetValue(user);
-            }
-            return QueryResult.Success();
+            }**/
+            return Task.Run(() => QueryResult.Success(), token);
         }
     }
 }

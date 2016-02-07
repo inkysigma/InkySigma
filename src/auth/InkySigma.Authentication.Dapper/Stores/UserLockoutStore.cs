@@ -88,7 +88,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success();
         }
 
-        public async Task<QueryResult> RemoveUserLockout(TUser user, CancellationToken token)
+        public async Task<QueryResult> RemoveUser(TUser user, CancellationToken token)
         {
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))

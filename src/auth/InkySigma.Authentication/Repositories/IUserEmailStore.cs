@@ -5,6 +5,10 @@ using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Repositories
 {
+    /// <summary>
+    /// This store represents the user's email
+    /// </summary>
+    /// <typeparam name="TUser">The User type</typeparam>
     public interface IUserEmailStore<TUser> : IDisposable where TUser : class
     {
         /// <summary>
@@ -66,6 +70,13 @@ namespace InkySigma.Authentication.Repositories
         /// <param name="token">A cancellation token.</param>
         /// <returns>A QueryResult representing whether the action succeeded and how many rows were affected.</returns>
         Task<QueryResult> SetUserEmailConfirmedAsync(TUser user, bool isConfirmed, CancellationToken token);
+
+        /// <summary>
+        /// Checks whether a user has an email.
+        /// </summary>
+        /// <param name="user">The user to check.</param>
+        /// <param name="token">A cancellation token.</param>
+        /// <returns>A QueryResult representing whether the action succeeded and how many rows were affected.</returns>
         Task<bool> HasUserEmailAsync(TUser user, CancellationToken token);
     }
 }

@@ -77,14 +77,14 @@ namespace InkySigma.Authentication.Managers
                 throw new InvalidUserException(username);
 
             var tokens = await LoginStore.GetUserLoginsAsync(user, cancellationToken);
-            var tokenRows = tokens as TokenRow[] ?? tokens.ToArray();
+            var tokenRows = tokens as LoginToken[] ?? tokens.ToArray();
 
             if (!tokenRows.Any())
                 return null;
 
             foreach (var i in tokenRows)
             {
-                if (i.Token == token && i.UserName == username)
+                if (i.Token == token)
                 {
                     if (i.Expiration > DateTime.Now)
                     {
