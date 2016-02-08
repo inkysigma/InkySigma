@@ -2,7 +2,7 @@
 
 namespace InkySigma.Authentication.Model
 {
-    public class UpdateTokenRow
+    public class UpdateToken
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

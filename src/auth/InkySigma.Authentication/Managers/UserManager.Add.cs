@@ -61,7 +61,7 @@ namespace InkySigma.Authentication.Managers
                 throw new ArgumentNullException(nameof(user));
 
             var token = _randomProvider.TokenProvider.Generate();
-            return await UserTokenStore.AddTokenAsync(user, new UpdateTokenRow
+            return await UserTokenStore.AddTokenAsync(user, new UpdateToken
             {
                 Expiration = DateTime.Now + _timeSpan
             }, cancellationToken);
@@ -94,7 +94,7 @@ namespace InkySigma.Authentication.Managers
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(role))
                 throw new ArgumentNullException(nameof(role));
-            return await UserRoleStore.AddUserRoleAsync(user, role, token);
+            return await UserRoleStore.AddUser(user, role, token);
         }
 
         public virtual async Task<QueryResult> AddUserProperties(TUser user,
@@ -103,7 +103,7 @@ namespace InkySigma.Authentication.Managers
             Handle(token);
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
-            return await UserPropertyStore.AddProperties(user, token);
+            return await UserPropertyStore.AddUser(user, token);
         }
 
         public virtual async Task<QueryResult> AddUserLockout(TUser user,

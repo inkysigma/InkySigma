@@ -8,7 +8,7 @@ namespace InkySigma.Authentication.Dapper
 {
     public static class UserAuthenticationManager
     {
-        public static async Task<UpdateTokenRow> AddUser(this UserManager<User> manager, User user, CancellationToken token = default(CancellationToken))
+        public static async Task<UpdateToken> AddUser(this UserManager<User> manager, User user, CancellationToken token = default(CancellationToken))
         {
             var identity = await manager.AddUserAsync(user, user.UserName, token);
             user.Id = identity;

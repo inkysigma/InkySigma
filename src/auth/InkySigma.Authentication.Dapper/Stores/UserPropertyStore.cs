@@ -37,7 +37,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return Task.Run(() => user, token);
         }
 
-        public Task<QueryResult> RemoveProperties(TUser user, CancellationToken token)
+        public Task<QueryResult> RemoveUser(TUser user, CancellationToken token)
         {
             return Task.Run(() => QueryResult.Success(), token);
         }
@@ -47,7 +47,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return Task.Run(() => QueryResult.Success(), token);
         }
 
-        public Task<QueryResult> AddProperties(TUser user, CancellationToken token)
+        public Task<QueryResult> AddUser(TUser user, CancellationToken token)
         {
             /**var properties = user.GetType().GetProperties();
             foreach (var property in properties)

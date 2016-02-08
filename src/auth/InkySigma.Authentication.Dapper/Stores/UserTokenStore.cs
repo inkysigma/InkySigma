@@ -32,7 +32,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             cancellationToken.ThrowIfCancellationRequested();
         }
 
-        public async Task<QueryResult> AddTokenAsync(TUser user, UpdateTokenRow token, CancellationToken cancellationToken)
+        public async Task<QueryResult> AddTokenAsync(TUser user, UpdateToken token, CancellationToken cancellationToken)
         {
             Handle(cancellationToken);
             if (user == null)
@@ -57,7 +57,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(count);
         }
 
-        public async Task<IEnumerable<UpdateTokenRow>> GetTokensAsync(TUser user, CancellationToken token)
+        public async Task<IEnumerable<UpdateToken>> GetTokensAsync(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -70,10 +70,10 @@ namespace InkySigma.Authentication.Dapper.Stores
                 Table
             });
             var enumerable = results as dynamic[] ?? results.ToArray();
-            var list = new UpdateTokenRow[enumerable.Count()];
+            var list = new UpdateToken[enumerable.Count()];
             for (int i = 0; i < enumerable.Count(); i++)
             {
-                list[i] = new UpdateTokenRow
+                list[i] = new UpdateToken
                 {
                     Expiration = enumerable[i].Expiration,
                     Token = enumerable[i].Token,
@@ -83,7 +83,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return list;
         }
 
-        public async Task<UpdateTokenRow> FindTokenAsync(TUser user, string code, CancellationToken cancellationToken)
+        public async Task<UpdateToken> FindTokenAsync(TUser user, string code, CancellationToken cancellationToken)
         {
             Handle(cancellationToken);
             if (user == null)
@@ -93,7 +93,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentNullException(nameof(code));
             var result =
-                await Connection.QueryAsync<UpdateTokenRow>("SELECT * FROM @Table WHERE Id=@Id And Token=@code", new {Table, user.Id, code});
+                await Connection.QueryAsync<UpdateToken>("SELECT * FROM @Table WHERE Id=@Id And Token=@code", new {Table, user.Id, code});
             return result.FirstOrDefault();
         }
 
@@ -111,7 +111,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(result);
         }
 
-        public async Task<QueryResult> RemoveUserAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<QueryResult> RemoveUser(TUser user, CancellationToken cancellationToken)
         {
             Handle(cancellationToken);
             if (user == null)

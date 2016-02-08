@@ -38,11 +38,11 @@ namespace InkySigma.Authentication.Managers
             return await UserStore.SetUserActive(user, false, cancellationToken);
         }
 
-        public virtual async Task<UpdateTokenRow> RequestActivation(TUser user,
+        public virtual async Task<UpdateToken> RequestActivation(TUser user,
             CancellationToken cancellationToken)
         {
             var guid = Guid.NewGuid();
-            var row = new UpdateTokenRow
+            var row = new UpdateToken
             {
                 Expiration = DateTime.Now + _timeSpan,
                 Property = UpdateProperty.Activate,
@@ -63,7 +63,7 @@ namespace InkySigma.Authentication.Managers
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
             var result = await UserTokenStore.GetTokensAsync(user, token);
-            var updateTokenRows = result as UpdateTokenRow[] ?? result.ToArray();
+            var updateTokenRows = result as UpdateToken[] ?? result.ToArray();
             if (!updateTokenRows.Any())
                 throw new InvalidCodeException();
             foreach (var i in updateTokenRows.Where(i => i.Token == code))

@@ -51,15 +51,15 @@ namespace InkySigma.Authentication.Managers
                 isAllRemoved = false;
 
             // Removes the key properties
-            result = result + await UserPropertyStore.RemoveProperties(user, token);
+            result = result + await UserPropertyStore.RemoveUser(user, token);
             if (result.Succeeded)
                 isAllRemoved = false;
 
-            result = result + await UserRoleStore.RemoveUserRolesAsync(user, token);
+            result = result + await UserRoleStore.RemoveUser(user, token);
             if (result.Succeeded)
                 isAllRemoved = false;
 
-            result = result + await UserTokenStore.RemoveUserAsync(user, token);
+            result = result + await UserTokenStore.RemoveUser(user, token);
             if (result.Succeeded)
                 isAllRemoved = false;
 

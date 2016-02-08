@@ -52,7 +52,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return result.ToArray();
         }
 
-        public async Task<QueryResult> AddUserRoleAsync(TUser user, string role, CancellationToken token)
+        public async Task<QueryResult> AddUser(TUser user, string role, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -83,7 +83,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             return QueryResult.Success(rowCount);
         }
 
-        public async Task<QueryResult> RemoveUserRolesAsync(TUser user, CancellationToken token)
+        public async Task<QueryResult> RemoveUser(TUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
