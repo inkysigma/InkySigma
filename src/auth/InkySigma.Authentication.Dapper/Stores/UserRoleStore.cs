@@ -48,7 +48,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
             var result =
-                await Connection.QueryAsync<string>("SELECT Role FROM @Table WHERE Id=@Id", new {Table, user.Id});
+                await Connection.QueryAsync<string>($"SELECT Role FROM {Table} WHERE Id=@Id", new {user.Id});
             return result.ToArray();
         }
 
@@ -63,8 +63,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(role));
             var rowCount =
                 await
-                    Connection.ExecuteAsync("INSERT INTO @Table (Id,Role) VALUES(@Id, @role)",
-                        new {Table, user.Id, role});
+                    Connection.ExecuteAsync($"INSERT INTO {Table} (Id,Role) VALUES(@Id, @role)",
+                        new {user.Id, role});
             return QueryResult.Success(rowCount);
         }
 
@@ -79,7 +79,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(role));
             var rowCount =
                 await
-                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id AND Role=@role", new {Table, user.Id, role});
+                    Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id AND Role=@role", new {Table, user.Id, role});
             return QueryResult.Success(rowCount);
         }
 
@@ -92,7 +92,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             var rowCount =
                 await
-                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id", new {Table, user.Id});
+                    Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id", new {user.Id});
             return QueryResult.Success(rowCount);
         }
 
@@ -107,7 +107,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(role));
             var result =
                 await
-                    Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id AND Role=@role", new {user.Id, Table, role});
+                    Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id AND Role=@role", new {user.Id, role});
             return result.Any();
         }
     }

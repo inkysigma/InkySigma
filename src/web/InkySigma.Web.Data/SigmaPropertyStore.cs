@@ -69,7 +69,7 @@ namespace InkySigma.Web.Data
             return user;
         }
 
-        public async Task<QueryResult> RemoveProperties(SigmaUser user, CancellationToken token)
+        public async Task<QueryResult> RemoveUser(SigmaUser user, CancellationToken token)
         {
             Handle(token);
             if (user == null)
@@ -91,7 +91,7 @@ namespace InkySigma.Web.Data
             return QueryResult.Success();
         }
 
-        public Task<QueryResult> AddProperties(SigmaUser user, CancellationToken token)
+        public Task<QueryResult> AddUser(SigmaUser user, CancellationToken token)
         {
             throw new NotImplementedException();
         }

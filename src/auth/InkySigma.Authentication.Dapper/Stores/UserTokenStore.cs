@@ -45,14 +45,13 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentOutOfRangeException(nameof(token));
             var count = await
                 Connection.ExecuteAsync(
-                    "INSERT INTO @Table (Id, Token, Expiration, Property) VALUES(@Id, @Token, @Expiration, @Property)",
+                    $"INSERT INTO {Table} (Id, Token, Expiration, Property) VALUES(@Id, @Token, @Expiration, @Property)",
                     new
                     {
                         user.Id,
                         token.Token,
                         token.Expiration,
-                        Property = Convert.ToInt32(token.Property),
-                        Table
+                        Property = Convert.ToInt32(token.Property)
                     });
             return QueryResult.Success(count);
         }
@@ -64,10 +63,9 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
-            var results = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id", new
+            var results = await Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id", new
             {
-                user.Id,
-                Table
+                user.Id
             });
             var enumerable = results as dynamic[] ?? results.ToArray();
             var list = new UpdateToken[enumerable.Count()];
@@ -93,7 +91,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentNullException(nameof(code));
             var result =
-                await Connection.QueryAsync<UpdateToken>("SELECT * FROM @Table WHERE Id=@Id And Token=@code", new {Table, user.Id, code});
+                await Connection.QueryAsync<UpdateToken>($"SELECT * FROM {Table} WHERE Id=@Id And Token=@code", new {user.Id, code});
             return result.FirstOrDefault();
         }
 
@@ -107,7 +105,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentNullException(nameof(code));
             var result =
-                await Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id AND Token=@code", new { Table, user.Id, code });
+                await Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id AND Token=@code", new { user.Id, code });
             return QueryResult.Success(result);
         }
 
@@ -119,7 +117,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
             var result =
-                await Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id", new { Table, user.Id});
+                await Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id", new { user.Id});
             return QueryResult.Success(result);
         }
 

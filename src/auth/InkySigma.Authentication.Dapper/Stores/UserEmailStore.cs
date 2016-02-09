@@ -41,9 +41,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException();
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
-            var first = (await _connection.QueryAsync("SELECT Email FROM @table WHERE Id=@Id", new
+            var first = (await _connection.QueryAsync($"SELECT Email FROM {Table} WHERE Id=@Id", new
             {
-                table = Table,
                 user.Id
             })).FirstOrDefault();
             if (first == null)
@@ -58,9 +57,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
-            var first = (await _connection.QueryAsync("SELECT Active FROM @table WHERE Id=@Id", new
+            var first = (await _connection.QueryAsync($"SELECT Active FROM {Table} WHERE Id=@Id", new
             {
-                table = Table,
                 user.Id
             })).FirstOrDefault();
             if (first == null)
@@ -77,9 +75,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
-            await _connection.ExecuteAsync("INSERT INTO @table (Id, Email, Active) VALUES(@Id, @Email, false)", new
+            await _connection.ExecuteAsync($"INSERT INTO {Table} (Id, Email, Active) VALUES(@Id, @Email, false)", new
             {
-                table = Table,
                 user.Id,
                 email
             });
@@ -93,7 +90,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.UserName))
                 throw new InvalidUserException(user.UserName);
-            await _connection.ExecuteAsync("DELETE FROM @table WHERE Id=@Id", new {table = Table, user.Id});
+            await _connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id", new {user.Id});
             return QueryResult.Success();
         }
 
@@ -106,7 +103,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(email);
-            await _connection.ExecuteAsync("UPDATE @table SET Email=@email WHERE Id=@Id", new {email, user.Id, table = Table});
+            await _connection.ExecuteAsync($"UPDATE {Table} SET Email=@email WHERE Id=@Id", new {email, user.Id });
             return QueryResult.Success();
         }
 
@@ -117,7 +114,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.UserName))
                 throw new InvalidUserException(user.UserName);
-            await _connection.ExecuteAsync("UPDATE @table SET Active=@isConfirmed WHERE Id=@Id", new { isConfirmed, user.Id, table = Table });
+            await _connection.ExecuteAsync($"UPDATE {Table} SET Active=@isConfirmed WHERE Id=@Id", new { isConfirmed, user.Id});
             return QueryResult.Success();
         }
 
@@ -128,7 +125,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.UserName))
                 throw new InvalidUserException(user.UserName);
-            var result = await _connection.QueryAsync("SELECT * FROM @table WHERE Id=@Id", new {table = Table, user.Id});
+            var result = await _connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id", new {user.Id});
             if (result == null)
                 throw new InvalidUserException();
             return result.Any();
@@ -140,7 +137,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
             var result =
-                (await _connection.QueryAsync<string>("SELECT Id FROM @Table WHERE Email=@email", new {Table, email}))
+                (await _connection.QueryAsync<string>($"SELECT Id FROM {Table} WHERE Email=@email", new {email}))
                     .FirstOrDefault();
             return (TUser) User.Create(result);
         }

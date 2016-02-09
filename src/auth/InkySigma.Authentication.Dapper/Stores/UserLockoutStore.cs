@@ -15,12 +15,12 @@ namespace InkySigma.Authentication.Dapper.Stores
     public class UserLockoutStore<TUser> : IUserLockoutStore<TUser> where TUser : User
     {
         private readonly DbConnection _connection;
-        private readonly string _table;
+        private string Table { get; }
 
         public UserLockoutStore(DbConnection conn, string table = "auth.lockout")
         {
             _connection = conn;
-            _table = table;
+            Table = table;
         }
 
         public bool IsDisposed { get; set; }
@@ -41,8 +41,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             dynamic firstOrDefault =
                 (await
-                    _connection.QueryAsync("SELECT AccessEndDate FROM @table WHERE Id=@Id",
-                        new {table = _table, Key = user.Id})).FirstOrDefault();
+                    _connection.QueryAsync($"SELECT AccessEndDate FROM {Table} WHERE Id=@Id",
+                        new {Key = user.Id})).FirstOrDefault();
             if (firstOrDefault == null)
                 throw new InvalidUserException(user.Id);
             return DateTime.Parse(firstOrDefault.Date);
@@ -55,8 +55,8 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             dynamic firstOrDefault =
                 (await
-                    _connection.QueryAsync("SELECT AccessFailedCount FROM @table WHERE Id=@Id",
-                        new {table = _table, Key = user.Id})).FirstOrDefault();
+                    _connection.QueryAsync($"SELECT AccessFailedCount FROM {Table} WHERE Id=@Id",
+                        new {Key = user.Id})).FirstOrDefault();
             if (firstOrDefault == null)
                 throw new InvalidUserException(user.Id);
             return firstOrDefault.AccessFailedCount;
@@ -67,8 +67,8 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            var value = await _connection.QueryAsync<bool>("SELECT LockoutEnabled FROM @table WHERE Id=@Id",
-                new {Key = user.Id, table = _table});
+            var value = await _connection.QueryAsync<bool>($"SELECT LockoutEnabled FROM {Table} WHERE Id=@Id",
+                new {Key = user.Id});
             return value.Any();
         }
 
@@ -79,10 +79,9 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             await
                 _connection.ExecuteAsync(
-                    "INSERT INTO @table (Id, AccessFailedCount, LockoutEnabled, AccessEndDate) VALUES(@Id, 0, false, @Date)",
+                    $"INSERT INTO {Table} (Id, AccessFailedCount, LockoutEnabled, AccessEndDate) VALUES(@Id, 0, false, @Date)",
                     new
                     {
-                        table = _table,
                         user.Id
                     });
             return QueryResult.Success();
@@ -95,10 +94,9 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             await
                 _connection.ExecuteAsync(
-                    "DELETE FROM @table WHERE Id=@Id",
+                    $"DELETE FROM {Table} WHERE Id=@Id",
                     new
                     {
-                        table = _table,
                         user.Id
                     });
             return QueryResult.Success();
@@ -110,8 +108,8 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
             await
-                _connection.ExecuteAsync("UPDATE @table SET AccessEndDate=@dateTime WHERE Id=@Id",
-                    new {table = _table, dateTime, user.Id});
+                _connection.ExecuteAsync($"UPDATE {Table} SET AccessEndDate=@dateTime WHERE Id=@Id",
+                    new {dateTime, user.Id});
             return QueryResult.Success();
         }
 
@@ -123,8 +121,8 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
             await
-                _connection.ExecuteAsync("UPDATE @table SET LockoutEnabled=@isLockedOut WHERE Id=@Id",
-                    new {table = _table, isLockedOut, user.Id});
+                _connection.ExecuteAsync($"UPDATE {Table} SET LockoutEnabled=@isLockedOut WHERE Id=@Id",
+                    new {isLockedOut, user.Id});
             return QueryResult.Success();
         }
 
@@ -138,7 +136,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             int accessFailedCount = await GetAccessFailedCount(user, token);
             accessFailedCount++;
             await
-                _connection.ExecuteAsync("UPDATE @table SET AccessFailedCount=@accessFailedCount WHERE Id=@Id", new { table = _table, accessFailedCount, user.Id});
+                _connection.ExecuteAsync($"UPDATE {Table} SET AccessFailedCount=@accessFailedCount WHERE Id=@Id", new { accessFailedCount, user.Id});
             return accessFailedCount;
         }
 
@@ -150,7 +148,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
             await
-                _connection.ExecuteAsync("UPDATE @table SET AccessFailedCount=0 WHERE Id=@Id", new { table = _table, user.Id });
+                _connection.ExecuteAsync($"UPDATE {Table} SET AccessFailedCount=0 WHERE Id=@Id", new { user.Id });
             return QueryResult.Success();
         }
 

@@ -27,7 +27,7 @@ namespace InkySigma.Authentication.Managers
                 return QueryResult.Fail("410", "The token has expired");
             if (token.Property != UpdateProperty.Activate)
                 return QueryResult.Fail("401", "This token is not for activation");
-            return await UserStore.SetUserActive(user, true, cancellationToken);
+            return await UserEmailStore.SetUserEmailConfirmedAsync(user, true, cancellationToken);
         }
 
         public virtual async Task<QueryResult> DeactivateAccount(TUser user, CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ namespace InkySigma.Authentication.Managers
             Handle(cancellationToken);
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
-            return await UserStore.SetUserActive(user, false, cancellationToken);
+            return await UserEmailStore.SetUserEmailConfirmedAsync(user, false, cancellationToken);
         }
 
         public virtual async Task<UpdateToken> RequestActivation(TUser user,

@@ -11,8 +11,7 @@ namespace InkySigma.Authentication.Managers
 {
     public partial class UserManager<TUser>
     {
-        public virtual async Task<string> AddUserAsync(TUser user, string username,
-            CancellationToken token = default(CancellationToken))
+        public virtual async Task<string> AddUserAsync(TUser user, string username, string name, CancellationToken token = default(CancellationToken))
         {
             Handle(token);
             if (user == null)
@@ -23,7 +22,7 @@ namespace InkySigma.Authentication.Managers
             if (errors != null)
                 throw new FormatException(errors.FirstOrDefault(), new ArgumentException("username"));
             var guid = _randomProvider.UserIdProvider.Generate();
-            var result = await UserStore.AddUserAsync(user, guid, token);
+            var result = await UserStore.AddUserAsync(user, guid, name, username, token);
             return !result.Succeeded ? null : guid;
         }
 

@@ -45,7 +45,7 @@ namespace InkySigma.Authentication.Dapper.Stores
         /// Gets all user logins asychronously
         /// </summary>
         /// <param name="user">The user to be queried for</param>
-        /// <param name="token">A cancellation token</param>
+        /// <param name="cancellationToken">A cancellation token</param>
         /// <returns>A list of all tokens</returns>
         public async Task<IEnumerable<LoginToken>> GetUserLoginsAsync(TUser user, CancellationToken cancellationToken)
         {
@@ -54,7 +54,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(nameof(user));
-            var result = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id", new {user.Id, Table});
+            var result = await Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id", new {user.Id, Table});
             if (result == null)
                 throw new NullReferenceException(nameof(result));
             var objects = result as dynamic[] ?? result.ToArray();
@@ -82,7 +82,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentNullException(nameof(token));
-            var tokens = await Connection.QueryAsync("SELECT * FROM @Table WHERE Id=@Id and Token=@token", new {Table, user.Id, token});
+            var tokens = await Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id and Token=@token", new {Table, user.Id, token});
             if (tokens == null)
                 throw new NullReferenceException(nameof(tokens));
             return tokens.Any();
@@ -103,7 +103,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(expiration));
             var count = await
                 Connection.ExecuteAsync(
-                    "INSERT INTO @Table (Id, Token, Location, Expiration) VALUES(@Id, @token, @location, @expiration)",
+                    $"INSERT INTO {Table} (Id, Token, Location, Expiration) VALUES(@Id, @token, @location, @expiration)",
                     new {user.Id, token, location, expiration, Table});
             return QueryResult.Success(count);
         }
@@ -119,7 +119,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(token));
             var count =
                 await
-                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id AND Token=@token",
+                    Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id AND Token=@token",
                         new {Table, user.Id, token});
             return QueryResult.Success(count);
         }
@@ -133,7 +133,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new InvalidUserException(user.UserName);
             var count =
                 await
-                    Connection.ExecuteAsync("DELETE FROM @Table WHERE Id=@Id",
+                    Connection.ExecuteAsync($"DELETE FROM {Table} WHERE Id=@Id",
                         new {Table, user.Id});
             return QueryResult.Success(count);
         }
