@@ -14,7 +14,7 @@ namespace InkySigma.Authentication.AspNet
         public LoginManagerOptions<TUser> LoginOptions { get; set; }
         public IEmailService EmailProvider { get; set; }
         public TimeSpan ExpirationTime { get; set; } = TimeSpan.FromDays(1);
-        public Logger<UserManager<TUser>> UserLogger { get; set; }
-        public Logger<LoginService<TUser>> LoginLogger { get; set; }
+        public ILogger UserLogger { get; set; }
+        public ILogger LoginLogger { get; set; }
     }
 }

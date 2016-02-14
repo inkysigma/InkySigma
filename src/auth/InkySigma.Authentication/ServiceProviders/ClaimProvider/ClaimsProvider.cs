@@ -13,11 +13,10 @@ namespace InkySigma.Authentication.ServiceProviders.ClaimProvider
 {
     public class ClaimsProvider<TUser> : IClaimsProvider<TUser> where TUser : class
     {
-        public ClaimsProvider(UserManager<TUser> manager,
-            ClaimTypesOptions options)
+        public ClaimsProvider(IUserStore<TUser> userStore, IUserRoleStore<TUser> userRoleStore, ClaimTypesOptions options)
         {
-            UserStore = manager.UserStore;
-            UserRoleStore = manager.UserRoleStore;
+            UserStore = userStore;
+            UserRoleStore = userRoleStore;
             Options = options;
         }
 

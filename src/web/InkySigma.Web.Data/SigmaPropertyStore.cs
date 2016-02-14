@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -26,9 +27,10 @@ namespace InkySigma.Web.Data
         public void Dispose()
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(nameof(SigmaPropertyStore));
+                return;
             IsDisposed = true;
-            Connection.Dispose();
+            if (Connection.State == ConnectionState.Open)
+                Connection.Dispose();
         }
 
         private void Handle(CancellationToken token = default(CancellationToken))

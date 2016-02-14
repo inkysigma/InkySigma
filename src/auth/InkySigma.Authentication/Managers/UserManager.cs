@@ -10,7 +10,7 @@ namespace InkySigma.Authentication.Managers
     public partial class UserManager<TUser> : IDisposable where TUser : class
     {
         private readonly FormValidatorOptions _formOptions;
-        private readonly ILogger<UserManager<TUser>> _logger;
+        private readonly ILogger _logger;
         private readonly PasswordOptions _passwordOptions;
         private readonly RandomOptions _randomProvider;
         private readonly TimeSpan _timeSpan;
@@ -26,7 +26,7 @@ namespace InkySigma.Authentication.Managers
         private bool _isDisposed;
 
         public UserManager(RepositoryOptions<TUser> repositories, IEmailService emailService,
-            ILogger<UserManager<TUser>> logger, TimeSpan maxTokenTimeSpan = default(TimeSpan))
+            ILogger logger, TimeSpan maxTokenTimeSpan = default(TimeSpan))
         {
             UserStore = repositories.UserStore;
             UserRoleStore = repositories.UserRoleStore;
@@ -48,7 +48,7 @@ namespace InkySigma.Authentication.Managers
 
         public UserManager(RepositoryOptions<TUser> repositories, FormValidatorOptions formOptions,
             PasswordOptions passwordOptions, RandomOptions randomOptions, IEmailService emailService,
-            ILogger<UserManager<TUser>> logger, TimeSpan timeSpan = default(TimeSpan))
+            ILogger logger, TimeSpan timeSpan = default(TimeSpan))
         {
             UserStore = repositories.UserStore;
             UserRoleStore = repositories.UserRoleStore;

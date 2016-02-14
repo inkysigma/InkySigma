@@ -22,13 +22,13 @@ namespace InkySigma.Authentication.Managers
         internal IEmailService EmailService;
         internal TimeSpan ExpirationTimeSpan;
         internal IUserLockoutStore<TUser> LockoutStore;
-        internal ILogger<LoginService<TUser>> Logger;
+        internal ILogger Logger;
         internal IUserLoginStore<TUser> LoginStore;
         internal int MaxCount;
         internal ITokenProvider TokenProvider;
         internal UserManager<TUser> Users;
 
-        public LoginService(UserManager<TUser> userManager, ILogger<LoginService<TUser>> logger,
+        public LoginService(UserManager<TUser> userManager, ILogger logger,
             LoginManagerOptions<TUser> options)
         {
             Users = userManager;

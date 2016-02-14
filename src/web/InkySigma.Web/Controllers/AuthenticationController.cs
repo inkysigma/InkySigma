@@ -28,7 +28,11 @@ namespace InkySigma.Web.Controllers
         }
 
         
-            // GET: api/values
+        /// <summary>
+        /// Logs a user in given a LoginRequestModel.
+        /// </summary>
+        /// <param name="login">The login information</param>
+        /// <returns>A response model containing the </returns>
         [HttpPost]
         public async Task<LoginResponseModel> Login(LoginRequestModel login)
         {

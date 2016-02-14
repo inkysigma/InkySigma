@@ -4,11 +4,11 @@
       "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=_CHANGE_ME;Trusted_Connection=True;"
     },
     "Npgsql": {
-      "ConnectionString": "Host=127.0.0.1;Port=5432;User Id=postgres;Password=password;Database=inkysigma"
+      "ConnectionString": "Host=127.0.0.1;Port=5432;User Id=postgres;Password=password;Database=sigma"
     }
   },
   "Application": {
-    "Domain": "api.inkysigma.com"
+    "Domain": "localhost"
   },
   "Email": {
     "Host": "smtp.gmail.com",

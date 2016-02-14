@@ -19,8 +19,8 @@ namespace InkySigma.Authentication.AspNet
 
         TimeSpan ExpirationTime { get; set; }
         
-        Logger<UserManager<TUser>> UserLogger { get; set; }
+        ILogger UserLogger { get; set; }
         
-        Logger<LoginService<TUser>> LoginLogger { get; set; }
+        ILogger LoginLogger { get; set; }
     }
 }

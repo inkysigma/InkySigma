@@ -89,7 +89,7 @@ namespace InkySigma.Web.Data.Stores
             var count =
                 await
                     Connection.ExecuteAsync(
-                        $"INSERT INTO {Table}(Id, Message, Name, UserName, Target) VALUES(@Id, @Message, @Name, @UserName, @Target)",
+                        $"INSERT INTO {Table} (Id, Message, Name, UserName, Target) VALUES(@Id, @Message, @Name, @UserName, @Target)",
                         new
                         {
                             request.Id,
