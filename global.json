@@ -1,5 +1,5 @@
 {
-  "projects": [ "test", "src/common", "src/auth", "src/web" ],
+  "projects": [ "test", "src/common", "src/auth", "src/web", "src/server" ],
   "sdk": {
     "version": "1.0.0-rc1-final",
     "runtime": "clr",
