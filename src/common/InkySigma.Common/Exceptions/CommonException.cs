@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InkySigma.Common
+namespace InkySigma.Common.Exceptions
 {
     public class CommonException : Exception
     {

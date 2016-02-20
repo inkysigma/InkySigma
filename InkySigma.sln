@@ -46,8 +46,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Chat.Server", "sr
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Chat.Networking", "src\chat\InkySigma.Chat.Networking\InkySigma.Chat.Networking.xproj", "{FB1ECBCE-D794-4FD2-B247-8047A93FB95F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InkySigma.Chat.Networking.Core", "src\chat\InkySigma.Chat.Networking.Core\InkySigma.Chat.Networking.Core.xproj", "{43B6B1D9-4791-449D-BE01-04BEF1AE2C55}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,10 +96,6 @@ Global
 		{FB1ECBCE-D794-4FD2-B247-8047A93FB95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1ECBCE-D794-4FD2-B247-8047A93FB95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1ECBCE-D794-4FD2-B247-8047A93FB95F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43B6B1D9-4791-449D-BE01-04BEF1AE2C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43B6B1D9-4791-449D-BE01-04BEF1AE2C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43B6B1D9-4791-449D-BE01-04BEF1AE2C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43B6B1D9-4791-449D-BE01-04BEF1AE2C55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +116,5 @@ Global
 		{E0491087-5E9E-461E-B220-B870A64A957B} = {5FBFE46B-D41C-4721-98A2-28FBE41F8428}
 		{ED62B156-6F80-4D21-8BBB-C59AFFAEBFC6} = {E0491087-5E9E-461E-B220-B870A64A957B}
 		{FB1ECBCE-D794-4FD2-B247-8047A93FB95F} = {E0491087-5E9E-461E-B220-B870A64A957B}
-		{43B6B1D9-4791-449D-BE01-04BEF1AE2C55} = {E0491087-5E9E-461E-B220-B870A64A957B}
 	EndGlobalSection
 EndGlobal

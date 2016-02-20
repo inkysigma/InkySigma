@@ -1,4 +1,5 @@
 ﻿using InkySigma.Common;
+using InkySigma.Common.Exceptions;
 
 namespace InkySigma.Web.Infrastructure.Exceptions
 {

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InkySigma.Common;
+using InkySigma.Common.Exceptions;
 using InkySigma.Web.Infrastructure.ExceptionPage;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.Filters;

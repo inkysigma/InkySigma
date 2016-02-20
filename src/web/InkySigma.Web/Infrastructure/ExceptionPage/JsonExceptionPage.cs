@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InkySigma.Common;
+using InkySigma.Common.Exceptions;
 using InkySigma.Web.Model;
 using Newtonsoft.Json;
 
