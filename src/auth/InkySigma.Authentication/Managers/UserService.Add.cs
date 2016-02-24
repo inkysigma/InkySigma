@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {
-    public partial class UserManager<TUser>
+    public partial class UserService<TUser>
     {
         public virtual async Task<string> AddUserAsync(TUser user, string username, string name, CancellationToken token = default(CancellationToken))
         {

@@ -8,17 +8,17 @@ namespace InkySigma.Authentication.Dapper
 {
     public static class UserAuthenticationManager
     {
-        public static async Task<UpdateToken> AddUser<TUser>(this UserManager<TUser> manager, TUser user, CancellationToken token = default(CancellationToken))
+        public static async Task<UpdateToken> AddUser<TUser>(this UserService<TUser> service, TUser user, CancellationToken token = default(CancellationToken))
             where TUser : User
         {
-            var identity = await manager.AddUserAsync(user, user.UserName, user.Name, token);
+            var identity = await service.AddUserAsync(user, user.UserName, user.Name, token);
             user.Id = identity;
-            await manager.AddUserPasswordAsync(user, user.Password, token);
-            await manager.AddUserEmailAsync(user, user.Email, token);
-            await manager.AddUserRole(user, "User", token);
-            await manager.AddUserProperties(user, token);
-            await manager.AddUserLockout(user, token);
-            var stoken = await manager.RequestActivation(user, token);
+            await service.AddUserPasswordAsync(user, user.Password, token);
+            await service.AddUserEmailAsync(user, user.Email, token);
+            await service.AddUserRole(user, "User", token);
+            await service.AddUserProperties(user, token);
+            await service.AddUserLockout(user, token);
+            var stoken = await service.RequestActivation(user, token);
             return stoken;
         }
     }

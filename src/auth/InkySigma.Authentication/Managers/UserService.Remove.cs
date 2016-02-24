@@ -6,7 +6,7 @@ using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Managers
 {
-    public partial class UserManager<TUser>
+    public partial class UserService<TUser>
     {
         public async Task<QueryResult> RemoveUserById(string userId,
             CancellationToken token = default(CancellationToken))

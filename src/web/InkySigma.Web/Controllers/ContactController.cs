@@ -13,7 +13,7 @@ namespace InkySigma.Web.Controllers
 {
     public class ContactController : Controller
     {
-        public UserManager<User> UserManager { get; set; }
+        public UserService<User> UserService { get; set; }
 
         /// <summary>
         /// 
@@ -34,10 +34,10 @@ namespace InkySigma.Web.Controllers
             var userName = HttpContext.User.Identity.Name;
             if (contact.Type.ToLower() == "username")
             {
-                var user = await UserManager.FindUserByUsername(userName);
+                var user = await UserService.FindUserByUsername(userName);
                 if (user == null)
                     return false;
-                user = await UserManager.GetUserProperties(user);
+                user = await UserService.GetUserProperties(user);
             }
             throw new NotImplementedException();
         }

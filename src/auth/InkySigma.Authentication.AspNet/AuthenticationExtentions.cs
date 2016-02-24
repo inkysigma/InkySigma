@@ -63,12 +63,12 @@ namespace InkySigma.Authentication.AspNet
                 throw new ArgumentNullException(nameof(builder));
             builder.ServiceCollection.AddTransient(
                 provider =>
-                    new UserManager<TUser>(builder.RepositoryOptions, builder.EmailProvider, builder.UserLogger,
+                    new UserService<TUser>(builder.RepositoryOptions, builder.EmailProvider, builder.UserLogger,
                         builder.ExpirationTime));
             builder.ServiceCollection.AddTransient(
                 provider =>
                 {
-                    var manager = provider.GetService<UserManager<TUser>>();
+                    var manager = provider.GetService<UserService<TUser>>();
                     return new LoginService<TUser>(manager, builder.LoginLogger, builder.LoginOptions);
                 });
             return builder.ServiceCollection;

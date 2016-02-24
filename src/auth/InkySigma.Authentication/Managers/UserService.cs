@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InkySigma.Authentication.Managers
 {
-    public partial class UserManager<TUser> : IDisposable where TUser : class
+    public partial class UserService<TUser> : IDisposable where TUser : class
     {
         private readonly FormValidatorOptions _formOptions;
         private readonly ILogger _logger;
@@ -25,7 +25,7 @@ namespace InkySigma.Authentication.Managers
         public readonly IUserTokenStore<TUser> UserTokenStore;
         private bool _isDisposed;
 
-        public UserManager(RepositoryOptions<TUser> repositories, IEmailService emailService,
+        public UserService(RepositoryOptions<TUser> repositories, IEmailService emailService,
             ILogger logger, TimeSpan maxTokenTimeSpan = default(TimeSpan))
         {
             UserStore = repositories.UserStore;
@@ -46,7 +46,7 @@ namespace InkySigma.Authentication.Managers
             _timeSpan = maxTokenTimeSpan;
         }
 
-        public UserManager(RepositoryOptions<TUser> repositories, FormValidatorOptions formOptions,
+        public UserService(RepositoryOptions<TUser> repositories, FormValidatorOptions formOptions,
             PasswordOptions passwordOptions, RandomOptions randomOptions, IEmailService emailService,
             ILogger logger, TimeSpan timeSpan = default(TimeSpan))
         {
@@ -85,7 +85,7 @@ namespace InkySigma.Authentication.Managers
         {
             token.ThrowIfCancellationRequested();
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(UserManager<TUser>));
+                throw new ObjectDisposedException(nameof(UserService<TUser>));
         }
     }
 }

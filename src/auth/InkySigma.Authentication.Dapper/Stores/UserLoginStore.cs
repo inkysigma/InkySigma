@@ -54,16 +54,14 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(nameof(user));
-            var result = await Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id", new {user.Id, Table});
-            if (result == null)
-                throw new NullReferenceException(nameof(result));
-            var objects = result as dynamic[] ?? result.ToArray();
-            var enumerable = new LoginToken[objects.Count()];
-            for (int i = 0; i < objects.Count(); i++)
+            var result = await Connection.QueryAsync($"SELECT Id, Token, Location, Expiration FROM {Table} WHERE Id=@Id", new {user.Id, Table});
+
+            return result.Select(p => new LoginToken()
             {
-                enumerable[i] = objects[i] as LoginToken;
-            }
-            return enumerable;
+                Expiration = p.Expiration,
+                Location = p.Location,
+                Token = p.Token
+            });
         }
 
         /// <summary>

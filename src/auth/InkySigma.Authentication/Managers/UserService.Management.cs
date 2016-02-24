@@ -10,7 +10,7 @@ using InkySigma.Authentication.Model.Result;
 
 namespace InkySigma.Authentication.Managers
 {
-    public partial class UserManager<TUser>
+    public partial class UserService<TUser>
     {
         public virtual async Task<QueryResult> ActivateAccount(TUser user, string code,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -30,7 +30,7 @@ namespace InkySigma.Authentication.Managers
             return await UserEmailStore.SetUserEmailConfirmedAsync(user, true, cancellationToken);
         }
 
-        public virtual async Task<QueryResult> DeactivateAccount(TUser user, CancellationToken cancellationToken)
+        public virtual async Task<QueryResult> DeactivateAccount(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             Handle(cancellationToken);
             if (user == null)
@@ -39,8 +39,11 @@ namespace InkySigma.Authentication.Managers
         }
 
         public virtual async Task<UpdateToken> RequestActivation(TUser user,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
+            Handle(cancellationToken);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
             var guid = Guid.NewGuid();
             var row = new UpdateToken
             {
@@ -113,19 +116,20 @@ namespace InkySigma.Authentication.Managers
             return await VerifyUserPasswordAsync(tuser, password, token);
         }
 
-        public virtual async Task<bool> RequestPasswordResetAsync(string user,
+        public virtual async Task<string> RequestPasswordResetAsync(TUser user,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             Handle(cancellationToken);
-            if (string.IsNullOrEmpty(user))
+            if (user == null)
                 throw new ArgumentNullException(nameof(user));
             var token = _randomProvider.TokenProvider.Generate();
-            var etoken = Uri.EscapeDataString(token);
-            return await EmailService.SendEmail(new EmailMessage
+            await UserTokenStore.AddTokenAsync(user, new UpdateToken
             {
-                Subject = "Password Reset",
-                Body = $@"Go to http://www.inkysigma.com/Reset?user={Uri.EscapeDataString(user)}&token={etoken}"
-            });
+                Expiration = DateTime.Now + _timeSpan,
+                Property = UpdateProperty.Password,
+                Token = token
+            }, cancellationToken);
+            return token;
         }
     }
 }

@@ -114,7 +114,7 @@ namespace InkySigma.Authentication.Dapper.Stores
             Handle(token);
             if (string.IsNullOrEmpty(user?.Id))
                 throw new ArgumentNullException(nameof(user));
-            return await _connection.ExecuteAsync($"SELECT * FROM {Table} WHERE Id=@Id", new {Key = user.Id}) > 1;
+            return await _connection.ExecuteAsync($"SELECT * FROM {Table} WHERE Id=@Id", new {Key = user.Id}) >= 1;
         }
 
         private void Handle(CancellationToken token = default(CancellationToken))

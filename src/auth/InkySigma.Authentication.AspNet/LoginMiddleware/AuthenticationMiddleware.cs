@@ -9,15 +9,15 @@ namespace InkySigma.Authentication.AspNet.LoginMiddleware
     public class AuthenticationMiddleware<TUser> where TUser : class
     {
         private readonly LoginService<TUser> _loginService;
-        private readonly UserManager<TUser> _manager;
+        private readonly UserService<TUser> _service;
         private readonly RequestDelegate _next;
         private readonly IAuthenticationMethod _method;
 
-        public AuthenticationMiddleware(RequestDelegate next, UserManager<TUser> manager,
+        public AuthenticationMiddleware(RequestDelegate next, UserService<TUser> service,
             LoginService<TUser> loginService, IAuthenticationMethod method)
         {
             _next = next;
-            _manager = manager;
+            _service = service;
             _loginService = loginService;
             _method = method;
         }

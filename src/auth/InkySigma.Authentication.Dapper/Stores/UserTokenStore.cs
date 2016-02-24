@@ -63,22 +63,16 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(user));
             if (string.IsNullOrEmpty(user.Id))
                 throw new InvalidUserException(user.UserName);
-            var results = await Connection.QueryAsync($"SELECT * FROM {Table} WHERE Id=@Id", new
+            var results = await Connection.QueryAsync($"SELECT Expiration,Property,Token FROM {Table} WHERE Id=@Id", new
             {
                 user.Id
             });
-            var enumerable = results as dynamic[] ?? results.ToArray();
-            var list = new UpdateToken[enumerable.Count()];
-            for (int i = 0; i < enumerable.Count(); i++)
+            return results.Select(p => new UpdateToken
             {
-                list[i] = new UpdateToken
-                {
-                    Expiration = enumerable[i].Expiration,
-                    Token = enumerable[i].Token,
-                    Property = (UpdateProperty)enumerable[i].Property
-                };
-            }
-            return list;
+                Expiration = p.Expiration,
+                Property = p.Property,
+                Token = p.Token
+            });
         }
 
         public async Task<UpdateToken> FindTokenAsync(TUser user, string code, CancellationToken cancellationToken)
@@ -91,8 +85,13 @@ namespace InkySigma.Authentication.Dapper.Stores
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentNullException(nameof(code));
             var result =
-                await Connection.QueryAsync<UpdateToken>($"SELECT * FROM {Table} WHERE Id=@Id And Token=@code", new {user.Id, code});
-            return result.FirstOrDefault();
+                await Connection.QueryAsync($"SELECT Expiration,Property,Token FROM {Table} WHERE Id=@Id And Token=@code", new {user.Id, code});
+            return result.Select(p => new UpdateToken
+            {
+                Expiration = p.Expiration,
+                Property = p.Property,
+                Token = p.Token
+            }).FirstOrDefault();
         }
 
         public async Task<QueryResult> RemoveTokenAsync(TUser user, string code, CancellationToken cancellationToken)

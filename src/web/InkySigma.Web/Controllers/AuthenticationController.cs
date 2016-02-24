@@ -17,13 +17,13 @@ namespace InkySigma.Web.Controllers
 {
     public class AuthenticationController : Controller
     {
-        public UserManager<SigmaUser> UserManager { get; set; }
+        public UserService<SigmaUser> UserService { get; set; }
         public LoginService<SigmaUser> LoginService { get; set; } 
         public IEmailService EmailService { get; set; }
 
-        public AuthenticationController(UserManager<SigmaUser> userManager, LoginService<SigmaUser> loginService, IEmailService emailService)
+        public AuthenticationController(UserService<SigmaUser> userService, LoginService<SigmaUser> loginService, IEmailService emailService)
         {
-            UserManager = userManager;
+            UserService = userService;
             LoginService = loginService;
             EmailService = emailService;
         }
@@ -51,7 +51,7 @@ namespace InkySigma.Web.Controllers
             return new LoginResponseModel
             {
                 Token = token,
-                Name = (await UserManager.FindUserByUsername(login.UserName)).UserName
+                Name = (await UserService.FindUserByUsername(login.UserName)).UserName
             };
         }
 
@@ -61,7 +61,7 @@ namespace InkySigma.Web.Controllers
             if (user == null)
                 throw new ParameterNullException(nameof(user));
             var constructed = user.Generate();
-            var model = await UserManager.AddUser(constructed);
+            var model = await UserService.AddUser(constructed);
             await
                 EmailService.SendEmail(new ActivationEmail(user.Email, model.Token, "api.inkysigma.com/activate",
                     "inkysigma.com/activate"));
@@ -73,12 +73,6 @@ namespace InkySigma.Web.Controllers
                 Payload = null
             };
             return response;
-        }
-
-        [HttpGet]
-        public async Task<string> Reset()
-        {
-            return "Hello";
         }
     }
 }

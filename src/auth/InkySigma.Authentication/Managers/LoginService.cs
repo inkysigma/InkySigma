@@ -26,15 +26,15 @@ namespace InkySigma.Authentication.Managers
         internal IUserLoginStore<TUser> LoginStore;
         internal int MaxCount;
         internal ITokenProvider TokenProvider;
-        internal UserManager<TUser> Users;
+        internal UserService<TUser> Users;
 
-        public LoginService(UserManager<TUser> userManager, ILogger logger,
+        public LoginService(UserService<TUser> userService, ILogger logger,
             LoginManagerOptions<TUser> options)
         {
-            Users = userManager;
-            LoginStore = userManager.UserLoginStore;
-            LockoutStore = userManager.UserLockoutStore;
-            EmailService = userManager.EmailService;
+            Users = userService;
+            LoginStore = userService.UserLoginStore;
+            LockoutStore = userService.UserLockoutStore;
+            EmailService = userService.EmailService;
             Logger = logger;
             ClaimsProvider = options.ClaimsProvider;
             TokenProvider = options.TokenProvider;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InkySigma.Authentication.Managers
 {
-    public partial class UserManager<TUser>
+    public partial class UserService<TUser>
     {
         public async Task<TUser> FindUserById(string userId, CancellationToken token = default(CancellationToken))
         {

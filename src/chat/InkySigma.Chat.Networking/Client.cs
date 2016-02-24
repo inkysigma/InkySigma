@@ -28,8 +28,10 @@ namespace InkySigma.Chat.Networking
         public async Task<Message> ReceieveMessageAsync(CancellationToken cancellationToken)
         {
             byte[] receieved = await Connection.ReadAsync(cancellationToken);
-            string[] stringMessage = Encoding.UTF8.GetString(receieved).Split(new []{ ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            
+            string[] stringMessage = Encoding.UTF8.GetString(receieved, 0, receieved.Length).Split(new []{ ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (stringMessage == null || stringMessage.Length > 2)
+                return null;
+            return new Message(stringMessage[0], stringMessage[1]);
         }
     }
 }

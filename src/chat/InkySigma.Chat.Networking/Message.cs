@@ -10,13 +10,13 @@ namespace InkySigma.Chat.Networking
         public string Command { get; set; }
         public string Parameters { get; set; }
 
-        public Message(string command, params string[] parameters)
+        public Message(string command, string parameters)
         {
             Command = command;
             Parameters = parameters;
         }
 
-        public void SetParameters(params string[] parameters)
+        public void SetParameters(string parameters)
         {
             Parameters = parameters;
         }
