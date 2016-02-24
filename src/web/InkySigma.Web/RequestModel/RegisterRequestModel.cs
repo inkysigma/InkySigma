@@ -1,4 +1,5 @@
 ﻿using InkySigma.Authentication.Dapper.Models;
+using InkySigma.Web.Core;
 
 namespace InkySigma.Web.RequestModel
 {
@@ -9,9 +10,9 @@ namespace InkySigma.Web.RequestModel
         public string Password { get; set; }
         public string UserName { get; set; }
 
-        public User Generate()
+        public SigmaUser Generate()
         {
-            var user = new User
+            var user = new SigmaUser
             {
                 Email = Email,
                 Name = Name,

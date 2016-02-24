@@ -4,6 +4,7 @@ using InkySigma.Authentication.Dapper.Models;
 using InkySigma.Authentication.Managers;
 using InkySigma.Authentication.Model.Messages;
 using InkySigma.Authentication.ServiceProviders.EmailProvider;
+using InkySigma.Web.Core;
 using InkySigma.Web.Infrastructure.Exceptions;
 using InkySigma.Web.Model;
 using InkySigma.Web.RequestModel;
@@ -16,11 +17,11 @@ namespace InkySigma.Web.Controllers
 {
     public class AuthenticationController : Controller
     {
-        public UserManager<User> UserManager { get; set; }
-        public LoginService<User> LoginService { get; set; } 
+        public UserManager<SigmaUser> UserManager { get; set; }
+        public LoginService<SigmaUser> LoginService { get; set; } 
         public IEmailService EmailService { get; set; }
 
-        public AuthenticationController(UserManager<User> userManager, LoginService<User> loginService, IEmailService emailService)
+        public AuthenticationController(UserManager<SigmaUser> userManager, LoginService<SigmaUser> loginService, IEmailService emailService)
         {
             UserManager = userManager;
             LoginService = loginService;
@@ -34,7 +35,7 @@ namespace InkySigma.Web.Controllers
         /// <param name="login">The login information</param>
         /// <returns>A response model containing the </returns>
         [HttpPost]
-        public async Task<LoginResponseModel> Login(LoginRequestModel login)
+        public async Task<LoginResponseModel> Login([FromBody] LoginRequestModel login)
         {
             if (login == null)
                 throw new ParameterNullException(nameof(login));
@@ -55,7 +56,7 @@ namespace InkySigma.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<StandardResponse> Register(RegisterRequestModel user)
+        public async Task<StandardResponse> Register([FromBody] RegisterRequestModel user)
         {
             if (user == null)
                 throw new ParameterNullException(nameof(user));
@@ -75,7 +76,7 @@ namespace InkySigma.Web.Controllers
         }
 
         [HttpGet]
-        public string Test()
+        public async Task<string> Reset()
         {
             return "Hello";
         }

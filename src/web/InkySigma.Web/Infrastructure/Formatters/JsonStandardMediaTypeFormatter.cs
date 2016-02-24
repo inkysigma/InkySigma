@@ -17,16 +17,9 @@ namespace InkySigma.Web.Infrastructure.Formatters
             var response = context.HttpContext.Response;
             var encoding = context.ContentType?.Encoding ?? Encoding.UTF8;
 
-            StandardResponse standard;
-
             var o = context.Object as StandardResponse;
-            if (o != null)
-                standard = o;
-            else
-                standard = new StandardResponse
-                {
-                    Code = 200
-                };
+            var standard = o ?? StandardResponse.Create(context.Object);
+
             return Task.Run(() =>
             {
                 using (var stream = new HttpResponseStreamWriter(response.Body, encoding))

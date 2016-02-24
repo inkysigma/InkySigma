@@ -122,7 +122,7 @@ namespace InkySigma.Authentication.Dapper.Stores
                 throw new ArgumentNullException(nameof(name));
             dynamic value =
                 (await
-                    _connection.QueryAsync($"SELECT Id,Name,UserName FROM {Table} WHERE UserName=@Name",
+                    _connection.QueryAsync($"SELECT Id,Name,Username FROM {Table} WHERE UserName=@Name",
                         new {table = Table, Name = name})).FirstOrDefault();
             if (value == null)
                 throw new InvalidUserException(name);

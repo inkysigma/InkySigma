@@ -31,7 +31,7 @@ namespace InkySigma.Chat.Networking
             IsDisposed = true;
         }
 
-        public async Task<byte[]> ReceieveMessageAsync(CancellationToken cancellationToken)
+        public async Task<byte[]> ReadAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (IsDisposed) throw new ObjectDisposedException(nameof(Connection));
@@ -64,7 +64,7 @@ namespace InkySigma.Chat.Networking
             }
         }
         
-        public async Task SendMessageAsync(byte[] message, CancellationToken cancellationToken)
+        public async Task WriteAsync(byte[] message, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (IsDisposed) throw new ObjectDisposedException(nameof(Connection));

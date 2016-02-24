@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Npgsql;
 using InkySigma.Web.Data;
+using Newtonsoft.Json;
 
 namespace InkySigma.Web
 {
@@ -53,9 +54,13 @@ namespace InkySigma.Web
             services.AddMvc(options =>
             {
                 var logger = Factory.CreateLogger("Web.Exception");
+                options.InputFormatters.Clear();
+                options.OutputFormatters.Clear();
                 options.Filters.Add(new ExceptionFilter(logger, new JsonExceptionPage()));
                 options.InputFormatters.Add(new JsonInputFormatter());
+
                 options.OutputFormatters.Add(new JsonStandardMediaTypeFormatter());
+                
             });
 
             services.AddTransient<IEmailService, EmailService>(
@@ -92,7 +97,7 @@ namespace InkySigma.Web
         public void Configure(IApplicationBuilder app, ILoggerFactory factory)
         {
 
-            app.RequireSecure();
+            // app.RequireSecure();
 
             app.UseStaticFiles();
 
